@@ -1,0 +1,9 @@
+﻿<Application x:Class="KAGTools.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:KAGTools"
+             StartupUri="Windows/MainWindow.xaml" Exit="Application_Exit" Startup="Application_Startup">
+    <Application.Resources>
+        <local:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
+    </Application.Resources>
+</Application>

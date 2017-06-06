@@ -1,0 +1,75 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:KAGTools.Windows"
+        xmlns:viewmodels="clr-namespace:KAGTools.ViewModels"
+        xmlns:properties="clr-namespace:KAGTools.Properties"
+        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="KAGTools.Windows.MainWindow"
+        mc:Ignorable="d"
+        Title="KAG Tools" Height="245" Width="200" Left="{Binding Left, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" Top="{Binding Top, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" ResizeMode="NoResize" SizeToContent="Height">
+    <Window.DataContext>
+        <viewmodels:MainViewModel />
+    </Window.DataContext>
+    <Grid Margin="5">
+        <Grid.Resources>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="Padding" Value="2"/>
+            </Style>
+            <Style TargetType="{x:Type Label}">
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="Padding" Value="2"/>
+            </Style>
+            <Style TargetType="{x:Type xctk:IntegerUpDown}">
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="TextAlignment" Value="Left"/>
+            </Style>
+            <Style TargetType="{x:Type CheckBox}">
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="Padding" Value="2"/>
+            </Style>
+            <Style TargetType="{x:Type Separator}">
+                <Setter Property="Margin" Value="0,4"/>
+            </Style>
+        </Grid.Resources>
+        <StackPanel>
+            <Button Content="Open KAG Folder" Command="{Binding OpenKAGFolderCommand}"/>
+            <Button Content="Open Screenshots" Command="{Binding OpenScreenshotsCommand}"/>
+            <Button Content="Run Localhost" Command="{Binding RunLocalhostCommand}"/>
+            <Button Content="Mods..." Command="{Binding ModsCommand}"/>
+
+            <Separator/>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="24"/>
+                </Grid.RowDefinitions>
+                <Label Content="Gamemode:" Grid.Row="0"/>
+                <Label Content="Screen width:" Grid.Row="1"/>
+                <Label Content="Screen height:" Grid.Row="2"/>
+                <Label Content="Fullscreen:" Grid.Row="3"/>
+                <ComboBox Grid.Column="1" Grid.Row="0" Text="{Binding Gamemode, UpdateSourceTrigger=LostFocus}" Margin="2" Padding="2,0" VerticalContentAlignment="Center" IsEditable="True">
+                    <System:String>Sandbox</System:String>
+                    <System:String>WAR</System:String>
+                    <System:String>TDM</System:String>
+                    <System:String>CTF</System:String>
+                    <System:String>Challenge</System:String>
+                </ComboBox>
+                <xctk:IntegerUpDown Grid.Column="1" Grid.Row="1" Value="{Binding ScreenWidth}" Minimum="0" UpdateValueOnEnterKey="True"/>
+                <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" Value="{Binding ScreenHeight}" Minimum="0" UpdateValueOnEnterKey="True"/>
+                <CheckBox Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding Fullscreen}"/>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window>
