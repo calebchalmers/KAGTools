@@ -61,3 +61,8 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+# Make ClickOnce files binary to avoid issues
+*.manifest binary
+*.application binary
+*.deploy binary
