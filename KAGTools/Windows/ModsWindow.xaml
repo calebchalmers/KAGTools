@@ -8,9 +8,6 @@
         xmlns:viewmodels="clr-namespace:KAGTools.ViewModels"
         mc:Ignorable="d"
         Title="Mods" Height="400" Width="300" WindowStartupLocation="CenterOwner" FocusManager.FocusedElement="{Binding ElementName=searchBox}" WindowStyle="SingleBorderWindow" KeyDown="Window_KeyDown" ResizeMode="NoResize">
-    <Window.DataContext>
-        <viewmodels:ModsViewModel/>
-    </Window.DataContext>
     <DockPanel>
         <xctk:WatermarkTextBox x:Name="searchBox" Watermark="Search..." DockPanel.Dock="Top" Padding="5,3" Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" SelectAllOnGotFocus="True" KeepWatermarkOnGotFocus="True"/>
         <ListBox x:Name="listbox" ItemsSource="{Binding FilteredMods}" SelectedItem="{Binding Selected}" BorderThickness="1,0,1,1" HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" KeyDown="listbox_KeyDown">

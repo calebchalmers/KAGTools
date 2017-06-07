@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using KAGTools.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -169,7 +170,8 @@ namespace KAGTools.ViewModels
 
         private void ExecuteModsCommand()
         {
-            MessengerInstance.Send("EditMods");
+            ModsViewModel viewModel = new ModsViewModel();
+            ServiceManager.GetService<IViewService>().OpenDialog(viewModel);
         }
     }
 }
