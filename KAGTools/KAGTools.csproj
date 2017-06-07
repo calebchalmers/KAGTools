@@ -139,8 +139,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ConfigProperty.cs" />
+    <Compile Include="Services\IService.cs" />
+    <Compile Include="Services\IViewService.cs" />
+    <Compile Include="Services\RequestCloseMessage.cs" />
+    <Compile Include="Services\ServiceManager.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\ModsViewModel.cs" />
+    <Compile Include="Services\ViewService.cs" />
     <Compile Include="Windows\ModsWindow.xaml.cs">
       <DependentUpon>ModsWindow.xaml</DependentUpon>
     </Compile>
