@@ -38,8 +38,6 @@ namespace KAGTools.Windows
                 }
             }
 
-            Messenger.Default.Register<string>(this, (msg) => ReceiveMessage(msg));
-
             if (Properties.Settings.Default.FirstRun)
             {
                 WindowStartupLocation = WindowStartupLocation.CenterScreen;
@@ -48,16 +46,7 @@ namespace KAGTools.Windows
             InitializeComponent();
 
             Version version = Assembly.GetEntryAssembly().GetName().Version;
-
             Title += string.Format(" v{0}", version.ToString());
-        }
-
-        private void ReceiveMessage(string msg)
-        {
-            if (msg == "EditMods")
-            {
-                OpenModsWindow();
-            }
         }
 
         private bool FindKagDirectory()
@@ -81,13 +70,6 @@ namespace KAGTools.Windows
                 return true;
             }
             return false;
-        }
-
-        private void OpenModsWindow()
-        {
-            ModsWindow modsWindow = new ModsWindow();
-            modsWindow.Owner = this;
-            modsWindow.ShowDialog();
         }
     }
 }

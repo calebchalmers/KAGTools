@@ -1,4 +1,7 @@
-﻿using System;
+﻿using KAGTools.Services;
+using KAGTools.ViewModels;
+using KAGTools.Windows;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -21,6 +24,12 @@ namespace KAGTools
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            IViewService viewService = ServiceManager.RegisterService<IViewService>(new ViewService());
+            viewService.RegisterView(typeof(MainWindow), typeof(MainViewModel));
+            viewService.RegisterView(typeof(ModsWindow), typeof(ModsViewModel));
+
+            ServiceManager.GetService<IViewService>().OpenWindow(new MainViewModel());
+
             KAGTools.Properties.Settings.Default.Upgrade();
         }
     }
