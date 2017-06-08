@@ -28,7 +28,12 @@ namespace KAGTools
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            Settings.Upgrade();
+            if(Settings.UpgradeRequired)
+            {
+                Settings.Upgrade();
+                Settings.UpgradeRequired = false;
+                Settings.Save();
+            }
 
             if (!Directory.Exists(Settings.KagDirectory))
             {
