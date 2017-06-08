@@ -27,6 +27,7 @@ namespace KAGTools
             IViewService viewService = ServiceManager.RegisterService<IViewService>(new ViewService());
             viewService.RegisterView(typeof(MainWindow), typeof(MainViewModel));
             viewService.RegisterView(typeof(ModsWindow), typeof(ModsViewModel));
+            viewService.RegisterView(typeof(InputWindow), typeof(InputViewModel));
 
             ServiceManager.GetService<IViewService>().OpenWindow(new MainViewModel());
 
