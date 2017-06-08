@@ -164,7 +164,7 @@ namespace KAGTools
                         rawvalue = rawvalue.Remove(commentIndex);
                     }
 
-                    Debug.WriteLine(rawvalue);
+                    //Debug.WriteLine(rawvalue);
 
                     foreach (var property in properties)
                     {
@@ -247,6 +247,27 @@ namespace KAGTools
             List<string> lines = new List<string>(comments);
             lines.AddRange(mods.Select((mod) => mod.Name));
             File.WriteAllLines(ModsConfigPath, lines.ToArray());
+        }
+
+        public static bool IsValidPath(string path)
+        {
+            Regex regex = new Regex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]");
+            return !regex.IsMatch(path);
+        }
+
+        public static void CopyDirectory(string sourceDir, string destDir)
+        {
+            // Copy folders
+            foreach (string dirPath in Directory.GetDirectories(sourceDir, "*", SearchOption.AllDirectories))
+            {
+                Directory.CreateDirectory(dirPath.Replace(sourceDir, destDir));
+            }
+
+            // Copy files
+            foreach (string newPath in Directory.GetFiles(sourceDir, "*", SearchOption.AllDirectories))
+            {
+                File.Copy(newPath, newPath.Replace(sourceDir, destDir), true);
+            }
         }
     }
 }

@@ -6,4 +6,8 @@ using System.Threading.Tasks;
 
 namespace KAGTools
 {
+    class FocusSelectedItemMessage
+    {
+
+    }
 }

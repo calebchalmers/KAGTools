@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -26,6 +27,12 @@ namespace KAGTools.Windows
 
             listbox.Items.SortDescriptions.Add(new SortDescription("IsActive", ListSortDirection.Descending));
             listbox.Items.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+
+            Messenger.Default.Register<FocusSelectedItemMessage>(this, e =>
+            {
+                listbox.Focus();
+                listbox.ScrollIntoView(listbox.SelectedItem);
+            });
         }
 
         private void listbox_KeyDown(object sender, KeyEventArgs e)

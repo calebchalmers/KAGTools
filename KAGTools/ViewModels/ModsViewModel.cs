@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using KAGTools.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,6 +28,8 @@ namespace KAGTools.ViewModels
             OpenCommand = new RelayCommand(ExecuteOpenCommand);
             DeleteCommand = new RelayCommand(ExecuteDeleteCommand);
             UpdateActiveModsCommand = new RelayCommand(ExecuteUpdateActiveModsCommand);
+            NewCommand = new RelayCommand(ExecuteNewCommand);
+            DuplicateCommand = new RelayCommand(ExecuteDuplicateCommand);
 
             Mods = new ObservableCollection<Mod>(FileHelper.GetMods());
 
@@ -88,6 +91,8 @@ namespace KAGTools.ViewModels
         public ICommand OpenCommand { get; private set; }
         public ICommand DeleteCommand { get; private set; }
         public ICommand UpdateActiveModsCommand { get; private set; }
+        public ICommand NewCommand { get; private set; }
+        public ICommand DuplicateCommand { get; private set; }
 
         private void ExecuteOpenCommand()
         {
@@ -108,7 +113,66 @@ namespace KAGTools.ViewModels
 
         private void ExecuteUpdateActiveModsCommand()
         {
+            UpdateActiveMods();
+        }
+
+        private void ExecuteNewCommand()
+        {
+            InputViewModel viewModel = new InputViewModel("New Mod", "Name:");
+            if(ServiceManager.GetService<IViewService>().OpenDialog(viewModel) == true)
+            {
+                CreateMod(viewModel.Input);
+            }
+        }
+
+        private void ExecuteDuplicateCommand()
+        {
+            if (Selected == null) return;
+            InputViewModel viewModel = new InputViewModel("Duplicate Mod", "Name:", Selected.Name);
+            if (ServiceManager.GetService<IViewService>().OpenDialog(viewModel) == true)
+            {
+                CreateMod(viewModel.Input, Selected);
+            }
+        }
+
+        private void UpdateActiveMods()
+        {
             FileHelper.SetActiveMods(Mods.Where(mod => mod.IsActive).ToArray());
+        }
+
+        private void CreateMod(string name, Mod from = null)
+        {
+            if (!FileHelper.IsValidPath(name))
+            {
+                MessageBox.Show("Invalid name!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            string modDir = Path.Combine(FileHelper.ModsDir, name);
+
+            if (Directory.Exists(modDir))
+            {
+                MessageBox.Show(name + " already exists!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if(from == null)
+            {
+                Directory.CreateDirectory(modDir);
+            }
+            else
+            {
+                FileHelper.CopyDirectory(from.Directory, modDir);
+            }
+
+            Mod newMod = new Mod(modDir, true);
+            Mods.Add(newMod);
+
+            Process.Start(modDir);
+
+            Selected = newMod;
+            MessengerInstance.Send(new FocusSelectedItemMessage());
+            UpdateActiveMods();
         }
     }
 }
