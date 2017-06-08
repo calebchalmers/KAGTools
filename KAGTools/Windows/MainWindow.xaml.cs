@@ -1,9 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -29,15 +27,6 @@ namespace KAGTools.Windows
     {
         public MainWindow()
         {
-            if (!Directory.Exists(Properties.Settings.Default.KagDirectory))
-            {
-                // KAG Directory not specified. Show dialog...
-                if (!FindKagDirectory())
-                {
-                    Close();
-                }
-            }
-
             if (Properties.Settings.Default.FirstRun)
             {
                 WindowStartupLocation = WindowStartupLocation.CenterScreen;
@@ -47,29 +36,6 @@ namespace KAGTools.Windows
 
             Version version = Assembly.GetEntryAssembly().GetName().Version;
             Title += string.Format(" v{0}", version.ToString());
-        }
-
-        private bool FindKagDirectory()
-        {
-            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-            dialog.Title = "Select your King Arthur's Gold install directory";
-            dialog.IsFolderPicker = true;
-
-            dialog.AddToMostRecentlyUsedList = false;
-            dialog.AllowNonFileSystemItems = false;
-            dialog.EnsureFileExists = true;
-            dialog.EnsurePathExists = true;
-            dialog.EnsureReadOnly = false;
-            dialog.EnsureValidNames = true;
-            dialog.Multiselect = false;
-            dialog.ShowPlacesList = true;
-
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                Properties.Settings.Default.KagDirectory = dialog.FileName;
-                return true;
-            }
-            return false;
         }
     }
 }
