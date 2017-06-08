@@ -100,7 +100,7 @@ namespace KAGTools.ViewModels
             if (Selected == null) return;
             if(MessageBox.Show("Are you sure you want to delete '" + Selected.Name + "'?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-                Directory.Delete(Selected.Directory);
+                Directory.Delete(Selected.Directory, true);
                 Mods.Remove(Selected);
                 UpdateActiveMods();
             }
