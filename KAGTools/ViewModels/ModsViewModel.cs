@@ -102,6 +102,7 @@ namespace KAGTools.ViewModels
             {
                 Directory.Delete(Selected.Directory);
                 Mods.Remove(Selected);
+                UpdateActiveMods();
             }
         }
 
