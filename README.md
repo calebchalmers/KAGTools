@@ -1,5 +1,5 @@
 # KAG Tools
-A set of useful modding tools for the game King Arthur's Gold.
+A set of useful modding tools for the game [King Arthur's Gold](https://www.kag2d.com).
 
 ![Screenshot](http://i.imgur.com/YBZUeIz.png)
 
