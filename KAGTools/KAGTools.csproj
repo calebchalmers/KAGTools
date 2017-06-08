@@ -144,10 +144,14 @@
     <Compile Include="Services\RequestCloseMessage.cs" />
     <Compile Include="Services\ServiceManager.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ViewModels\InputViewModel.cs" />
     <Compile Include="ViewModels\ModsViewModel.cs" />
     <Compile Include="Services\ViewService.cs" />
     <Compile Include="Windows\ModsWindow.xaml.cs">
       <DependentUpon>ModsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\InputWindow.xaml.cs">
+      <DependentUpon>InputWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -168,6 +172,10 @@
     <Page Include="Windows\ModsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\InputWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
