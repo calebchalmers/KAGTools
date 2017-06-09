@@ -56,12 +56,22 @@
                 <Label Content="Screen width:" Grid.Row="1"/>
                 <Label Content="Screen height:" Grid.Row="2"/>
                 <Label Content="Fullscreen:" Grid.Row="3"/>
-                <ComboBox Grid.Column="1" Grid.Row="0" Text="{Binding Gamemode, UpdateSourceTrigger=LostFocus}" Margin="2" Padding="2,0" VerticalContentAlignment="Center" IsEditable="True">
-                    <System:String>Sandbox</System:String>
-                    <System:String>WAR</System:String>
-                    <System:String>TDM</System:String>
-                    <System:String>CTF</System:String>
-                    <System:String>Challenge</System:String>
+                <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Gamemodes}" Text="{Binding Gamemode, UpdateSourceTrigger=LostFocus}" Margin="2" Padding="2,0" VerticalContentAlignment="Center" IsEditable="True">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding}" Value="">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                                                <Separator HorizontalAlignment="Stretch" IsEnabled="False" Margin="3"/>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
                 </ComboBox>
                 <xctk:IntegerUpDown Grid.Column="1" Grid.Row="1" Value="{Binding ScreenWidth}" Minimum="0" UpdateValueOnEnterKey="True"/>
                 <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" Value="{Binding ScreenHeight}" Minimum="0" UpdateValueOnEnterKey="True"/>

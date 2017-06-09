@@ -18,10 +18,20 @@ namespace KAGTools.ViewModels
     {
         private static Properties.Settings Settings = Properties.Settings.Default;
 
+        private static readonly string[] DEFAULT_GAMEMODES = 
+        {
+            "CTF",
+            "TDM",
+            "Sandbox",
+            "WAR",
+            "Challenge",
+        };
+
         private string _gamemode;
         private int _screenWidth;
         private int _screenHeight;
         private bool _fullscreen;
+        ObservableCollection<string> _gamemodes;
 
         public MainViewModel()
         {
@@ -37,6 +47,9 @@ namespace KAGTools.ViewModels
 
             //FileHelper.GetStartupInfo(ref _screenWidth, ref _screenHeight, ref _fullscreen);
 
+            InitializeGamemodes(FileHelper.GetMods());
+
+            // Get settings from config files
             // startup_config.cfg
             var screenWidthProperty = new ConfigPropertyDouble("Window.Width", ScreenWidth);
             var screenHeightProperty = new ConfigPropertyDouble("Window.Height", ScreenHeight);
@@ -145,6 +158,19 @@ namespace KAGTools.ViewModels
             }
         }
 
+        public ObservableCollection<string> Gamemodes
+        {
+            get { return _gamemodes; }
+            set
+            {
+                if (_gamemodes != value)
+                {
+                    _gamemodes = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         public ICommand OpenKAGFolderCommand { get; private set; }
         public ICommand OpenScreenshotsCommand { get; private set; }
         public ICommand RunLocalhostCommand { get; private set; }
@@ -172,6 +198,31 @@ namespace KAGTools.ViewModels
         {
             ModsViewModel viewModel = new ModsViewModel();
             ServiceManager.GetService<IViewService>().OpenDialog(viewModel);
+
+            InitializeGamemodes(viewModel.Mods);
+        }
+
+        private void InitializeGamemodes(IEnumerable<Mod> mods)
+        {
+            var newGamemodes = new List<string>(DEFAULT_GAMEMODES);
+
+            bool first = true;
+
+            foreach (Mod active in mods.Where(m => m.IsActive))
+            {
+                if (!newGamemodes.Contains(active.Gamemode))
+                {
+                    if (first)
+                    {
+                        newGamemodes.Add("");
+                        first = false;
+                    }
+
+                    newGamemodes.Add(active.Gamemode);
+                }
+            }
+
+            Gamemodes = new ObservableCollection<string>(newGamemodes);
         }
     }
 }
