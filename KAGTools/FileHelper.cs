@@ -147,5 +147,18 @@ namespace KAGTools
                 File.Copy(newPath, newPath.Replace(sourceDir, destDir), true);
             }
         }
+
+        public static string FindFirstFile(string dir, string fileName, bool includeSubs = true)
+        {
+            string[] filePaths = FindFiles(dir, fileName, includeSubs);
+            if (filePaths.Length == 0) return null;
+            return filePaths[0];
+        }
+
+        public static string[] FindFiles(string dir, string fileName, bool includeSubs = true)
+        {
+            string[] filePaths = Directory.GetFiles(dir, fileName, includeSubs ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
+            return filePaths;
+        }
     }
 }
