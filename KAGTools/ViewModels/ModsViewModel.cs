@@ -30,8 +30,9 @@ namespace KAGTools.ViewModels
             UpdateActiveModsCommand = new RelayCommand(ExecuteUpdateActiveModsCommand);
             NewCommand = new RelayCommand(ExecuteNewCommand);
             DuplicateCommand = new RelayCommand(ExecuteDuplicateCommand);
+            InfoCommand = new RelayCommand(ExecuteInfoCommand);
 
-            Mods = new ObservableCollection<Mod>(FileHelper.GetMods());
+            _mods = new ObservableCollection<Mod>(FileHelper.GetMods());
 
             _filteredMods = new CollectionViewSource();
             _filteredMods.Source = Mods;
@@ -93,6 +94,7 @@ namespace KAGTools.ViewModels
         public ICommand UpdateActiveModsCommand { get; private set; }
         public ICommand NewCommand { get; private set; }
         public ICommand DuplicateCommand { get; private set; }
+        public ICommand InfoCommand { get; private set; }
 
         private void ExecuteOpenCommand()
         {
@@ -133,6 +135,17 @@ namespace KAGTools.ViewModels
             {
                 CreateMod(viewModel.Input, Selected);
             }
+        }
+
+        private void ExecuteInfoCommand()
+        {
+            if (Selected == null) return;
+
+            StringBuilder infoBuilder = new StringBuilder();
+            infoBuilder.AppendLine("Name: " + Selected.Name);
+            infoBuilder.AppendLine("Gamemode: " + Selected.Gamemode);
+
+            MessageBox.Show(infoBuilder.ToString(), "Mod Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void UpdateActiveMods()

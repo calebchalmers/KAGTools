@@ -22,6 +22,8 @@
                     <MenuItem Header="Open" Command="{Binding OpenCommand}"/>
                     <MenuItem Header="Duplicate" Command="{Binding DuplicateCommand}"/>
                     <MenuItem Header="Delete" Command="{Binding DeleteCommand}"/>
+                    <Separator/>
+                    <MenuItem Header="Info..." Command="{Binding InfoCommand}"/>
                 </ContextMenu>
                 <Style TargetType="{x:Type ListBoxItem}">
                     <Setter Property="ContextMenu" Value="{StaticResource ModContextMenu}"/>
