@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -41,7 +42,7 @@ namespace KAGTools.ViewModels
             }
 
             OpenKAGFolderCommand = new RelayCommand(ExecuteOpenKAGFolderCommand);
-            OpenScreenshotsCommand = new RelayCommand(ExecuteOpenScreenshotsCommand);
+            RunServerClientCommand = new RelayCommand(ExecuteRunServerClientCommand);
             RunLocalhostCommand = new RelayCommand(ExecuteRunLocalhostCommand);
             ModsCommand = new RelayCommand(ExecuteModsCommand);
 
@@ -172,7 +173,7 @@ namespace KAGTools.ViewModels
         }
 
         public ICommand OpenKAGFolderCommand { get; private set; }
-        public ICommand OpenScreenshotsCommand { get; private set; }
+        public ICommand RunServerClientCommand { get; private set; }
         public ICommand RunLocalhostCommand { get; private set; }
         public ICommand ModsCommand { get; private set; }
 
@@ -181,17 +182,30 @@ namespace KAGTools.ViewModels
             Process.Start(FileHelper.KagDir);
         }
 
-        private void ExecuteOpenScreenshotsCommand()
+        private void ExecuteRunServerClientCommand()
         {
-            Process.Start(FileHelper.ScreenshotsDir);
+            Process.Start(new ProcessStartInfo()
+            {
+                FileName = FileHelper.KAGExecutablePath,
+                Arguments = "noautoupdate nolauncher autostart Scripts/server_autostart.as autoconfig autoconfig.cfg",
+                WorkingDirectory = FileHelper.KagDir
+            });
+            
+            Process.Start(new ProcessStartInfo()
+            {
+                FileName = FileHelper.KAGExecutablePath,
+                Arguments = string.Format("noautoupdate nolauncher autostart \"{0}\"", FileHelper.ClientLocalhostScriptPath),
+                WorkingDirectory = FileHelper.KagDir
+            });
         }
 
         private void ExecuteRunLocalhostCommand()
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = FileHelper.RunLocalhostPath;
-            startInfo.WorkingDirectory = FileHelper.KagDir;
-            Process.Start(startInfo);
+            Process.Start(new ProcessStartInfo()
+            {
+                FileName = FileHelper.RunLocalhostPath,
+                WorkingDirectory = FileHelper.KagDir
+            });
         }
 
         private void ExecuteModsCommand()

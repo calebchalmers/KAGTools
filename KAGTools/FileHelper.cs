@@ -12,18 +12,15 @@ namespace KAGTools
     public static class FileHelper
     {
         public static string KagDir { get { return Properties.Settings.Default.KagDirectory; } }
-
         public static string ScreenshotsDir { get { return Path.Combine(KagDir, "Screenshots"); } }
-
         public static string ModsDir { get { return Path.Combine(KagDir, "Mods"); } }
-
         public static string StartupConfigPath { get { return Path.Combine(KagDir, "startup_config.cfg"); } }
-
         public static string ModsConfigPath { get { return Path.Combine(KagDir, "mods.cfg"); } }
-
         public static string AutoConfigPath { get { return Path.Combine(KagDir, "autoconfig.cfg"); } }
-
         public static string RunLocalhostPath { get { return Path.Combine(KagDir, "runlocalhost.bat"); } }
+        public static string RunDedicatedServerPath { get { return Path.Combine(KagDir, "dedicatedserver.bat"); } }
+        public static string KAGExecutablePath { get { return Path.Combine(KagDir, "KAG.exe"); } }
+        public static string ClientLocalhostScriptPath { get { return Path.GetFullPath(@"Resources\client_localhost.as"); } }
 
         public static void GetConfigInfo(string filePath, params ConfigProperty[] properties)
         {

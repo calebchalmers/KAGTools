@@ -35,7 +35,7 @@
         </Grid.Resources>
         <StackPanel>
             <Button Content="Open KAG Folder" Command="{Binding OpenKAGFolderCommand}"/>
-            <Button Content="Open Screenshots" Command="{Binding OpenScreenshotsCommand}"/>
+            <Button Content="Run Server + Client" Command="{Binding RunServerClientCommand}"/>
             <Button Content="Run Localhost" Command="{Binding RunLocalhostCommand}"/>
             <Button Content="Mods..." Command="{Binding ModsCommand}"/>
 
