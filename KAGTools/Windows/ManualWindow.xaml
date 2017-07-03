@@ -8,7 +8,11 @@
         xmlns:viewmodels="clr-namespace:KAGTools.ViewModels.Manual"
         xmlns:properties="clr-namespace:KAGTools.Properties"
         mc:Ignorable="d"
-        Title="Manual" Height="{Binding ManualWindowHeight, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" Width="{Binding ManualWindowWidth, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" WindowStartupLocation="CenterOwner">
+        Title="Manual"
+        Height="{Binding ManualWindowHeight, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+        Width="{Binding ManualWindowWidth, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+        Top="{Binding ManualWindowTop, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+        Left="{Binding ManualWindowLeft, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
     <TabControl>
         <TabItem Header="Objects">
             <usercontrols:ManualGenericUserControl>

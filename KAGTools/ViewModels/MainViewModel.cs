@@ -223,7 +223,7 @@ namespace KAGTools.ViewModels
         private void ExecuteManualCommand()
         {
             ManualViewModel viewModel = new ManualViewModel();
-            ServiceManager.GetService<IViewService>().OpenDialog(viewModel);
+            ServiceManager.GetService<IViewService>().OpenWindow(viewModel);
         }
 
         private void InitializeGamemodes(IEnumerable<Mod> mods)

@@ -37,7 +37,7 @@ namespace KAGTools.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("400")]
+        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
         public double Left {
             get {
                 return ((double)(this["Left"]));
@@ -49,7 +49,7 @@ namespace KAGTools.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("400")]
+        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
         public double Top {
             get {
                 return ((double)(this["Top"]));
@@ -98,12 +98,36 @@ namespace KAGTools.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("600")]
-        public string ManualWindowHeight {
+        public double ManualWindowHeight {
             get {
-                return ((string)(this["ManualWindowHeight"]));
+                return ((double)(this["ManualWindowHeight"]));
             }
             set {
                 this["ManualWindowHeight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
+        public double ManualWindowTop {
+            get {
+                return ((double)(this["ManualWindowTop"]));
+            }
+            set {
+                this["ManualWindowTop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
+        public double ManualWindowLeft {
+            get {
+                return ((double)(this["ManualWindowLeft"]));
+            }
+            set {
+                this["ManualWindowLeft"] = value;
             }
         }
     }

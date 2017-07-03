@@ -6,10 +6,10 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Left" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">400</Value>
+      <Value Profile="(Default)">NaN</Value>
     </Setting>
     <Setting Name="Top" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">400</Value>
+      <Value Profile="(Default)">NaN</Value>
     </Setting>
     <Setting Name="FirstRun" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -20,8 +20,14 @@
     <Setting Name="ManualWindowWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">500</Value>
     </Setting>
-    <Setting Name="ManualWindowHeight" Type="System.String" Scope="User">
+    <Setting Name="ManualWindowHeight" Type="System.Double" Scope="User">
       <Value Profile="(Default)">600</Value>
+    </Setting>
+    <Setting Name="ManualWindowTop" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">NaN</Value>
+    </Setting>
+    <Setting Name="ManualWindowLeft" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">NaN</Value>
     </Setting>
   </Settings>
 </SettingsFile>
