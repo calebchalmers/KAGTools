@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:KAGTools.Xaml.Styles"
+                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
+
+    <Style x:Key="FilterBarStyle">
+        <Style.Resources>
+            <Style TargetType="{x:Type xctk:WatermarkComboBox}">
+                <Setter Property="Padding" Value="5,3"/>
+            </Style>
+            <Style TargetType="{x:Type xctk:WatermarkTextBox}">
+                <Setter Property="Padding" Value="5,3"/>
+                <Setter Property="KeepWatermarkOnGotFocus" Value="True"/>
+                <Setter Property="SelectAllOnGotFocus" Value="True" />
+            </Style>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Padding" Value="5,3"/>
+            </Style>
+        </Style.Resources>
+    </Style>
+</ResourceDictionary>

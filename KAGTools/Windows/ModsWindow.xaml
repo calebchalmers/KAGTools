@@ -12,9 +12,9 @@
         <KeyBinding Key="Delete" Command="{Binding DeleteCommand}" />
     </Window.InputBindings>
     <DockPanel>
-        <DockPanel DockPanel.Dock="Top" >
-            <Button DockPanel.Dock="Right" Content="New" Width="36" Command="{Binding NewCommand}"/>
-            <xctk:WatermarkTextBox x:Name="searchBox" Watermark="Search..." Padding="5,3" Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" SelectAllOnGotFocus="True" KeepWatermarkOnGotFocus="True"/>
+        <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
+            <Button DockPanel.Dock="Right" Content="New" Command="{Binding NewCommand}"/>
+            <xctk:WatermarkTextBox x:Name="searchBox" Watermark="Search..." Padding="5,3" Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
         </DockPanel>
         <ListBox x:Name="listbox" ItemsSource="{Binding FilteredMods}" SelectedItem="{Binding Selected}" BorderThickness="1,0,1,1" HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" KeyDown="listbox_KeyDown">
             <ListBox.Resources>

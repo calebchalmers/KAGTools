@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace KAGTools
+namespace KAGTools.Xaml.Converters
 {
     public class NullableBoolToBoolConverter : IValueConverter
     {

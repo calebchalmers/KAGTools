@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:KAGTools"
              Exit="Application_Exit" Startup="Application_Startup">
     <Application.Resources>
-        <local:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Xaml/Default.xaml"/>
+                <ResourceDictionary Source="Xaml/Brushes.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
