@@ -39,9 +39,17 @@
         </Grid.Resources>
         <StackPanel>
             <Button Content="Open KAG Folder" Command="{Binding OpenKAGFolderCommand}"/>
-            <Button Content="Run Server + Client" Command="{Binding RunServerClientCommand}"/>
             <Button Content="Run Localhost" Command="{Binding RunLocalhostCommand}"/>
-            <Button Content="Mods..." Command="{Binding ModsCommand}"/>
+            <Button Content="Run Server + Client" Command="{Binding RunServerClientCommand}"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button Content="Manual..." Grid.Column="0" Command="{Binding ManualCommand}"/>
+                <Button Content="Mods..." Grid.Column="1" Command="{Binding ModsCommand}"/>
+            </Grid>
 
             <Separator/>
 
