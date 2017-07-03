@@ -6,21 +6,34 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using KAGTools.Data;
 
-namespace KAGTools
+namespace KAGTools.Helpers
 {
     public static class FileHelper
     {
-        public static string KagDir { get { return Properties.Settings.Default.KagDirectory; } }
-        public static string ScreenshotsDir { get { return Path.Combine(KagDir, "Screenshots"); } }
-        public static string ModsDir { get { return Path.Combine(KagDir, "Mods"); } }
-        public static string StartupConfigPath { get { return Path.Combine(KagDir, "startup_config.cfg"); } }
-        public static string ModsConfigPath { get { return Path.Combine(KagDir, "mods.cfg"); } }
-        public static string AutoConfigPath { get { return Path.Combine(KagDir, "autoconfig.cfg"); } }
-        public static string RunLocalhostPath { get { return Path.Combine(KagDir, "runlocalhost.bat"); } }
-        public static string RunDedicatedServerPath { get { return Path.Combine(KagDir, "dedicatedserver.bat"); } }
-        public static string KAGExecutablePath { get { return Path.Combine(KagDir, "KAG.exe"); } }
-        public static string ClientLocalhostScriptPath { get { return Path.GetFullPath(@"Resources\client_localhost.as"); } }
+        // KAG directories/files
+        public static string KagDir => Properties.Settings.Default.KagDirectory;
+        public static string ScreenshotsDir => Path.Combine(KagDir, "Screenshots");
+        public static string ModsDir => Path.Combine(KagDir, "Mods");
+        public static string StartupConfigPath => Path.Combine(KagDir, "startup_config.cfg");
+        public static string ModsConfigPath => Path.Combine(KagDir, "mods.cfg");
+        public static string AutoConfigPath => Path.Combine(KagDir, "autoconfig.cfg");
+        public static string RunLocalhostPath => Path.Combine(KagDir, "runlocalhost.bat");
+        public static string RunDedicatedServerPath => Path.Combine(KagDir, "dedicatedserver.bat");
+        public static string KAGExecutablePath => Path.Combine(KagDir, "KAG.exe");
+
+        // Manual
+        public static string ManualDir => Path.Combine(KagDir, "Manual", "interface");
+        public static string ManualObjectsPath => Path.Combine(ManualDir, "Objects.txt");
+        public static string ManualFunctionsPath => Path.Combine(ManualDir, "Functions.txt");
+        public static string ManualHooksPath => Path.Combine(ManualDir, "Hooks.txt");
+        public static string ManualEnumsPath => Path.Combine(ManualDir, "Enums.txt");
+        public static string ManualVariablesPath => Path.Combine(ManualDir, "Variables.txt");
+        public static string ManualTypeDefsPath => Path.Combine(ManualDir, "TypeDefs.txt");
+
+        // Resources
+        public static string ClientLocalhostScriptPath => Path.GetFullPath(@"Resources\client_localhost.as");
 
         public static void GetConfigInfo(string filePath, params ConfigProperty[] properties)
         {
@@ -156,6 +169,43 @@ namespace KAGTools
         {
             string[] filePaths = Directory.GetFiles(dir, fileName, includeSubs ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
             return filePaths;
+        }
+
+        public static List<ManualItem> GetManualFunctions(string fileName, bool findTypes = false)
+        {
+            List<ManualItem> items = new List<ManualItem>();
+
+            using (StreamReader reader = new StreamReader(fileName))
+            {
+                string line = "";
+
+                for(int i = 0; i < 5; i++)
+                {
+                    reader.ReadLine();
+                }
+
+                string lastType = null;
+
+                while((line = reader.ReadLine()) != null)
+                {
+                    if (string.IsNullOrEmpty(line))
+                        continue;
+
+                    if (findTypes)
+                    {
+                        if(!line.StartsWith(" ")) // Is a class declaration
+                        {
+                            lastType = line;
+                            continue;
+                        }
+                    }
+
+                    string info = line.TrimStart(' ');
+                    items.Add(new ManualItem(lastType, info));
+                }
+            }
+
+            return items;
         }
     }
 }

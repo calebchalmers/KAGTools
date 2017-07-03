@@ -119,7 +119,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ConfigProperty.cs" />
+    <Compile Include="Data\ConfigProperty.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\IViewService.cs" />
@@ -143,8 +143,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FileHelper.cs" />
-    <Compile Include="Mod.cs" />
+    <Compile Include="Helpers\FileHelper.cs" />
+    <Compile Include="Data\Mod.cs" />
     <Compile Include="Xaml\Converters\NullableBoolToBoolConverter.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">

@@ -12,6 +12,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using KAGTools.Data;
+using KAGTools.Helpers;
 
 namespace KAGTools.ViewModels
 {

@@ -4,8 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KAGTools.Helpers;
 
-namespace KAGTools
+namespace KAGTools.Data
 {
     public class Mod
     {
