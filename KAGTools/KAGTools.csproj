@@ -30,8 +30,8 @@
     <UpdateUrl>https://raw.githubusercontent.com/CalebChalmers/KAGTools/master/KAGTools/publish/</UpdateUrl>
     <ProductName>KAG Tools</ProductName>
     <PublisherName>Caleb Chalmers</PublisherName>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>0.4.0.1</ApplicationVersion>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>0.4.0.2</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
