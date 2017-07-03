@@ -49,6 +49,7 @@ namespace KAGTools
             viewService.RegisterView(typeof(MainWindow), typeof(MainViewModel));
             viewService.RegisterView(typeof(ModsWindow), typeof(ModsViewModel));
             viewService.RegisterView(typeof(InputWindow), typeof(InputViewModel));
+            viewService.RegisterView(typeof(ManualWindow), typeof(ManualViewModel));
 
             ServiceManager.GetService<IViewService>().OpenWindow(new MainViewModel());
         }

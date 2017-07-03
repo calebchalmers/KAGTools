@@ -120,22 +120,41 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data\ConfigProperty.cs" />
+    <Compile Include="Data\ManualItem.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\IViewService.cs" />
     <Compile Include="Services\RequestCloseMessage.cs" />
     <Compile Include="Services\ServiceManager.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="UserControls\ManualGenericUserControl.xaml.cs">
+      <DependentUpon>ManualGenericUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\FilterListViewModelBase.cs" />
     <Compile Include="ViewModels\InputViewModel.cs" />
+    <Compile Include="ViewModels\Manual\ManualGenericViewModel.cs" />
+    <Compile Include="ViewModels\Manual\ManualTypeDefsViewModel.cs" />
+    <Compile Include="ViewModels\Manual\ManualVariablesViewModel.cs" />
+    <Compile Include="ViewModels\Manual\ManualEnumsViewModel.cs" />
+    <Compile Include="ViewModels\Manual\ManualFunctionsViewModel.cs" />
+    <Compile Include="ViewModels\Manual\ManualHooksViewModel.cs" />
+    <Compile Include="ViewModels\Manual\ManualObjectsViewModel.cs" />
+    <Compile Include="ViewModels\ManualViewModel.cs" />
     <Compile Include="ViewModels\ModsViewModel.cs" />
     <Compile Include="Services\ViewService.cs" />
+    <Compile Include="Windows\ManualWindow.xaml.cs">
+      <DependentUpon>ManualWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ModsWindow.xaml.cs">
       <DependentUpon>ModsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\InputWindow.xaml.cs">
       <DependentUpon>InputWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="UserControls\ManualGenericUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -152,6 +171,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Windows\ManualWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\ModsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
