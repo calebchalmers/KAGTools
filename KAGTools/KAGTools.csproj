@@ -126,6 +126,7 @@
     <Compile Include="Services\RequestCloseMessage.cs" />
     <Compile Include="Services\ServiceManager.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ViewModels\FilterListViewModelBase.cs" />
     <Compile Include="ViewModels\InputViewModel.cs" />
     <Compile Include="ViewModels\ModsViewModel.cs" />
     <Compile Include="Services\ViewService.cs" />

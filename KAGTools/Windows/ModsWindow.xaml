@@ -16,7 +16,7 @@
             <Button DockPanel.Dock="Right" Content="New" Command="{Binding NewCommand}"/>
             <xctk:WatermarkTextBox x:Name="searchBox" Watermark="Search..." Padding="5,3" Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
         </DockPanel>
-        <ListBox x:Name="listbox" ItemsSource="{Binding FilteredMods}" SelectedItem="{Binding Selected}" BorderThickness="1,0,1,1" HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" KeyDown="listbox_KeyDown">
+        <ListBox x:Name="listbox" ItemsSource="{Binding FilteredItems}" SelectedItem="{Binding Selected}" BorderThickness="1,0,1,1" HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" KeyDown="listbox_KeyDown">
             <ListBox.Resources>
                 <ContextMenu x:Key="ModContextMenu" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
                     <MenuItem Header="Open" Command="{Binding OpenCommand}"/>

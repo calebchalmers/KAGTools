@@ -18,14 +18,12 @@ using KAGTools.Helpers;
 
 namespace KAGTools.ViewModels
 {
-    public class ModsViewModel : ViewModelBase
+    public class ModsViewModel : FilterListViewModelBase<Mod>
     {
-        private Mod _selected;
-        private ObservableCollection<Mod> _mods;
-        private CollectionViewSource _filteredMods;
         private string _searchFilter = "";
 
-        public ModsViewModel()
+        public ModsViewModel() :
+            base(FileHelper.GetMods())
         {
             OpenCommand = new RelayCommand(ExecuteOpenCommand);
             DeleteCommand = new RelayCommand(ExecuteDeleteCommand);
@@ -33,48 +31,11 @@ namespace KAGTools.ViewModels
             NewCommand = new RelayCommand(ExecuteNewCommand);
             DuplicateCommand = new RelayCommand(ExecuteDuplicateCommand);
             InfoCommand = new RelayCommand(ExecuteInfoCommand);
-
-            _mods = new ObservableCollection<Mod>(FileHelper.GetMods());
-
-            _filteredMods = new CollectionViewSource();
-            _filteredMods.Source = Mods;
-            _filteredMods.Filter += FilteredMods_Filter;
         }
 
-        private void FilteredMods_Filter(object sender, FilterEventArgs e)
+        protected override bool FilterItem(Mod item)
         {
-            e.Accepted = ((Mod)e.Item).Name.ToLower().Contains(_searchFilter.ToLower());
-        }
-
-        public Mod Selected
-        {
-            get { return _selected; }
-            set
-            {
-                if (_selected != value)
-                {
-                    _selected = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public ObservableCollection<Mod> Mods
-        {
-            get { return _mods; }
-            set
-            {
-                if (_mods != value)
-                {
-                    _mods = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public ICollectionView FilteredMods
-        {
-            get { return _filteredMods.View; }
+            return item.Name.IndexOf(SearchFilter, StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         public string SearchFilter
@@ -86,7 +47,7 @@ namespace KAGTools.ViewModels
                 {
                     _searchFilter = value;
                     RaisePropertyChanged();
-                    FilteredMods.Refresh();
+                    RefreshFilters();
                 }
             }
         }
@@ -110,7 +71,7 @@ namespace KAGTools.ViewModels
             if(MessageBox.Show("Are you sure you want to delete '" + Selected.Name + "'?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 Directory.Delete(Selected.Directory, true);
-                Mods.Remove(Selected);
+                Items.Remove(Selected);
                 UpdateActiveMods();
             }
         }
@@ -152,7 +113,7 @@ namespace KAGTools.ViewModels
 
         private void UpdateActiveMods()
         {
-            FileHelper.SetActiveMods(Mods.Where(mod => mod.IsActive).ToArray());
+            FileHelper.SetActiveMods(Items.Where(mod => mod.IsActive).ToArray());
         }
 
         private void CreateMod(string name, Mod from = null)
@@ -181,7 +142,7 @@ namespace KAGTools.ViewModels
             }
 
             Mod newMod = new Mod(modDir, true);
-            Mods.Add(newMod);
+            Items.Add(newMod);
 
             Process.Start(modDir);
 
