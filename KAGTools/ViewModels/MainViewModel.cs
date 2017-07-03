@@ -215,28 +215,31 @@ namespace KAGTools.ViewModels
             ModsViewModel viewModel = new ModsViewModel();
             ServiceManager.GetService<IViewService>().OpenDialog(viewModel);
 
-            InitializeGamemodes(viewModel.Mods);
+            InitializeGamemodes(viewModel.Items);
+        }
         }
 
         private void InitializeGamemodes(IEnumerable<Mod> mods)
         {
-            var newGamemodes = new List<string>(DEFAULT_GAMEMODES);
+            var newGamemodes = new List<string>(DEFAULT_GAMEMODES.Length);
 
-            bool first = true;
+            bool hasCustomGamemodes = false;
 
             foreach (Mod active in mods.Where(m => m.IsActive))
             {
                 if (!newGamemodes.Contains(active.Gamemode))
                 {
-                    if (first)
-                    {
-                        newGamemodes.Add("");
-                        first = false;
-                    }
-
                     newGamemodes.Add(active.Gamemode);
+                    hasCustomGamemodes = true;
                 }
             }
+
+            if (hasCustomGamemodes)
+            {
+                newGamemodes.Add("");
+            }
+
+            newGamemodes.AddRange(DEFAULT_GAMEMODES);
 
             Gamemodes = new ObservableCollection<string>(newGamemodes);
         }

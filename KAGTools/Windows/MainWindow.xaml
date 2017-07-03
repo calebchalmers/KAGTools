@@ -16,6 +16,10 @@
                 <Setter Property="Margin" Value="2"/>
                 <Setter Property="Padding" Value="2"/>
             </Style>
+            <Style TargetType="{x:Type ComboBox}">
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="Padding" Value="2,0"/>
+            </Style>
             <Style TargetType="{x:Type Label}">
                 <Setter Property="Margin" Value="2"/>
                 <Setter Property="Padding" Value="2"/>
@@ -56,7 +60,7 @@
                 <Label Content="Screen width:" Grid.Row="1"/>
                 <Label Content="Screen height:" Grid.Row="2"/>
                 <Label Content="Fullscreen:" Grid.Row="3"/>
-                <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Gamemodes}" Text="{Binding Gamemode, UpdateSourceTrigger=LostFocus}" Margin="2" Padding="2,0" VerticalContentAlignment="Center" IsEditable="True">
+                <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Gamemodes}" Text="{Binding Gamemode, UpdateSourceTrigger=LostFocus}" VerticalContentAlignment="Center" IsEditable="True">
                     <ComboBox.ItemContainerStyle>
                         <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
                             <Style.Triggers>
@@ -64,7 +68,7 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="{x:Type ComboBoxItem}">
-                                                <Separator HorizontalAlignment="Stretch" IsEnabled="False" Margin="3"/>
+                                                <Separator HorizontalAlignment="Stretch" IsEnabled="False" Margin="0,2"/>
                                             </ControlTemplate>
                                         </Setter.Value>
                                     </Setter>
