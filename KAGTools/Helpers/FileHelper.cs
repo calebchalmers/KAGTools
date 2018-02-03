@@ -32,6 +32,9 @@ namespace KAGTools.Helpers
         public static string ManualVariablesPath => Path.Combine(ManualDir, "Variables.txt");
         public static string ManualTypeDefsPath => Path.Combine(ManualDir, "TypeDefs.txt");
 
+        private const int ManualHeaderLineCount = 3;
+        private const char ManualIndentCharacter = '\t';
+
         // Resources
         public static string ClientLocalhostScriptPath => Path.GetFullPath(@"Resources\client_localhost.as");
 
@@ -178,8 +181,8 @@ namespace KAGTools.Helpers
             using (StreamReader reader = new StreamReader(fileName))
             {
                 string line = "";
-
-                for(int i = 0; i < 5; i++)
+                
+                for(int i = 0; i < ManualHeaderLineCount; i++) // Remove manual header
                 {
                     reader.ReadLine();
                 }
@@ -193,14 +196,14 @@ namespace KAGTools.Helpers
 
                     if (findTypes)
                     {
-                        if(!line.StartsWith(" ")) // Is a class declaration
+                        if(!line.StartsWith(ManualIndentCharacter.ToString())) // Is a class declaration
                         {
                             lastType = line;
                             continue;
                         }
                     }
 
-                    string info = line.TrimStart(' ');
+                    string info = line.TrimStart(ManualIndentCharacter); // Trim indent characters
                     items.Add(new ManualItem(lastType, info));
                 }
             }
