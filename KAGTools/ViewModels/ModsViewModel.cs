@@ -132,11 +132,9 @@ namespace KAGTools.ViewModels
                 return;
             }
 
-            if(from == null)
-            {
-                Directory.CreateDirectory(modDir);
-            }
-            else
+            Directory.CreateDirectory(modDir);
+
+            if (from != null)
             {
                 FileHelper.CopyDirectory(from.Directory, modDir);
             }
