@@ -120,7 +120,7 @@ namespace KAGTools.Helpers
             return lines.Where((line) => !line.StartsWith("#")).ToList();
         }
 
-        public static IEnumerable<Mod> GetMods()
+        public static IEnumerable<Mod> GetMods(bool activeOnly = false)
         {
             List<string> activeModNames = GetActiveModNames();
 
@@ -128,7 +128,11 @@ namespace KAGTools.Helpers
             {
                 Mod mod = new Mod(dir);
                 mod.IsActive = activeModNames.Contains(mod.Name);
-                yield return mod;
+
+                if (mod.IsActive || !activeOnly)
+                {
+                    yield return mod;
+                }
             }
         }
 
@@ -170,8 +174,7 @@ namespace KAGTools.Helpers
 
         public static string[] FindFiles(string dir, string fileName, bool includeSubs = true)
         {
-            string[] filePaths = Directory.GetFiles(dir, fileName, includeSubs ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
-            return filePaths;
+            return Directory.GetFiles(dir, fileName, includeSubs ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
         }
 
         public static List<ManualItem> GetManualFunctions(string fileName, bool findTypes = false)

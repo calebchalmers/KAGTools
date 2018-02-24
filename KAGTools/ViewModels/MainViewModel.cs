@@ -51,7 +51,7 @@ namespace KAGTools.ViewModels
 
             //FileHelper.GetStartupInfo(ref _screenWidth, ref _screenHeight, ref _fullscreen);
 
-            InitializeGamemodes(FileHelper.GetMods());
+            InitializeGamemodes(FileHelper.GetMods(true));
 
             // Get settings from config files
             // startup_config.cfg
@@ -217,7 +217,7 @@ namespace KAGTools.ViewModels
             ModsViewModel viewModel = new ModsViewModel();
             ServiceManager.GetService<IViewService>().OpenDialog(viewModel);
 
-            InitializeGamemodes(viewModel.Items);
+            InitializeGamemodes(viewModel.Items.Where(mod => mod.IsActive));
         }
 
         private void ExecuteManualCommand()
@@ -226,17 +226,17 @@ namespace KAGTools.ViewModels
             ServiceManager.GetService<IViewService>().OpenWindow(viewModel);
         }
 
-        private void InitializeGamemodes(IEnumerable<Mod> mods)
+        private void InitializeGamemodes(IEnumerable<Mod> activeMods)
         {
             var newGamemodes = new List<string>(DEFAULT_GAMEMODES.Length);
 
             bool hasCustomGamemodes = false;
 
-            foreach (Mod active in mods.Where(m => m.IsActive))
+            foreach (Mod mod in activeMods)
             {
-                if (!newGamemodes.Contains(active.Gamemode))
+                if (mod.Gamemode != "N/A" && !newGamemodes.Contains(mod.Gamemode))
                 {
-                    newGamemodes.Add(active.Gamemode);
+                    newGamemodes.Add(mod.Gamemode);
                     hasCustomGamemodes = true;
                 }
             }
