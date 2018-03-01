@@ -9,12 +9,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
-        <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
-            <xctk:WatermarkComboBox Watermark="Type..." Padding="5,3" Text="{Binding TypeFilter}" IsEditable="True" MinWidth="70" ItemsSource="{Binding Types}" Visibility="{Binding HasTypes, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-            <Button Content="..." DockPanel.Dock="Right" Command="{Binding OpenFileCommand}" ToolTip="Open File..."/>
-            <xctk:WatermarkTextBox Watermark="Search..." Padding="5,3" Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
+        <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}" FocusManager.FocusedElement="{Binding ElementName=txtbox_Search}">
+            <xctk:WatermarkComboBox Watermark="Type..." Padding="5,3" Text="{Binding TypeFilter}" TabIndex="1" IsEditable="True" MinWidth="70" ItemsSource="{Binding Types}" Visibility="{Binding HasTypes, Converter={StaticResource BooleanToVisibilityConverter}}" IsTabStop="True"/>
+            <Button Content="📖" DockPanel.Dock="Right" Command="{Binding OpenFileCommand}" ToolTip="Open File..." TabIndex="3"/>
+            <xctk:WatermarkTextBox x:Name="txtbox_Search" Watermark="Search..." Padding="5,3" Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="2"/>
         </DockPanel>
-        <ListBox ItemsSource="{Binding FilteredItems}" BorderThickness="1,0,1,1">
+        <ListBox ItemsSource="{Binding FilteredItems}" BorderThickness="1,0,1,1" TabIndex="4">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <DockPanel ToolTip="{Binding Value}" Name="test">
