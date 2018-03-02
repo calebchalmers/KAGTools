@@ -30,7 +30,7 @@ namespace KAGTools.ViewModels.Manual
 
             if (hasTypes)
             {
-                _types = new ObservableCollection<string>(Items.Select(i => i.Type).Distinct());
+                _types = new ObservableCollection<string>(Items.Select(i => i.Type).Distinct().OrderBy(i => i));
             }
         }
 
