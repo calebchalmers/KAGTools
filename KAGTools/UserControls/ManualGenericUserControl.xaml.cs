@@ -24,5 +24,15 @@ namespace KAGTools.UserControls
         {
             InitializeComponent();
         }
+
+        private void AutoSelectTextBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ((Xceed.Wpf.Toolkit.AutoSelectTextBox)sender).SelectAll();
+        }
+
+        private void AutoSelectTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ((Xceed.Wpf.Toolkit.AutoSelectTextBox)sender).SelectionLength = 0;
+        }
     }
 }
