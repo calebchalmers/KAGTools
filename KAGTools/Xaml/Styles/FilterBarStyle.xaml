@@ -11,7 +11,7 @@
             <Style TargetType="{x:Type xctk:WatermarkTextBox}">
                 <Setter Property="Padding" Value="5,3"/>
                 <Setter Property="KeepWatermarkOnGotFocus" Value="True"/>
-                <Setter Property="SelectAllOnGotFocus" Value="True" />
+                <Setter Property="AutoSelectBehavior" Value="OnFocus" />
             </Style>
             <Style TargetType="{x:Type Button}">
                 <Setter Property="Padding" Value="5,3"/>
