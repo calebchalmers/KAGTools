@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Caleb Chalmers")]
 [assembly: AssemblyProduct("KAG Tools")]
-[assembly: AssemblyCopyright("Copyright © Caleb Chalmers 2017")]
+[assembly: AssemblyCopyright("Copyright © Caleb Chalmers 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
