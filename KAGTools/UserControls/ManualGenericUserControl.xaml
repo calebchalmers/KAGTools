@@ -17,7 +17,7 @@
         <ListBox ItemsSource="{Binding FilteredItems}" BorderThickness="1,0,1,1" TabIndex="4">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <DockPanel ToolTip="{Binding Value}" Name="test">
+                    <DockPanel ToolTip="{Binding Value}">
                         <TextBlock Text="{Binding Type}" Padding="1" Margin="0,0,5,0" Foreground="{StaticResource DisabledBrush}" Visibility="{Binding DataContext.HasTypes, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         <xctk:AutoSelectTextBox Text="{Binding Value, Mode=OneWay}" Background="Transparent" AutoSelectBehavior="Never" BorderThickness="0" IsReadOnly="True" TextWrapping="Wrap" IsReadOnlyCaretVisible="True" MouseDoubleClick="AutoSelectTextBox_MouseDoubleClick" LostFocus="AutoSelectTextBox_LostFocus"/>
                     </DockPanel>
