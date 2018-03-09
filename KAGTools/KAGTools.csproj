@@ -123,6 +123,7 @@
     </ApplicationDefinition>
     <Compile Include="Data\ConfigProperty.cs" />
     <Compile Include="Data\ManualItem.cs" />
+    <Compile Include="Helpers\ApiHelper.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\IViewService.cs" />
