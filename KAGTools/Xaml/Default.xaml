@@ -6,6 +6,7 @@
     <!-- Styles -->
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Styles/FilterBarStyle.xaml"/>
+        <ResourceDictionary Source="Styles/ButtonComboBoxStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Converters -->

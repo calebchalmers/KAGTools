@@ -39,8 +39,10 @@
         </Grid.Resources>
         <StackPanel>
             <Button Content="Open KAG Folder" Command="{Binding OpenKAGFolderCommand}"/>
-            <Button Content="Run Localhost" Command="{Binding RunLocalhostCommand}"/>
-            <Button Content="Run Server + Client" Command="{Binding RunServerClientCommand}"/>
+            <ComboBox Margin="2" SelectedIndex="{Binding RunTypeIndex, Source={x:Static properties:Settings.Default}}" Style="{StaticResource ButtonComboBoxStyle}">
+                <ComboBoxItem Content="▶ Run Localhost" Tag="{Binding RunLocalhostCommand}"/>
+                <ComboBoxItem Content="▶ Run Server + Client" Tag="{Binding RunServerClientCommand}"/>
+            </ComboBox>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
