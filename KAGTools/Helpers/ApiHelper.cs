@@ -42,7 +42,7 @@ namespace KAGTools.Helpers
             }
             catch (HttpRequestException e)
             {
-                MessageBox.Show(e.Message, "HTTP Request Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(string.Format("{0}{2}{2}Request URL: {1}", e.Message, requestUri, Environment.NewLine), "HTTP Request Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             return null;
