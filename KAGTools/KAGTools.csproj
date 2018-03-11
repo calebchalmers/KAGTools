@@ -136,6 +136,7 @@
     <Compile Include="UserControls\ManualGenericUserControl.xaml.cs">
       <DependentUpon>ManualGenericUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ApiViewModel.cs" />
     <Compile Include="ViewModels\FilterListViewModelBase.cs" />
     <Compile Include="ViewModels\InputViewModel.cs" />
     <Compile Include="ViewModels\Manual\ManualGenericViewModel.cs" />
@@ -148,6 +149,9 @@
     <Compile Include="ViewModels\ManualViewModel.cs" />
     <Compile Include="ViewModels\ModsViewModel.cs" />
     <Compile Include="Services\ViewService.cs" />
+    <Compile Include="Windows\ApiWindow.xaml.cs">
+      <DependentUpon>ApiWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ManualWindow.xaml.cs">
       <DependentUpon>ManualWindow.xaml</DependentUpon>
     </Compile>
@@ -158,6 +162,10 @@
       <DependentUpon>InputWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="UserControls\ManualGenericUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ApiWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

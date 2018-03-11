@@ -49,6 +49,7 @@
                 <ComboBoxItem Content="▶ Run Localhost" Tag="{Binding RunLocalhostCommand}"/>
                 <ComboBoxItem Content="▶ Run Server + Client" Tag="{Binding RunServerClientCommand}"/>
             </ComboBox>
+            <Button Content="API Browser..." Command="{Binding ApiCommand}"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

@@ -48,6 +48,7 @@ namespace KAGTools.ViewModels
             RunLocalhostCommand = new RelayCommand(ExecuteRunLocalhostCommand);
             ModsCommand = new RelayCommand(ExecuteModsCommand);
             ManualCommand = new RelayCommand(ExecuteManualCommand);
+            ApiCommand = new RelayCommand(ExecuteApiCommand);
 
             //FileHelper.GetStartupInfo(ref _screenWidth, ref _screenHeight, ref _fullscreen);
 
@@ -180,6 +181,7 @@ namespace KAGTools.ViewModels
         public ICommand RunLocalhostCommand { get; private set; }
         public ICommand ModsCommand { get; private set; }
         public ICommand ManualCommand { get; private set; }
+        public ICommand ApiCommand { get; private set; }
 
         private void ExecuteOpenKAGFolderCommand()
         {
@@ -224,6 +226,12 @@ namespace KAGTools.ViewModels
         {
             ManualViewModel viewModel = new ManualViewModel();
             ServiceManager.GetService<IViewService>().OpenWindow(viewModel);
+        }
+
+        private void ExecuteApiCommand()
+        {
+            ApiViewModel viewModel = new ApiViewModel();
+            ServiceManager.GetService<IViewService>().OpenDialog(viewModel);
         }
 
         private void InitializeGamemodes(IEnumerable<Mod> activeMods)
