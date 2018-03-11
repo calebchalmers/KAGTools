@@ -40,7 +40,7 @@
         <Setter Property="ItemContainerStyle">
             <Setter.Value>
                 <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
-                    <Setter Property="Padding" Value="4,3"/>
+                    <Setter Property="Padding" Value="6,3"/>
                 </Style>
             </Setter.Value>
         </Setter>
