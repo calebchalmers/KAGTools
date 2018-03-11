@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using KAGTools.Data;
+using KAGTools.Data.API;
 using Newtonsoft.Json;
 
 namespace KAGTools.Helpers

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KAGTools.Data
+namespace KAGTools.Data.API
 {
     public class ApiServerResults
     {
