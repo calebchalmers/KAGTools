@@ -27,15 +27,14 @@ namespace KAGTools.Data
         public object Value { get; }
     }
 
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum FilterOperator
-        {
-            eq, // =
-            ne, // !=
-            le, // <=
-            lt, // <
-            ge, // >=
-            gt, // >
-        }
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum FilterOperator
+    {
+        eq, // =
+        ne, // !=
+        le, // <=
+        lt, // <
+        ge, // >=
+        gt, // >
     }
 }
