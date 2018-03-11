@@ -7,14 +7,14 @@
         xmlns:local="clr-namespace:KAGTools.Windows"
         xmlns:viewmodels="clr-namespace:KAGTools.ViewModels"
         mc:Ignorable="d"
-        Title="Mods" Height="400" Width="300" WindowStartupLocation="CenterOwner" FocusManager.FocusedElement="{Binding ElementName=searchBox}" WindowStyle="SingleBorderWindow" KeyDown="Window_KeyDown" ResizeMode="NoResize">
+        Title="Mods" Height="400" Width="300" WindowStartupLocation="CenterOwner" FocusManager.FocusedElement="{Binding ElementName=searchBox}" KeyDown="Window_KeyDown" ResizeMode="NoResize">
     <Window.InputBindings>
         <KeyBinding Key="Delete" Command="{Binding DeleteCommand}" />
     </Window.InputBindings>
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
             <Button DockPanel.Dock="Right" Content="New" Command="{Binding NewCommand}"/>
-            <xctk:WatermarkTextBox x:Name="searchBox" Watermark="Search..." Padding="5,3" Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
+            <xctk:WatermarkTextBox x:Name="searchBox" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
         </DockPanel>
         <ListBox x:Name="listbox" ItemsSource="{Binding FilteredItems}" SelectedItem="{Binding Selected}" BorderThickness="1,0,1,1" HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" KeyDown="listbox_KeyDown">
             <ListBox.Resources>
