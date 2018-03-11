@@ -8,29 +8,24 @@ using System.Threading.Tasks;
 
 namespace KAGTools.Data
 {
-    public class ApiFilter
+    public struct ApiFilter
     {
-        public ApiFilter(string field, FilterOperator op, object value)
+        public ApiFilter(string field, object value, FilterOperator op = FilterOperator.eq)
         {
             Field = field;
             Operator = op;
             Value = value;
         }
 
-        public ApiFilter(string field, object value) :
-            this(field, FilterOperator.eq, value)
-        {
-
-        }
-
         [JsonProperty("field")]
-        public string Field { get; set; }
+        public string Field { get; }
 
         [JsonProperty("op")]
-        public FilterOperator Operator { get; set; }
+        public FilterOperator Operator { get; }
 
         [JsonProperty("value")]
-        public object Value { get; set; }
+        public object Value { get; }
+    }
 
         [JsonConverter(typeof(StringEnumConverter))]
         public enum FilterOperator
