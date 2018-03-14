@@ -23,7 +23,7 @@ namespace KAGTools.ViewModels
         public ApiViewModel()
         {
             RefreshServersCommand = new RelayCommand(ExecuteRefreshServersCommand);
-            RefreshServersAsync();
+            var tmp = RefreshServersAsync();
         }
 
         public ObservableCollection<ApiServer> Servers
