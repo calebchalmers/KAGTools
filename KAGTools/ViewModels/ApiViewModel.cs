@@ -35,6 +35,7 @@ namespace KAGTools.ViewModels
                 {
                     _servers = value;
                     RaisePropertyChanged();
+                    RaisePropertyChanged("ServerCount");
                 }
             }
         }
@@ -78,6 +79,11 @@ namespace KAGTools.ViewModels
                     RaisePropertyChanged();
                 }
             }
+        }
+
+        public int ServerCount
+        {
+            get { return Servers?.Count ?? 0; }
         }
 
         public ICommand RefreshServersCommand { get; private set; }
