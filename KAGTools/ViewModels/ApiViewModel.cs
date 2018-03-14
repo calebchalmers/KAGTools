@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace KAGTools.ViewModels
 {
@@ -16,7 +17,8 @@ namespace KAGTools.ViewModels
     {
         private ObservableCollection<ApiServer> _servers = null;
         private ApiServer _selectedServer;
-        private string _searchFilter = "KAG Official TDM US No. 3";
+        private BitmapImage _serverMinimapBitmap;
+        private string _searchFilter = "";
 
         public ApiViewModel()
         {
@@ -45,6 +47,21 @@ namespace KAGTools.ViewModels
                 if (_selectedServer != value)
                 {
                     _selectedServer = value;
+                    RaisePropertyChanged();
+
+                    UpdateMinimap();
+                }
+            }
+        }
+
+        public BitmapImage ServerMinimapBitmap
+        {
+            get { return _serverMinimapBitmap; }
+            set
+            {
+                if (_serverMinimapBitmap != value)
+                {
+                    _serverMinimapBitmap = value;
                     RaisePropertyChanged();
                 }
             }
@@ -80,6 +97,12 @@ namespace KAGTools.ViewModels
             {
                 Servers = new ObservableCollection<ApiServer>(results.Servers.Where(s => s.Name.ToLower().Contains(SearchFilter.ToLower())).OrderByDescending(s => s.PlayerCount));
             }
+        }
+
+        private async void UpdateMinimap()
+        {
+            ServerMinimapBitmap = null;
+            ServerMinimapBitmap = await ApiHelper.GetServerMinimap(SelectedServer.IPv4Address, SelectedServer.Port);
         }
     }
 }

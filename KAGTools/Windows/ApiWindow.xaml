@@ -32,16 +32,39 @@
                         </Style>
                     </Grid.Style>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="114"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" HorizontalAlignment="Center" Text="{Binding Name}" FontSize="16" FontWeight="SemiBold" Margin="2"/>
-                    <TextBlock Grid.Row="1" HorizontalAlignment="Left" Text="{Binding Description}" Foreground="Gray" Margin="6,4" TextWrapping="Wrap"/>
+                    <Image Grid.Row="0" Source="{Binding DataContext.ServerMinimapBitmap, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Stretch="Fill" Opacity="0.3" ClipToBounds="True" RenderOptions.BitmapScalingMode="NearestNeighbor">
+                        <Image.Effect>
+                            <BlurEffect Radius="10"/>
+                        </Image.Effect>
+                        <Image.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation To="0" Duration="0:0:0.1" Storyboard.TargetProperty="Effect.Radius"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation To="10" Duration="0:0:0.1" Storyboard.TargetProperty="Effect.Radius"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Image.Triggers>
+                    </Image>
+
+                    <StackPanel x:Name="titlePanel" Grid.Row="0">
+                        <TextBlock HorizontalAlignment="Center" Text="{Binding Name}" FontSize="16" FontWeight="SemiBold" Margin="2" IsHitTestVisible="False"/>
+                        <TextBlock HorizontalAlignment="Left" Text="{Binding Description}" Foreground="Gray" Margin="6,4" TextWrapping="Wrap" IsHitTestVisible="False"/>
+                    </StackPanel>
 
                     <Separator Grid.Row="2" Margin="0"/>
 
@@ -74,9 +97,9 @@
                         IPv4: <Run Text="{Binding IPv4Address}" Style="{StaticResource Special}"/>, IPv6: <Run Text="{Binding IPv6Address}" Style="{StaticResource Special}"/>, Port: <Run Text="{Binding Port}" Style="{StaticResource Special}"/>
                     </TextBlock>
 
-                    <TextBlock Grid.Row="4" Text="Players:" Margin="5,0"/>
+                    <TextBlock Grid.Row="3" Text="Players:" Margin="5,0"/>
 
-                    <ItemsControl Grid.Row="5" ItemsSource="{Binding Players}" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}" Padding="2" Margin="4" FontWeight="SemiBold">
+                    <ItemsControl Grid.Row="4" ItemsSource="{Binding Players}" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}" Padding="2" Margin="4" FontWeight="SemiBold">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding ., StringFormat='{}{0},'}" Margin="2"/>
