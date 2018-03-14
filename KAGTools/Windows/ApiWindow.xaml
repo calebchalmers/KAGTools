@@ -6,7 +6,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:KAGTools.Windows"
         mc:Ignorable="d"
-        Title="API Browser" Height="450" Width="700" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+        Title="API Browser" Height="450" Width="640" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
     <TabControl>
         <TabItem Header="Server Browser">
             <Grid>
