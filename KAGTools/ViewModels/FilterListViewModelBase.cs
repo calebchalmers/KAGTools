@@ -18,13 +18,14 @@ namespace KAGTools.ViewModels
 
         public FilterListViewModelBase(ObservableCollection<T> items)
         {
-            _items = items;
-
-            _filteredItems = new CollectionViewSource()
-            {
-                Source = Items
-            };
+            _filteredItems = new CollectionViewSource();
             _filteredItems.Filter += FilteredItems_Filter;
+            Items = items;
+        }
+
+        public FilterListViewModelBase() :
+            this(new ObservableCollection<T>())
+        {
         }
 
         public FilterListViewModelBase(IEnumerable<T> items) : 
@@ -55,6 +56,7 @@ namespace KAGTools.ViewModels
                 if(_items != value)
                 {
                     _items = value;
+                    _filteredItems.Source = value;
                     RaisePropertyChanged();
                 }
             }
