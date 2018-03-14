@@ -21,14 +21,75 @@
                     </DockPanel>
                     <ListBox ItemsSource="{Binding Servers}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedServer}"/>
                 </DockPanel>
-                <xctk:PropertyGrid Grid.Column="1"
-                                   SelectedObject="{Binding SelectedServer, Mode=OneWay}"
-                                   ShowSummary="False"
-                                   ShowSortOptions="False"
-                                   ShowSearchBox="False"
-                                   NameColumnWidth="120"
-                                   ShowTitle="False"
-                                   IsReadOnly="True"/>
+                <Grid Grid.Column="1" DataContext="{Binding SelectedServer}">
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" HorizontalAlignment="Center" Text="{Binding Name}" FontSize="16" FontWeight="SemiBold" Margin="2"/>
+                    <TextBlock Grid.Row="1" HorizontalAlignment="Left" Text="{Binding Description}" Foreground="Gray" Margin="6,4" TextWrapping="Wrap"/>
+
+                    <Separator Grid.Row="2" Margin="0"/>
+
+                    <TextBlock Grid.Row="3" Margin="8" TextWrapping="Wrap" FontSize="13">
+                        <TextBlock.Resources>
+                            <Style x:Key="Special" TargetType="{x:Type Run}">
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Style>
+                        </TextBlock.Resources>
+                        <!--Description: <Run Text="{Binding Description}" Style="{StaticResource Special}"/>
+                        <LineBreak/>-->
+                        Player Count: <Run Text="{Binding PlayerCount}" Style="{StaticResource Special}"/> (<Run Text="{Binding SpectatorPlayers}" Style="{StaticResource Special}"/> spectators) (<Run Text="{Binding BotCount}" Style="{StaticResource Special}"/> bots),
+                        <LineBreak/>
+                        Max Players: <Run Text="{Binding MaxPlayers}" Style="{StaticResource Special}"/> (+<Run Text="{Binding ReservedPlayers}" Style="{StaticResource Special}"/> reserved),
+                        <LineBreak/>
+                        Gamemode: <Run Text="{Binding Gamemode}" Style="{StaticResource Special}"/>,
+                        <LineBreak/>
+                        Map Size: <Run Text="{Binding MapWidth}" Style="{StaticResource Special}"/> x <Run Text="{Binding MapHeight}" Style="{StaticResource Special}"/>,
+                        <LineBreak/>
+                        Build: <Run Text="{Binding Build}" Style="{StaticResource Special}"/>,
+                        <LineBreak/>
+                        Daytime: <Run Text="{Binding DNState}" Style="{StaticResource Special}"/>,
+                        <LineBreak/>
+                        Game State: <Run Text="{Binding GameState}" Style="{StaticResource Special}"/>,
+                        <LineBreak/>
+                        Uses Password: <Run Text="{Binding HasPassword}" Style="{StaticResource Special}"/>,
+                        <LineBreak/>
+                        Lifetime: <Run Text="{Binding FirstSeenDate}" Style="{StaticResource Special}"/>, <Run Text="{Binding LastUpdateDate}" Style="{StaticResource Special}"/>,
+                        <LineBreak/>
+                        IPv4: <Run Text="{Binding IPv4Address}" Style="{StaticResource Special}"/>, IPv6: <Run Text="{Binding IPv6Address}" Style="{StaticResource Special}"/>, Port: <Run Text="{Binding Port}" Style="{StaticResource Special}"/>
+                    </TextBlock>
+
+                    <TextBlock Grid.Row="4" Text="Players:" Margin="5,0"/>
+
+                    <ItemsControl Grid.Row="5" ItemsSource="{Binding Players}" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}" Padding="2" Margin="4" FontWeight="SemiBold">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding ., StringFormat='{}{0},'}" Margin="2"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                    
+                </Grid>
             </Grid>
         </TabItem>
         <TabItem Header="Player Info">
