@@ -31,11 +31,12 @@ namespace KAGTools.ViewModels
             get { return _servers; }
             set
             {
-                if(_servers != value)
+                if (_servers != value)
                 {
                     _servers = value;
                     RaisePropertyChanged();
                     RaisePropertyChanged("ServerCount");
+                    RaisePropertyChanged("PlayerCount");
                 }
             }
         }
@@ -84,6 +85,18 @@ namespace KAGTools.ViewModels
         public int ServerCount
         {
             get { return Servers?.Count ?? 0; }
+        }
+
+        public int PlayerCount
+        {
+            get {
+                int total = 0;
+                foreach(int count in Servers?.Select(s => s.PlayerCount) ?? Enumerable.Empty<int>())
+                {
+                    total += count;
+                }
+                return total;
+            }
         }
 
         public ICommand RefreshServersCommand { get; private set; }

@@ -20,9 +20,19 @@
                         <Button DockPanel.Dock="Right" Content="⟳" HorizontalContentAlignment="Center" Command="{Binding RefreshServersCommand}"/>
                         <xctk:WatermarkTextBox Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
                     </DockPanel>
-                    <StatusBar DockPanel.Dock="Bottom" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}">
-                        Sever Count:
-                        <StatusBarItem Content="{Binding ServerCount}" Padding="0"/>
+                    <StatusBar DockPanel.Dock="Bottom" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}" Padding="5,3">
+                        <StatusBar.Resources>
+                            <Style TargetType="{x:Type StatusBarItem}">
+                                <Setter Property="Padding" Value="0"/>
+                            </Style>
+                            <Style x:Key="Special" TargetType="{x:Type StatusBarItem}" BasedOn="{StaticResource {x:Type StatusBarItem}}">
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                            </Style>
+                        </StatusBar.Resources>
+                        <StatusBarItem Content="{Binding ServerCount}" Style="{StaticResource Special}"/>
+                        players in
+                        <StatusBarItem Content="{Binding PlayerCount}" Style="{StaticResource Special}"/>
+                        servers
                     </StatusBar>
                     <ListBox ItemsSource="{Binding Servers}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedServer}"/>
                 </DockPanel>
