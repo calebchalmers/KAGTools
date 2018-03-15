@@ -63,6 +63,7 @@ namespace KAGTools.ViewModels
                     _items = value;
                     _filteredItems.Source = value;
                     RaisePropertyChanged();
+                    RaisePropertyChanged("FilteredItems");
                 }
             }
         }
