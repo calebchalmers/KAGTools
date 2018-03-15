@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace KAGTools.Data.API
         public string Description { get; set; }
 
         [JsonProperty("firstSeen")]
-        public string FirstSeenDate { get; set; }
+        public DateTime FirstSeenDate { get; set; }
 
         [JsonProperty("gameID")]
         public int GameID { get; set; }
@@ -61,7 +62,7 @@ namespace KAGTools.Data.API
         public string InternalIPv4 { get; set; }
 
         [JsonProperty("lastUpdate")]
-        public string LastUpdateDate { get; set; }
+        public DateTime LastUpdateDate { get; set; }
 
         [JsonProperty("mapH")]
         public int MapHeight { get; set; }

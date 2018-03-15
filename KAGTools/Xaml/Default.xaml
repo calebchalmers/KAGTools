@@ -11,5 +11,6 @@
 
     <!-- Converters -->
     <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
+    <converters:BooleanToYesNoConverter x:Key="BooleanToYesNoConverter"/>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 </ResourceDictionary>
