@@ -55,8 +55,9 @@ namespace KAGTools.Helpers
 
         private static async Task<T> HttpGetApiResult<T>(string requestUri) where T : class
         {
-            string data = await (await HttpGetContent(requestUri))?.ReadAsStringAsync();
-            return data != null ? JsonConvert.DeserializeObject<T>(data) : null;
+            Task<string> task = (await HttpGetContent(requestUri))?.ReadAsStringAsync();
+            if (task == null) return null;
+            return JsonConvert.DeserializeObject<T>(await task);
         }
 
         private static async Task<HttpContent> HttpGetContent(string requestUri)
