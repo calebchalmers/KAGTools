@@ -30,10 +30,11 @@ namespace KAGTools.Helpers
             return await HttpGetApiResult<ApiPlayerResults>(string.Format(UrlPlayer, username));
         }
 
-        public static async Task<ApiServerResults> GetServers(params ApiFilter[] filters)
+        public static async Task<ApiServer[]> GetServers(params ApiFilter[] filters)
         {
             string filterJson = "?filters=" + JsonConvert.SerializeObject(filters);
-            return await HttpGetApiResult<ApiServerResults>(UrlServers + filterJson);
+            var results = await HttpGetApiResult<ApiServerResults>(UrlServers + filterJson);
+            return results?.Servers ?? Array.Empty<ApiServer>();
         }
 
         public static async Task<BitmapImage> GetServerMinimap(string ip, int port)
