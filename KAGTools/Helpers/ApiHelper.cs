@@ -64,6 +64,12 @@ namespace KAGTools.Helpers
             try
             {
                 var result = await httpClient.GetAsync(requestUri);
+
+                if(result.StatusCode == HttpStatusCode.NotFound)
+                {
+                    return null;
+                }
+
                 result.EnsureSuccessStatusCode();
                 return result.Content;
             }
