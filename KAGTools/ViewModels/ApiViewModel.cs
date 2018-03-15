@@ -31,7 +31,7 @@ namespace KAGTools.ViewModels
 
             PropertyChanged += (s, e) =>
             {
-                if(e.PropertyName == "Selected")
+                if(e.PropertyName == "Selected" && Selected != null)
                 {
                     UpdateMinimap();
                 }
