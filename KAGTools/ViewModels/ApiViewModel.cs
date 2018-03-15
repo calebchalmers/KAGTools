@@ -137,6 +137,8 @@ namespace KAGTools.ViewModels
                 new ApiFilter("current", true)
                 );
             Items = new ObservableCollection<ApiServer>(results);
+            RaisePropertyChanged("ServerCount");
+            RaisePropertyChanged("PlayerCount");
         }
 
         private async void UpdateMinimap()
