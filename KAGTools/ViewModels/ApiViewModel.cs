@@ -5,6 +5,7 @@ using KAGTools.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,47 +14,35 @@ using System.Windows.Media.Imaging;
 
 namespace KAGTools.ViewModels
 {
-    public class ApiViewModel : ViewModelBase
+    public class ApiViewModel : FilterListViewModelBase<ApiServer>
     {
-        private ObservableCollection<ApiServer> _servers = null;
-        private ApiServer _selectedServer;
         private BitmapImage _serverMinimapBitmap;
-        private string _searchFilter = "";
+        private ApiPlayerResults _resultPlayer;
+        private string _serverSearchFilter = "";
+        private string _playerSearchFilter = "";
 
-        public ApiViewModel()
+        public ApiViewModel() :
+            base()
         {
             RefreshServersCommand = new RelayCommand(ExecuteRefreshServersCommand);
+            SearchPlayerCommand = new RelayCommand(ExecuteSearchPlayerCommand);
+
+            SortDescriptions.Add(new SortDescription("PlayerCount", ListSortDirection.Descending));
+
+            PropertyChanged += (s, e) =>
+            {
+                if(e.PropertyName == "Selected")
+                {
+                    UpdateMinimap();
+                }
+            };
+
             var tmp = RefreshServersAsync();
         }
 
-        public ObservableCollection<ApiServer> Servers
+        protected override bool FilterItem(ApiServer item)
         {
-            get { return _servers; }
-            set
-            {
-                if (_servers != value)
-                {
-                    _servers = value;
-                    RaisePropertyChanged();
-                    RaisePropertyChanged("ServerCount");
-                    RaisePropertyChanged("PlayerCount");
-                }
-            }
-        }
-
-        public ApiServer SelectedServer
-        {
-            get { return _selectedServer; }
-            set
-            {
-                if (_selectedServer != value)
-                {
-                    _selectedServer = value;
-                    RaisePropertyChanged();
-
-                    UpdateMinimap();
-                }
-            }
+            return item.Name.IndexOf(ServerSearchFilter, StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         public BitmapImage ServerMinimapBitmap
@@ -69,14 +58,28 @@ namespace KAGTools.ViewModels
             }
         }
 
-        public string SearchFilter
+        public string ServerSearchFilter
         {
-            get { return _searchFilter; }
+            get { return _serverSearchFilter; }
             set
             {
-                if (_searchFilter != value)
+                if (_serverSearchFilter != value)
                 {
-                    _searchFilter = value;
+                    _serverSearchFilter = value;
+                    RaisePropertyChanged();
+                    RefreshFilters();
+                }
+            }
+        }
+
+        public string PlayerSearchFilter
+        {
+            get { return _playerSearchFilter; }
+            set
+            {
+                if (_playerSearchFilter != value)
+                {
+                    _playerSearchFilter = value;
                     RaisePropertyChanged();
                 }
             }
@@ -84,14 +87,14 @@ namespace KAGTools.ViewModels
 
         public int ServerCount
         {
-            get { return Servers?.Count ?? 0; }
+            get { return Items.Count; }
         }
 
         public int PlayerCount
         {
             get {
                 int total = 0;
-                foreach(int count in Servers?.Select(s => s.PlayerCount) ?? Enumerable.Empty<int>())
+                foreach(int count in Items.Select(s => s.PlayerCount))
                 {
                     total += count;
                 }
@@ -99,29 +102,47 @@ namespace KAGTools.ViewModels
             }
         }
 
+        public ApiPlayerResults ResultPlayer
+        {
+            get { return _resultPlayer; }
+            set
+            {
+                if (_resultPlayer != value)
+                {
+                    _resultPlayer = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         public ICommand RefreshServersCommand { get; private set; }
+        public ICommand SearchPlayerCommand { get; private set; }
 
         private async void ExecuteRefreshServersCommand()
         {
             await RefreshServersAsync();
         }
 
+        private async void ExecuteSearchPlayerCommand()
+        {
+            if (string.IsNullOrWhiteSpace(PlayerSearchFilter))
+                return;
+            ResultPlayer = await ApiHelper.GetPlayer(PlayerSearchFilter);
+        }
+
         private async Task RefreshServersAsync()
         {
-            Servers = null;
-            ApiServerResults results = await ApiHelper.GetServers(
+            Items.Clear();
+            ApiServer[] results = await ApiHelper.GetServers(
                 new ApiFilter("current", true)
                 );
-            if(results != null)
-            {
-                Servers = new ObservableCollection<ApiServer>(results.Servers.Where(s => s.Name.ToLower().Contains(SearchFilter.ToLower())).OrderByDescending(s => s.PlayerCount));
-            }
+            Items = new ObservableCollection<ApiServer>(results);
         }
 
         private async void UpdateMinimap()
         {
             ServerMinimapBitmap = null;
-            ServerMinimapBitmap = await ApiHelper.GetServerMinimap(SelectedServer.IPv4Address, SelectedServer.Port);
+            ServerMinimapBitmap = await ApiHelper.GetServerMinimap(Selected.IPv4Address, Selected.Port);
         }
     }
 }

@@ -18,7 +18,7 @@
                 <DockPanel Grid.Column="0">
                     <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
                         <Button DockPanel.Dock="Right" Content="⟳" HorizontalContentAlignment="Center" Command="{Binding RefreshServersCommand}"/>
-                        <xctk:WatermarkTextBox Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
+                        <xctk:WatermarkTextBox Watermark="Search..." Text="{Binding ServerSearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
                     </DockPanel>
                     <StatusBar DockPanel.Dock="Bottom" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}" Padding="5,3">
                         <StatusBar.Resources>
@@ -34,10 +34,10 @@
                         <StatusBarItem Content="{Binding PlayerCount}" Style="{StaticResource Special}"/>
                         servers
                     </StatusBar>
-                    <ListBox ItemsSource="{Binding Servers}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedServer}"/>
+                    <ListBox ItemsSource="{Binding FilteredItems}" DisplayMemberPath="Name" SelectedItem="{Binding Selected}"/>
                 </DockPanel>
 
-                <Grid Grid.Column="1" DataContext="{Binding SelectedServer}">
+                <Grid Grid.Column="1" DataContext="{Binding Selected}">
                     <Grid.Style>
                         <Style TargetType="Grid">
                             <Style.Triggers>
@@ -128,7 +128,33 @@
             </Grid>
         </TabItem>
         <TabItem Header="Player Info">
-
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <DockPanel Grid.Row="0" Style="{StaticResource FilterBarStyle}" DockPanel.Dock="Top">
+                    <Button Content="Search" DockPanel.Dock="Right" Command="{Binding SearchPlayerCommand}"/>
+                    <xctk:WatermarkTextBox Watermark="Username..." Text="{Binding PlayerSearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
+                </DockPanel>
+                <Grid Grid.Row="1">
+                    <TextBlock>
+                        Username: <Run Text="{Binding ResultPlayer.Info.Username}"/>
+                    </TextBlock>
+                    <TextBlock Text="Player not found" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" FontSize="20" Foreground="Maroon">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ResultPlayer}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+            </Grid>
         </TabItem>
     </TabControl>
 </Window>
