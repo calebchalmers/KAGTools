@@ -48,6 +48,11 @@ namespace KAGTools.ViewModels
             FilteredItems.Refresh();
         }
 
+        protected SortDescriptionCollection SortDescriptions
+        {
+            get { return _filteredItems.SortDescriptions; }
+        }
+
         public ObservableCollection<T> Items
         {
             get { return _items; }
