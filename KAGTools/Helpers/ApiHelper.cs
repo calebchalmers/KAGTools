@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -25,22 +26,24 @@ namespace KAGTools.Helpers
             httpClient = new HttpClient();
         }
 
-        public static async Task<ApiPlayerResults> GetPlayer(string username)
+        public static async Task<ApiPlayerResults> GetPlayer(string username, CancellationToken cancellationToken)
         {
-            return await HttpGetApiResult<ApiPlayerResults>(string.Format(UrlPlayer, username));
+            return await HttpGetApiResult<ApiPlayerResults>(string.Format(UrlPlayer, username), cancellationToken);
         }
 
-        public static async Task<ApiServer[]> GetServers(params ApiFilter[] filters)
+        public static async Task<ApiServer[]> GetServers(ApiFilter[] filters, CancellationToken cancellationToken)
         {
             string filterJson = "?filters=" + JsonConvert.SerializeObject(filters);
-            var results = await HttpGetApiResult<ApiServerResults>(UrlServers + filterJson);
+            var results = await HttpGetApiResult<ApiServerResults>(UrlServers + filterJson, cancellationToken);
             return results?.Servers ?? Array.Empty<ApiServer>();
         }
 
-        public static async Task<BitmapImage> GetServerMinimap(string ip, int port)
+        public static async Task<BitmapImage> GetServerMinimap(string ip, int port, CancellationToken cancellationToken)
         {
             string requestUri = string.Format(UrlServerMinimap, ip, port);
-            var stream = await (await HttpGetContent(requestUri))?.ReadAsStreamAsync();
+            Task<System.IO.Stream> task = (await HttpGetContent(requestUri, cancellationToken))?.ReadAsStreamAsync();
+            if (task == null) return null;
+            System.IO.Stream stream = await task;
             if (stream == null) return null;
 
             BitmapImage bitmap = new BitmapImage();
@@ -53,18 +56,18 @@ namespace KAGTools.Helpers
             return bitmap;
         }
 
-        private static async Task<T> HttpGetApiResult<T>(string requestUri) where T : class
+        private static async Task<T> HttpGetApiResult<T>(string requestUri, CancellationToken cancellationToken) where T : class
         {
-            Task<string> task = (await HttpGetContent(requestUri))?.ReadAsStringAsync();
+            Task<string> task = (await HttpGetContent(requestUri, cancellationToken))?.ReadAsStringAsync();
             if (task == null) return null;
             return JsonConvert.DeserializeObject<T>(await task);
         }
 
-        private static async Task<HttpContent> HttpGetContent(string requestUri)
+        private static async Task<HttpContent> HttpGetContent(string requestUri, CancellationToken cancellationToken)
         {
             try
             {
-                var result = await httpClient.GetAsync(requestUri);
+                var result = await httpClient.GetAsync(requestUri, cancellationToken);
 
                 if(result.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -78,6 +81,10 @@ namespace KAGTools.Helpers
             {
                 var message = string.Format("{0}{2}{2}Request URL: {1}", e.Message, requestUri, Environment.NewLine);
                 MessageBox.Show(message, "HTTP Request Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (TaskCanceledException)
+            {
+                return null;
             }
 
             return null;

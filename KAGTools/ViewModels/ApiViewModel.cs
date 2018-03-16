@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -21,6 +22,8 @@ namespace KAGTools.ViewModels
         private string _serverSearchFilter = "";
         private string _playerSearchFilter = "";
 
+        private CancellationTokenSource MinimapCancellationSource { get; set; } = new CancellationTokenSource();
+
         public ApiViewModel() :
             base()
         {
@@ -29,11 +32,11 @@ namespace KAGTools.ViewModels
 
             SortDescriptions.Add(new SortDescription("PlayerCount", ListSortDirection.Descending));
 
-            PropertyChanged += (s, e) =>
+            PropertyChanged += async (s, e) =>
             {
                 if(e.PropertyName == "Selected" && Selected != null)
                 {
-                    UpdateMinimap();
+                    await UpdateMinimapAsync();
                 }
             };
 
@@ -127,24 +130,30 @@ namespace KAGTools.ViewModels
         {
             if (string.IsNullOrWhiteSpace(PlayerSearchFilter))
                 return;
-            ResultPlayer = await ApiHelper.GetPlayer(PlayerSearchFilter);
+            ResultPlayer = await ApiHelper.GetPlayer(PlayerSearchFilter, CancellationToken.None);
         }
 
         private async Task RefreshServersAsync()
         {
             Items.Clear();
             ApiServer[] results = await ApiHelper.GetServers(
-                new ApiFilter("current", true)
+                new ApiFilter[] {
+                    new ApiFilter("current", true)
+                },
+                CancellationToken.None
                 );
             Items = new ObservableCollection<ApiServer>(results);
             RaisePropertyChanged("ServerCount");
             RaisePropertyChanged("PlayerCount");
         }
 
-        private async void UpdateMinimap()
+        private async Task UpdateMinimapAsync()
         {
+            MinimapCancellationSource.Cancel();
+            MinimapCancellationSource = new CancellationTokenSource();
+
             ServerMinimapBitmap = null;
-            ServerMinimapBitmap = await ApiHelper.GetServerMinimap(Selected.IPv4Address, Selected.Port);
+            ServerMinimapBitmap = await ApiHelper.GetServerMinimap(Selected.IPv4Address, Selected.Port, MinimapCancellationSource.Token);
         }
     }
 }
