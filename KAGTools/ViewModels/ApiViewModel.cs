@@ -23,6 +23,7 @@ namespace KAGTools.ViewModels
         private string _playerSearchFilter = "";
 
         private CancellationTokenSource MinimapCancellationSource { get; set; } = new CancellationTokenSource();
+        private bool RefreshingServers { get; set; } = false;
 
         public ApiViewModel() :
             base()
@@ -135,6 +136,9 @@ namespace KAGTools.ViewModels
 
         private async Task RefreshServersAsync()
         {
+            if (RefreshingServers) return;
+            RefreshingServers = true;
+
             Items.Clear();
             ApiServer[] results = await ApiHelper.GetServers(
                 new ApiFilter[] {
@@ -143,6 +147,9 @@ namespace KAGTools.ViewModels
                 CancellationToken.None
                 );
             Items = new ObservableCollection<ApiServer>(results);
+
+            RefreshingServers = false;
+
             RaisePropertyChanged("ServerCount");
             RaisePropertyChanged("PlayerCount");
         }
