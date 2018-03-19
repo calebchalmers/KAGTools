@@ -112,7 +112,7 @@
                         <TextBlock>Last Seen: <Run Text="{Binding LastUpdateDate, StringFormat=d}" Style="{StaticResource Special}" ToolTip="{Binding LastUpdateDate}"/>,</TextBlock>
                         <TextBlock>IPv4: <Run Text="{Binding IPv4Address}" Style="{StaticResource Special}"/>,</TextBlock>
                         <TextBlock>IPv6: <Run Text="{Binding IPv6Address, TargetNullValue=N/A}" Style="{StaticResource Special}"/>,</TextBlock>
-                        <TextBlock>Port: <Run Text="{Binding Port}" Style="{StaticResource Special}"/>,</TextBlock>
+                        <TextBlock>Port: <Run Text="{Binding Port}" Style="{StaticResource Special}"/></TextBlock>
                     </WrapPanel>
 
                     <TextBlock Grid.Row="3" Text="Players:" Margin="5,0"/>
