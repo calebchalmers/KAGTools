@@ -7,6 +7,20 @@
         xmlns:local="clr-namespace:KAGTools.Windows"
         mc:Ignorable="d"
         Title="API Browser" Height="470" Width="630" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style x:Key="PropertyWrapPanel" TargetType="{x:Type WrapPanel}">
+            <Setter Property="TextElement.FontSize" Value="13"/>
+            <Setter Property="Margin" Value="2"/>
+            <Style.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Margin" Value="2"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style x:Key="Special" TargetType="{x:Type Run}">
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+    </Window.Resources>
     <TabControl>
         <TabItem Header="Server Browser">
             <Grid>
@@ -84,15 +98,7 @@
 
                     <Separator Grid.Row="1" Margin="0"/>
 
-                    <WrapPanel Grid.Row="2" TextElement.FontSize="13" Margin="2">
-                        <WrapPanel.Resources>
-                            <Style x:Key="Special" TargetType="{x:Type Run}">
-                                <Setter Property="FontWeight" Value="Bold"/>
-                            </Style>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Margin" Value="2"/>
-                            </Style>
-                        </WrapPanel.Resources>
+                    <WrapPanel Grid.Row="2" Style="{StaticResource PropertyWrapPanel}">
                         <TextBlock>Player Count: <Run Text="{Binding PlayerCount}" Style="{StaticResource Special}"/> (<Run Text="{Binding SpectatorPlayers}" Style="{StaticResource Special}"/> spectators) (<Run Text="{Binding BotCount}" Style="{StaticResource Special}"/> bots),</TextBlock>
                         <TextBlock>Max Players: <Run Text="{Binding MaxPlayers}" Style="{StaticResource Special}"/> (+<Run Text="{Binding ReservedPlayers}" Style="{StaticResource Special}"/> reserved),</TextBlock>
                         <TextBlock>Build: <Run Text="{Binding Build}" Style="{StaticResource Special}"/>,</TextBlock>
