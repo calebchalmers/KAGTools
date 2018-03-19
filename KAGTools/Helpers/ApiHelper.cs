@@ -16,6 +16,7 @@ namespace KAGTools.Helpers
     public static class ApiHelper
     {
         private const string UrlPlayer = "https://api.kag2d.com/v1/player/{0}";
+        private const string UrlPlayerAvatar = "https://api.kag2d.com/v1/player/{0}/avatar";
         private const string UrlServers = "https://api.kag2d.com/v1/game/thd/kag/servers";
         private const string UrlServerMinimap = "https://api.kag2d.com/v1/game/thd/kag/server/{0}/{1}/minimap";
 
@@ -29,6 +30,11 @@ namespace KAGTools.Helpers
         public static async Task<ApiPlayerResults> GetPlayer(string username, CancellationToken cancellationToken)
         {
             return await GetApiResultObject<ApiPlayerResults>(string.Format(UrlPlayer, username), cancellationToken);
+        }
+
+        public static async Task<ApiPlayerAvatarResults> GetPlayerAvatar(string username, CancellationToken cancellationToken)
+        {
+            return await GetApiResultObject<ApiPlayerAvatarResults>(string.Format(UrlPlayerAvatar, username), cancellationToken);
         }
 
         public static async Task<ApiServer[]> GetServers(ApiFilter[] filters, CancellationToken cancellationToken)

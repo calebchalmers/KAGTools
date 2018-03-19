@@ -19,9 +19,11 @@ namespace KAGTools.ViewModels
     {
         private BitmapImage _serverMinimapBitmap;
         private ApiPlayerResults _resultPlayer;
+        private BitmapImage _resultPlayerAvatarBitmap;
         private string _serverSearchFilter = "";
         private string _playerSearchFilter = "";
 
+        private CancellationTokenSource AvatarCancellationSource { get; set; } = new CancellationTokenSource();
         private CancellationTokenSource MinimapCancellationSource { get; set; } = new CancellationTokenSource();
         private bool RefreshingServers { get; set; } = false;
 
@@ -119,6 +121,19 @@ namespace KAGTools.ViewModels
             }
         }
 
+        public BitmapImage ResultPlayerAvatarBitmap
+        {
+            get { return _resultPlayerAvatarBitmap; }
+            set
+            {
+                if (_resultPlayerAvatarBitmap != value)
+                {
+                    _resultPlayerAvatarBitmap = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         public ICommand RefreshServersCommand { get; private set; }
         public ICommand SearchPlayerCommand { get; private set; }
 
@@ -141,6 +156,27 @@ namespace KAGTools.ViewModels
             catch (System.Net.Http.HttpRequestException)
             {
                 ResultPlayer = null;
+            }
+
+            try
+            {
+                AvatarCancellationSource.Cancel();
+                AvatarCancellationSource = new CancellationTokenSource();
+
+                ApiPlayerAvatarResults results = await ApiHelper.GetPlayerAvatar(username, AvatarCancellationSource.Token);
+
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+                bitmap.CacheOption = BitmapCacheOption.Default;
+                bitmap.UriSource = new Uri(results.LargeUrl);
+                bitmap.EndInit();
+
+                ResultPlayerAvatarBitmap = bitmap;
+            }
+            catch (System.Net.Http.HttpRequestException)
+            {
+                ResultPlayerAvatarBitmap = null;
             }
         }
 
