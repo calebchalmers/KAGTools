@@ -131,7 +131,17 @@ namespace KAGTools.ViewModels
         {
             if (string.IsNullOrWhiteSpace(PlayerSearchFilter))
                 return;
-            ResultPlayer = await ApiHelper.GetPlayer(PlayerSearchFilter, CancellationToken.None);
+
+            string username = PlayerSearchFilter;
+
+            try
+            {
+                ResultPlayer = await ApiHelper.GetPlayer(username, CancellationToken.None);
+            }
+            catch (System.Net.Http.HttpRequestException)
+            {
+                ResultPlayer = null;
+            }
         }
 
         private async Task RefreshServersAsync()
@@ -140,13 +150,18 @@ namespace KAGTools.ViewModels
             RefreshingServers = true;
 
             Items.Clear();
-            ApiServer[] results = await ApiHelper.GetServers(
-                new ApiFilter[] {
+
+            try
+            {
+                ApiServer[] results = await ApiHelper.GetServers(
+                    new ApiFilter[] {
                     new ApiFilter("current", true)
-                },
-                CancellationToken.None
-                );
-            Items = new ObservableCollection<ApiServer>(results);
+                    },
+                    CancellationToken.None
+                    );
+                Items = new ObservableCollection<ApiServer>(results);
+            }
+            catch (System.Net.Http.HttpRequestException) { }
 
             RefreshingServers = false;
 
@@ -160,7 +175,14 @@ namespace KAGTools.ViewModels
             MinimapCancellationSource = new CancellationTokenSource();
 
             ServerMinimapBitmap = null;
-            ServerMinimapBitmap = await ApiHelper.GetServerMinimap(Selected.IPv4Address, Selected.Port, MinimapCancellationSource.Token);
+
+            try
+            {
+                var bitmap = await ApiHelper.GetServerMinimap(Selected.IPv4Address, Selected.Port, MinimapCancellationSource.Token);
+                ServerMinimapBitmap = bitmap;
+            }
+            catch (TaskCanceledException) { }
+            catch (System.Net.Http.HttpRequestException) { }
         }
     }
 }

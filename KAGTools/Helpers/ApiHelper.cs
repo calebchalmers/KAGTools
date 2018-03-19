@@ -28,66 +28,65 @@ namespace KAGTools.Helpers
 
         public static async Task<ApiPlayerResults> GetPlayer(string username, CancellationToken cancellationToken)
         {
-            return await HttpGetApiResult<ApiPlayerResults>(string.Format(UrlPlayer, username), cancellationToken);
+            return await GetApiResultObject<ApiPlayerResults>(string.Format(UrlPlayer, username), cancellationToken);
         }
 
         public static async Task<ApiServer[]> GetServers(ApiFilter[] filters, CancellationToken cancellationToken)
         {
             string filterJson = "?filters=" + JsonConvert.SerializeObject(filters);
-            var results = await HttpGetApiResult<ApiServerResults>(UrlServers + filterJson, cancellationToken);
-            return results?.Servers ?? Array.Empty<ApiServer>();
+            var results = await GetApiResultObject<ApiServerResults>(UrlServers + filterJson, cancellationToken);
+            return results.Servers;
         }
 
         public static async Task<BitmapImage> GetServerMinimap(string ip, int port, CancellationToken cancellationToken)
         {
             string requestUri = string.Format(UrlServerMinimap, ip, port);
-            Task<System.IO.Stream> task = (await HttpGetContent(requestUri, cancellationToken))?.ReadAsStreamAsync();
-            if (task == null) return null;
-            System.IO.Stream stream = await task;
-            if (stream == null) return null;
+            var stream = await HttpGetStream(requestUri, cancellationToken);
 
             BitmapImage bitmap = new BitmapImage();
             bitmap.BeginInit();
             bitmap.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
             bitmap.CacheOption = BitmapCacheOption.Default;
-            bitmap.UriSource = null;
             bitmap.StreamSource = stream;
             bitmap.EndInit();
             return bitmap;
         }
 
-        private static async Task<T> HttpGetApiResult<T>(string requestUri, CancellationToken cancellationToken) where T : class
+        public static async Task<T> GetApiResultObject<T>(string requestUri, CancellationToken cancellationToken) where T : class
         {
-            Task<string> task = (await HttpGetContent(requestUri, cancellationToken))?.ReadAsStringAsync();
-            if (task == null) return null;
-            return JsonConvert.DeserializeObject<T>(await task);
+            return JsonConvert.DeserializeObject<T>(await HttpGetString(requestUri, cancellationToken));
+        }
+
+        private static async Task<string> HttpGetString(string requestUri, CancellationToken cancellationToken)
+        {
+            return await (await HttpGetContent(requestUri, cancellationToken)).ReadAsStringAsync();
+        }
+
+        private static async Task<System.IO.Stream> HttpGetStream(string requestUri, CancellationToken cancellationToken)
+        {
+            return await (await HttpGetContent(requestUri, cancellationToken)).ReadAsStreamAsync();
+        }
+
+        private static async Task<byte[]> HttpGetByteArray(string requestUri, CancellationToken cancellationToken)
+        {
+            return await (await HttpGetContent(requestUri, cancellationToken)).ReadAsByteArrayAsync();
         }
 
         private static async Task<HttpContent> HttpGetContent(string requestUri, CancellationToken cancellationToken)
         {
+            HttpResponseMessage result = null;
+
             try
             {
-                var result = await httpClient.GetAsync(requestUri, cancellationToken);
-
-                if(result.StatusCode == HttpStatusCode.NotFound)
-                {
-                    return null;
-                }
-
-                result.EnsureSuccessStatusCode();
-                return result.Content;
+                result = await httpClient.GetAsync(requestUri, cancellationToken);
+                return result.EnsureSuccessStatusCode().Content;
             }
-            catch (HttpRequestException e)
+            catch (HttpRequestException e) when (result?.StatusCode == HttpStatusCode.InternalServerError)
             {
                 var message = string.Format("{0}{2}{2}Request URL: {1}", e.Message, requestUri, Environment.NewLine);
                 MessageBox.Show(message, "HTTP Request Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw;
             }
-            catch (TaskCanceledException)
-            {
-                return null;
-            }
-
-            return null;
         }
     }
 }
