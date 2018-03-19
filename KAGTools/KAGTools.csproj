@@ -140,6 +140,8 @@
     <Compile Include="ViewModels\ApiViewModel.cs" />
     <Compile Include="ViewModels\FilterListViewModelBase.cs" />
     <Compile Include="ViewModels\InputViewModel.cs" />
+    <Compile Include="ViewModels\ApiPlayerInfoViewModel.cs" />
+    <Compile Include="ViewModels\ApiServerBrowserViewModel.cs" />
     <Compile Include="ViewModels\Manual\ManualGenericViewModel.cs" />
     <Compile Include="ViewModels\Manual\ManualTypeDefsViewModel.cs" />
     <Compile Include="ViewModels\Manual\ManualVariablesViewModel.cs" />

@@ -18,6 +18,7 @@ namespace KAGTools.Helpers
         private const string UrlPlayer = "https://api.kag2d.com/v1/player/{0}";
         private const string UrlPlayerAvatar = "https://api.kag2d.com/v1/player/{0}/avatar";
         private const string UrlServers = "https://api.kag2d.com/v1/game/thd/kag/servers";
+        private const string UrlServer = "https://api.kag2d.com/v1/game/thd/kag/server/{0}/{1}/status";
         private const string UrlServerMinimap = "https://api.kag2d.com/v1/game/thd/kag/server/{0}/{1}/minimap";
 
         private static readonly HttpClient httpClient;
@@ -44,7 +45,14 @@ namespace KAGTools.Helpers
             return results.Servers;
         }
 
-        public static async Task<BitmapImage> GetServerMinimap(string ip, int port, CancellationToken cancellationToken)
+        public static async Task<ApiServer> GetServer(string ip, object port, CancellationToken cancellationToken)
+        {
+            string requestUri = string.Format(UrlServer, ip, port);
+            var results = await GetApiResultObject<ApiServerResults>(requestUri, cancellationToken);
+            return results.Server;
+        }
+
+        public static async Task<BitmapImage> GetServerMinimap(string ip, object port, CancellationToken cancellationToken)
         {
             string requestUri = string.Format(UrlServerMinimap, ip, port);
             var stream = await HttpGetStream(requestUri, cancellationToken);

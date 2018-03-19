@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:KAGTools.Windows"
+        xmlns:viewmodels="clr-namespace:KAGTools.ViewModels"
         mc:Ignorable="d"
         Title="API Browser" Height="470" Width="630" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
     <Window.Resources>
@@ -23,6 +24,9 @@
     </Window.Resources>
     <TabControl>
         <TabItem Header="Server Browser">
+            <TabItem.DataContext>
+                <viewmodels:ApiServerBrowserViewModel />
+            </TabItem.DataContext>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="300"/>
@@ -32,7 +36,7 @@
                 <DockPanel Grid.Column="0">
                     <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
                         <Button DockPanel.Dock="Right" Content="⟳" HorizontalContentAlignment="Center" Command="{Binding RefreshServersCommand}"/>
-                        <xctk:WatermarkTextBox Watermark="Search..." Text="{Binding ServerSearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
+                        <xctk:WatermarkTextBox Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
                     </DockPanel>
                     <StatusBar DockPanel.Dock="Bottom" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}" Padding="5,3">
                         <StatusBar.Resources>
@@ -69,7 +73,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Image Grid.Row="0" Source="{Binding DataContext.ServerMinimapBitmap, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Stretch="Fill" Opacity="0.3" ClipToBounds="True" RenderOptions.BitmapScalingMode="NearestNeighbor">
+                    <Image Grid.Row="0" Source="{Binding DataContext.MinimapBitmap, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TabItem}}" Stretch="Fill" Opacity="0.3" ClipToBounds="True" RenderOptions.BitmapScalingMode="NearestNeighbor">
                         <Image.Effect>
                             <BlurEffect Radius="10"/>
                         </Image.Effect>
@@ -134,21 +138,24 @@
             </Grid>
         </TabItem>
         <TabItem Header="Player Info">
+            <TabItem.DataContext>
+                <viewmodels:ApiPlayerInfoViewModel />
+            </TabItem.DataContext>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <DockPanel Grid.Row="0" Style="{StaticResource FilterBarStyle}" DockPanel.Dock="Top">
-                    <Button Content="Search" DockPanel.Dock="Right" Command="{Binding SearchPlayerCommand}" IsDefault="True"/>
-                    <xctk:WatermarkTextBox Watermark="Username..." Text="{Binding PlayerSearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Content="Search" DockPanel.Dock="Right" Command="{Binding SearchCommand}" IsDefault="True"/>
+                    <xctk:WatermarkTextBox Watermark="Username..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
                 </DockPanel>
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="1.5*"/>
                     </Grid.ColumnDefinitions>
-                    <Image Source="{Binding ResultPlayerAvatarBitmap}" Grid.Column="0" Stretch="Uniform" VerticalAlignment="Center" Margin="5"/>
+                    <Image Source="{Binding AvatarBitmap}" Grid.Column="0" Stretch="Uniform" VerticalAlignment="Center" Margin="5"/>
                     <StackPanel Grid.Column="1" Margin="10" DataContext="{Binding ResultPlayer}">
                         <StackPanel.Style>
                             <Style TargetType="{x:Type StackPanel}">
@@ -181,7 +188,7 @@
                                         Port: <Run Text="{Binding Status.Server.Port}" Style="{StaticResource Special}"/>
                                     </TextBlock>
                                 </TextBlock.ToolTip>
-                                Last Server: <Run Text ="{Binding DataContext.ResultPlayerServer.Name, Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Style="{StaticResource Special}"/>,                                
+                                Last Server: <Run Text="{Binding DataContext.ResultPlayerServer.Name, Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TabItem}}" Style="{StaticResource Special}"/>
                             </TextBlock>
                         </WrapPanel>
                     </StackPanel>

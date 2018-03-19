@@ -12,6 +12,9 @@ namespace KAGTools.Data.API
     {
         [JsonProperty("serverList")]
         public ApiServer[] Servers { get; set; }
+
+        [JsonProperty("serverStatus")]
+        public ApiServer Server { get; set; }
     }
 
     public class ApiServer
