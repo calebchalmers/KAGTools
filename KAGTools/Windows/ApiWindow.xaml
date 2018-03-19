@@ -140,7 +140,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <DockPanel Grid.Row="0" Style="{StaticResource FilterBarStyle}" DockPanel.Dock="Top">
-                    <Button Content="Search" DockPanel.Dock="Right" Command="{Binding SearchPlayerCommand}"/>
+                    <Button Content="Search" DockPanel.Dock="Right" Command="{Binding SearchPlayerCommand}" IsDefault="True"/>
                     <xctk:WatermarkTextBox Watermark="Username..." Text="{Binding PlayerSearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
                 </DockPanel>
                 <Grid Grid.Row="1">
