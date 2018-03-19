@@ -144,10 +144,49 @@
                     <xctk:WatermarkTextBox Watermark="Username..." Text="{Binding PlayerSearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
                 </DockPanel>
                 <Grid Grid.Row="1">
-                    <TextBlock>
-                        Username: <Run Text="{Binding ResultPlayer.Info.Username}"/>
-                    </TextBlock>
-                    <TextBlock Text="Player not found" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" FontSize="20" Foreground="Maroon">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="{Binding ResultPlayerAvatarBitmap}" Grid.Column="0" Stretch="Uniform" VerticalAlignment="Center" Margin="5"/>
+                    <StackPanel Grid.Column="1" Margin="10" DataContext="{Binding ResultPlayer}">
+                        <StackPanel.Style>
+                            <Style TargetType="{x:Type StackPanel}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        
+                        <TextBlock Text="{Binding Info.Username}" HorizontalAlignment="Center" FontWeight="SemiBold" FontSize="22" Margin="5" />
+                        
+                        <Separator Margin="10"/>
+                        
+                        <WrapPanel Orientation="Vertical" Style="{StaticResource PropertyWrapPanel}">
+                            <TextBlock>Role: <Run Text="{Binding Info.Role}" Style="{StaticResource Special}"/>,</TextBlock>
+                            <TextBlock>Active: <Run Text="{Binding Info.IsActive, Converter={StaticResource BooleanToYesNoConverter}}" Style="{StaticResource Special}"/>,</TextBlock>
+                            <TextBlock>Banned: <Run Text="{Binding Info.IsBanned, Converter={StaticResource BooleanToYesNoConverter}}" Style="{StaticResource Special}"/>,</TextBlock>
+                            <TextBlock>Gold: <Run Text="{Binding Info.HasGold, Converter={StaticResource BooleanToYesNoConverter}}" Style="{StaticResource Special}"/>,</TextBlock>
+                            <TextBlock>State: <Run Text="{Binding Status.Action}" Style="{StaticResource Special}"/>,</TextBlock>
+                            <TextBlock>Registered: <Run Text="{Binding Info.RegisterDate, StringFormat=d}" ToolTip="{Binding Info.RegisterDate}" Style="{StaticResource Special}"/>,</TextBlock>
+                            <TextBlock>Last Seen: <Run Text="{Binding Status.LastUpdateDate, StringFormat=d}" ToolTip="{Binding Status.LastUpdateDate}" Style="{StaticResource Special}"/>,</TextBlock>
+                            <TextBlock>
+                                <TextBlock.ToolTip>
+                                    <TextBlock>
+                                        IPv4: <Run Text="{Binding Status.Server.IPv4Address}" Style="{StaticResource Special}"/>, 
+                                        IPv6: <Run Text="{Binding Status.Server.IPv6Address, TargetNullValue=N/A}" Style="{StaticResource Special}"/>, 
+                                        Port: <Run Text="{Binding Status.Server.Port}" Style="{StaticResource Special}"/>
+                                    </TextBlock>
+                                </TextBlock.ToolTip>
+                                Last Server: <Run Text ="{Binding DataContext.ResultPlayerServer.Name, Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Style="{StaticResource Special}"/>,                                
+                            </TextBlock>
+                        </WrapPanel>
+                    </StackPanel>
+                    
+                    <TextBlock Grid.ColumnSpan="2" Text="Player not found" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" FontSize="20" Foreground="Maroon">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="Visibility" Value="Hidden"/>

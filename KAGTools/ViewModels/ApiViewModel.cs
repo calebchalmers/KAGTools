@@ -41,6 +41,10 @@ namespace KAGTools.ViewModels
                 {
                     await UpdateMinimapAsync();
                 }
+                else if(e.PropertyName == "Items")
+                {
+                    RaisePropertyChanged("ResultPlayerServer");
+                }
             };
 
             var tmp = RefreshServersAsync();
@@ -117,6 +121,7 @@ namespace KAGTools.ViewModels
                 {
                     _resultPlayer = value;
                     RaisePropertyChanged();
+                    RaisePropertyChanged("ResultPlayerServer");
                 }
             }
         }
@@ -131,6 +136,20 @@ namespace KAGTools.ViewModels
                     _resultPlayerAvatarBitmap = value;
                     RaisePropertyChanged();
                 }
+            }
+        }
+
+        public ApiServer ResultPlayerServer
+        {
+            get
+            {
+                var playerServer = ResultPlayer?.Status.Server;
+                if (playerServer == null) return null;
+                return Items.FirstOrDefault(s => 
+                s.IPv4Address == playerServer.IPv4Address &&
+                s.IPv6Address == playerServer.IPv6Address &&
+                s.Port.ToString() == playerServer.Port
+                );
             }
         }
 
