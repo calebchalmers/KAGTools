@@ -56,10 +56,10 @@ namespace KAGTools.Data.API
         public int RegisterUnixTime { get; set; }
 
         [JsonProperty("registered")]
-        public string RegisterDate { get; set; }
+        public DateTime RegisterDate { get; set; }
 
         [JsonProperty("role")]
-        public int Role { get; set; }
+        public PlayerRole Role { get; set; }
 
         [JsonProperty("username")]
         public string Username { get; set; }
@@ -71,7 +71,7 @@ namespace KAGTools.Data.API
         public int Action { get; set; }
 
         [JsonProperty("lastUpdate")]
-        public string LastUpdateDate { get; set; }
+        public DateTime LastUpdateDate { get; set; }
 
         [JsonProperty("server")]
         public PlayerServer Server { get; set; }
@@ -87,5 +87,16 @@ namespace KAGTools.Data.API
 
         [JsonProperty("serverPort")]
         public string Port { get; set; }
+    }
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum PlayerRole
+    {
+        Normal = 0,
+        Staff = 1,
+        Guard = 2,
+        Unknown = 3,
+        Developer = 4,
+        Tester = 5,
     }
 }
