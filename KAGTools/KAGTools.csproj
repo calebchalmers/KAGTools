@@ -124,6 +124,7 @@
     <Compile Include="Data\API\ApiFilter.cs" />
     <Compile Include="Data\API\ApiPlayerAvatarResults.cs" />
     <Compile Include="Data\API\ApiServerResults.cs" />
+    <Compile Include="Data\AsyncTaskState.cs" />
     <Compile Include="Data\ConfigProperty.cs" />
     <Compile Include="Data\ManualItem.cs" />
     <Compile Include="Data\API\ApiPlayerResults.cs" />
@@ -182,6 +183,7 @@
     </Compile>
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Data\Mod.cs" />
+    <Compile Include="Xaml\Converters\EqualityToVisibilityConverter.cs" />
     <Compile Include="Xaml\Converters\BooleanToYesNoConverter.cs" />
     <Compile Include="Xaml\Converters\NullableBoolToBoolConverter.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

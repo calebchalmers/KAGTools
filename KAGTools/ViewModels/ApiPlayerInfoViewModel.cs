@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using KAGTools.Data;
 using KAGTools.Data.API;
 using KAGTools.Helpers;
 using System;
@@ -19,11 +20,13 @@ namespace KAGTools.ViewModels
         private ApiServer _resultPlayerServer;
         private BitmapImage _avatarBitmap;
         private string _searchFilter = "";
+        private AsyncTaskState _searchState = AsyncTaskState.Standby;
+        private AsyncTaskState _resultPlayerServerState = AsyncTaskState.Standby;
+        private AsyncTaskState _avatarState = AsyncTaskState.Standby;
 
         private CancellationTokenSource AvatarCancellationSource { get; set; } = new CancellationTokenSource();
 
-        public ApiPlayerInfoViewModel() :
-            base()
+        public ApiPlayerInfoViewModel()
         {
             SearchCommand = new RelayCommand(ExecuteSearchCommand);
         }
@@ -80,6 +83,45 @@ namespace KAGTools.ViewModels
             }
         }
 
+        public AsyncTaskState SearchState
+        {
+            get { return _searchState; }
+            set
+            {
+                if (_searchState != value)
+                {
+                    _searchState = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public AsyncTaskState ResultPlayerServerState
+        {
+            get { return _resultPlayerServerState; }
+            set
+            {
+                if (_resultPlayerServerState != value)
+                {
+                    _resultPlayerServerState = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public AsyncTaskState AvatarState
+        {
+            get { return _avatarState; }
+            set
+            {
+                if (_avatarState != value)
+                {
+                    _avatarState = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         public ICommand SearchCommand { get; private set; }
 
         private async void ExecuteSearchCommand()
@@ -87,37 +129,63 @@ namespace KAGTools.ViewModels
             if (string.IsNullOrWhiteSpace(SearchFilter))
                 return;
 
-            await Task.WhenAll(FindResultPlayer(), FindAvatarBitmap());
+            await FindResultPlayer();
+
+            if (ResultPlayer != null)
+            {
+                await Task.WhenAll(FindResultPlayerServer(), FindAvatarBitmap());
+            }
         }
 
         private async Task FindResultPlayer()
         {
+            ResultPlayer = null;
+
             try
             {
+                SearchState = AsyncTaskState.Running;
                 ResultPlayer = await ApiHelper.GetPlayer(SearchFilter, CancellationToken.None);
+                SearchState = AsyncTaskState.Finished;
             }
             catch (System.Net.Http.HttpRequestException)
             {
-                ResultPlayer = null;
+                SearchState = AsyncTaskState.Failed;
             }
+        }
 
+        private async Task FindResultPlayerServer()
+        {
             ResultPlayerServer = null;
 
             try
             {
                 var playerServer = ResultPlayer?.Status.Server;
-                if (playerServer == null) return;
+
+                if (playerServer == null)
+                {
+                    ResultPlayerServerState = AsyncTaskState.Failed;
+                    return;
+                }
+
+                ResultPlayerServerState = AsyncTaskState.Running;
                 ResultPlayerServer = await ApiHelper.GetServer(playerServer.IPv4Address, playerServer.Port, CancellationToken.None);
+                ResultPlayerServerState = AsyncTaskState.Finished;
             }
-            catch (System.Net.Http.HttpRequestException) { }
+            catch (System.Net.Http.HttpRequestException)
+            {
+                ResultPlayerServerState = AsyncTaskState.Failed;
+            }
         }
 
         private async Task FindAvatarBitmap()
         {
+            AvatarBitmap = null;
+
             try
             {
                 AvatarCancellationSource.Cancel();
                 AvatarCancellationSource = new CancellationTokenSource();
+                AvatarState = AsyncTaskState.Running;
 
                 ApiPlayerAvatarResults results = await ApiHelper.GetPlayerAvatar(SearchFilter, AvatarCancellationSource.Token);
 
@@ -129,10 +197,11 @@ namespace KAGTools.ViewModels
                 bitmap.EndInit();
 
                 AvatarBitmap = bitmap;
+                AvatarState = AsyncTaskState.Finished;
             }
             catch (System.Net.Http.HttpRequestException)
             {
-                AvatarBitmap = null;
+                AvatarState = AsyncTaskState.Failed;
             }
         }
     }

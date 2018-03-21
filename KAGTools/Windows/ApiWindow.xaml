@@ -6,6 +6,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:KAGTools.Windows"
         xmlns:viewmodels="clr-namespace:KAGTools.ViewModels"
+        xmlns:data="clr-namespace:KAGTools.Data"
         mc:Ignorable="d"
         Title="API Browser" Height="470" Width="630" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
     <Window.Resources>
@@ -141,65 +142,72 @@
             <TabItem.DataContext>
                 <viewmodels:ApiPlayerInfoViewModel />
             </TabItem.DataContext>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <DockPanel Grid.Row="0" Style="{StaticResource FilterBarStyle}" DockPanel.Dock="Top">
+            <DockPanel>
+                <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
                     <Button Content="Search" DockPanel.Dock="Right" Command="{Binding SearchCommand}" IsDefault="True"/>
                     <xctk:WatermarkTextBox Watermark="Username..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
                 </DockPanel>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="1.5*"/>
-                    </Grid.ColumnDefinitions>
-                    <Image Source="{Binding AvatarBitmap}" Grid.Column="0" Stretch="Uniform" VerticalAlignment="Center" Margin="5"/>
-                    <StackPanel Grid.Column="1" Margin="10" DataContext="{Binding ResultPlayer}">
-                        <StackPanel.Style>
-                            <Style TargetType="{x:Type StackPanel}">
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding}" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Hidden"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </StackPanel.Style>
+                <Grid>
+                    <Grid Visibility="{Binding SearchState, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter={x:Static data:AsyncTaskState.Finished}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1.5*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Image Source="{Binding AvatarBitmap}" Stretch="Uniform" VerticalAlignment="Center" Margin="5"/>
+                            <TextBlock Text="Not found" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Foreground="Gray" IsHitTestVisible="False"
+                                       Visibility="{Binding AvatarState, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter={x:Static data:AsyncTaskState.Failed}}"/>
+                        </Grid>
+                        <StackPanel Grid.Column="1" Margin="10" DataContext="{Binding ResultPlayer}">
+
+                            <TextBlock Text="{Binding Info.Username}" HorizontalAlignment="Center" FontWeight="SemiBold" FontSize="22" Margin="5" />
                         
-                        <TextBlock Text="{Binding Info.Username}" HorizontalAlignment="Center" FontWeight="SemiBold" FontSize="22" Margin="5" />
+                            <Separator Margin="10"/>
                         
-                        <Separator Margin="10"/>
-                        
-                        <WrapPanel Orientation="Vertical" Style="{StaticResource PropertyWrapPanel}">
-                            <TextBlock>Role: <Run Text="{Binding Info.Role}" Style="{StaticResource Special}"/>,</TextBlock>
-                            <TextBlock>Active: <Run Text="{Binding Info.IsActive, Converter={StaticResource BooleanToYesNoConverter}}" Style="{StaticResource Special}"/>,</TextBlock>
-                            <TextBlock>Banned: <Run Text="{Binding Info.IsBanned, Converter={StaticResource BooleanToYesNoConverter}}" Style="{StaticResource Special}"/>,</TextBlock>
-                            <TextBlock>Gold: <Run Text="{Binding Info.HasGold, Converter={StaticResource BooleanToYesNoConverter}}" Style="{StaticResource Special}"/>,</TextBlock>
-                            <TextBlock>State: <Run Text="{Binding Status.Action}" Style="{StaticResource Special}"/>,</TextBlock>
-                            <TextBlock>Registered: <Run Text="{Binding Info.RegisterDate, StringFormat=d}" ToolTip="{Binding Info.RegisterDate}" Style="{StaticResource Special}"/>,</TextBlock>
-                            <TextBlock>Last Seen: <Run Text="{Binding Status.LastUpdateDate, StringFormat=d}" ToolTip="{Binding Status.LastUpdateDate}" Style="{StaticResource Special}"/>,</TextBlock>
-                            <TextBlock>
-                                <TextBlock.ToolTip>
-                                    <TextBlock>
-                                        IPv4: <Run Text="{Binding Status.Server.IPv4Address}" Style="{StaticResource Special}"/>, 
-                                        IPv6: <Run Text="{Binding Status.Server.IPv6Address, TargetNullValue=N/A}" Style="{StaticResource Special}"/>, 
-                                        Port: <Run Text="{Binding Status.Server.Port}" Style="{StaticResource Special}"/>
-                                    </TextBlock>
-                                </TextBlock.ToolTip>
-                                Last Server: <Run Text="{Binding DataContext.ResultPlayerServer.Name, Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TabItem}}" Style="{StaticResource Special}"/>
-                            </TextBlock>
-                        </WrapPanel>
-                    </StackPanel>
-                    
-                    <TextBlock Grid.ColumnSpan="2" Text="Player not found" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" FontSize="20" Foreground="Maroon">
+                            <WrapPanel Orientation="Vertical" Style="{StaticResource PropertyWrapPanel}">
+                                <TextBlock>Role: <Run Text="{Binding Info.Role}" Style="{StaticResource Special}"/>,</TextBlock>
+                                <TextBlock>Banned: <Run Text="{Binding Info.IsBanned, Converter={StaticResource BooleanToYesNoConverter}}" Style="{StaticResource Special}"/>,</TextBlock>
+                                <TextBlock>Gold: <Run Text="{Binding Info.HasGold, Converter={StaticResource BooleanToYesNoConverter}}" Style="{StaticResource Special}"/>,</TextBlock>
+                                <TextBlock>Registered: <Run Text="{Binding Info.RegisterDate, StringFormat=d}" ToolTip="{Binding Info.RegisterDate}" Style="{StaticResource Special}"/>,</TextBlock>
+                                <TextBlock>Last Seen: <Run Text="{Binding Status.LastUpdateDate, StringFormat=d}" ToolTip="{Binding Status.LastUpdateDate}" Style="{StaticResource Special}"/>,</TextBlock>
+                                <TextBlock>
+                                    <TextBlock.ToolTip>
+                                        <TextBlock>
+                                            IPv4: <Run Text="{Binding Status.Server.IPv4Address}" Style="{StaticResource Special}"/>, 
+                                            IPv6: <Run Text="{Binding Status.Server.IPv6Address, TargetNullValue=N/A}" Style="{StaticResource Special}"/>, 
+                                            Port: <Run Text="{Binding Status.Server.Port}" Style="{StaticResource Special}"/>
+                                        </TextBlock>
+                                    </TextBlock.ToolTip>
+                                    Last Server:
+                                    <Run DataContext="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TabItem}}">
+                                        <Run.Style>
+                                            <Style TargetType="{x:Type Run}" BasedOn="{StaticResource Special}">
+                                                <Setter Property="Text" Value="{Binding ResultPlayerServer.Name}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ResultPlayerServerState}" Value="{x:Static data:AsyncTaskState.Failed}">
+                                                        <Setter Property="Text" Value="[Not found]"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Run.Style>
+                                    </Run>
+                                </TextBlock>
+                            </WrapPanel>
+                        </StackPanel>
+                    </Grid>
+
+                    <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" IsHitTestVisible="False">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Visibility" Value="Hidden"/>
+                                <Setter Property="Foreground" Value="Gray"/>
+                                <Setter Property="Text" Value=""/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ResultPlayer}" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Visible"/>
+                                    <DataTrigger Binding="{Binding SearchState}" Value="{x:Static data:AsyncTaskState.Running}">
+                                        <Setter Property="Text" Value="Searching..."/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SearchState}" Value="{x:Static data:AsyncTaskState.Failed}">
+                                        <Setter Property="Foreground" Value="Maroon"/>
+                                        <Setter Property="Text" Value="Player not found"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
