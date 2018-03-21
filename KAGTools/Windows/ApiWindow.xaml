@@ -52,9 +52,9 @@
                                     <Setter Property="FontWeight" Value="SemiBold"/>
                                 </Style>
                             </StatusBar.Resources>
-                            <StatusBarItem Content="{Binding ServerCount}" Style="{StaticResource Special}"/>
-                            players in
                             <StatusBarItem Content="{Binding PlayerCount}" Style="{StaticResource Special}"/>
+                            players in
+                            <StatusBarItem Content="{Binding ServerCount}" Style="{StaticResource Special}"/>
                             servers
                         </StatusBar>
                         <ListBox ItemsSource="{Binding FilteredItems}" SelectedItem="{Binding Selected}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch">
