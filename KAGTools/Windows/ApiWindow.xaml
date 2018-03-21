@@ -229,7 +229,7 @@
                                 <TextBlock>
                                     <TextBlock.ToolTip>
                                         <TextBlock>
-                                            IPv4: <Run Text="{Binding Status.Server.IPv4Address}" Style="{StaticResource Special}"/>, 
+                                            IPv4: <Run Text="{Binding Status.Server.IPv4Address, TargetNullValue=N/A}" Style="{StaticResource Special}"/>, 
                                             IPv6: <Run Text="{Binding Status.Server.IPv6Address, TargetNullValue=N/A}" Style="{StaticResource Special}"/>, 
                                             Port: <Run Text="{Binding Status.Server.Port}" Style="{StaticResource Special}"/>
                                         </TextBlock>
@@ -241,7 +241,7 @@
                                                 <Setter Property="Text" Value="{Binding ResultPlayerServer.Name}"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding ResultPlayerServerState}" Value="{x:Static data:AsyncTaskState.Failed}">
-                                                        <Setter Property="Text" Value="[Not found]"/>
+                                                        <Setter Property="Text" Value="[Server not found]"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
