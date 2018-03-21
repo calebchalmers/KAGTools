@@ -194,10 +194,10 @@
             <TabItem.DataContext>
                 <viewmodels:ApiPlayerInfoViewModel />
             </TabItem.DataContext>
-            <DockPanel>
+            <DockPanel FocusManager.FocusedElement="{Binding ElementName=tbx_playerSearch}">
                 <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
                     <Button Content="Search" DockPanel.Dock="Right" Command="{Binding SearchCommand}" IsDefault="True"/>
-                    <xctk:WatermarkTextBox Watermark="Username..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
+                    <xctk:WatermarkTextBox x:Name="tbx_playerSearch" Watermark="Username..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
                 </DockPanel>
                 <Grid>
                     <Grid Visibility="{Binding SearchState, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter={x:Static data:AsyncTaskState.Finished}}">
