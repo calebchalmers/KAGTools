@@ -232,15 +232,19 @@
                     <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" IsHitTestVisible="False">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Foreground" Value="Gray"/>
-                                <Setter Property="Text" Value=""/>
+                                <Setter Property="Foreground" Value="LightGray"/>
+                                <Setter Property="Text" Value=" "/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding SearchState}" Value="{x:Static data:AsyncTaskState.Running}">
+                                        <Setter Property="Foreground" Value="Gray"/>
                                         <Setter Property="Text" Value="Searching..."/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding SearchState}" Value="{x:Static data:AsyncTaskState.Failed}">
                                         <Setter Property="Foreground" Value="Maroon"/>
                                         <Setter Property="Text" Value="Player not found"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SearchState}" Value="{x:Static data:AsyncTaskState.Standby}">
+                                        <Setter Property="Text" Value="Search for a player's info"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
