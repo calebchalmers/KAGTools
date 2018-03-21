@@ -56,7 +56,7 @@ namespace KAGTools.Data.API
         public string Gamemode { get; set; }
 
         [JsonProperty("gameState")]
-        public int GameState { get; set; }
+        public ServerGameState GameState { get; set; }
 
         [JsonProperty("gold")]
         public bool HasGold { get; set; }
@@ -123,5 +123,11 @@ namespace KAGTools.Data.API
 
         [JsonProperty("version")]
         public string Version { get; set; }
+    }
+
+    public enum ServerGameState
+    {
+        Warmup = 0,
+        Active = 1
     }
 }
