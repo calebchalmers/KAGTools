@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:KAGTools.Windows"
-        xmlns:viewmodels="clr-namespace:KAGTools.ViewModels"
+        xmlns:viewmodels="clr-namespace:KAGTools.ViewModels.API"
         xmlns:data="clr-namespace:KAGTools.Data"
         mc:Ignorable="d"
         Title="API Browser" Height="470" Width="660" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
