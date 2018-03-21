@@ -199,7 +199,7 @@
                         
                             <WrapPanel Orientation="Vertical" Style="{StaticResource PropertyWrapPanel}">
                                 <TextBlock>Role: <Run Text="{Binding Info.Role}" Style="{StaticResource Special}"/>,</TextBlock>
-                                <TextBlock>Banned: <Run Text="{Binding Info.IsBanned, Converter={StaticResource BooleanToYesNoConverter}}" Style="{StaticResource Special}"/>,</TextBlock>
+                                <TextBlock>Banned: <Run Text="{Binding Info.BanReason, TargetNullValue=No}" Style="{StaticResource Special}"/>,</TextBlock>
                                 <TextBlock>Gold: <Run Text="{Binding Info.HasGold, Converter={StaticResource BooleanToYesNoConverter}}" Style="{StaticResource Special}"/>,</TextBlock>
                                 <TextBlock>Registered: <Run Text="{Binding Info.RegisterDate, StringFormat=d}" ToolTip="{Binding Info.RegisterDate}" Style="{StaticResource Special}"/>,</TextBlock>
                                 <TextBlock>Last Seen: <Run Text="{Binding Status.LastUpdateDate, StringFormat=d}" ToolTip="{Binding Status.LastUpdateDate}" Style="{StaticResource Special}"/>,</TextBlock>
