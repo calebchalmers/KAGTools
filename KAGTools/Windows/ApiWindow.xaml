@@ -57,7 +57,16 @@
                             <StatusBarItem Content="{Binding PlayerCount}" Style="{StaticResource Special}"/>
                             servers
                         </StatusBar>
-                        <ListBox ItemsSource="{Binding FilteredItems}" DisplayMemberPath="Name" SelectedItem="{Binding Selected}"/>
+                        <ListBox ItemsSource="{Binding FilteredItems}" SelectedItem="{Binding Selected}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel>
+                                        <TextBlock Text="{Binding PlayerCount}" Foreground="{StaticResource DisabledBrush}" DockPanel.Dock="Right" ToolTip="Player Count"/>
+                                        <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </DockPanel>
 
                     <Grid Grid.Column="1" DataContext="{Binding Selected}">
