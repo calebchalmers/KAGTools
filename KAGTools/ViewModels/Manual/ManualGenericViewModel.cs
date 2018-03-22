@@ -34,34 +34,6 @@ namespace KAGTools.ViewModels.Manual
             }
         }
 
-        public string SearchFilter
-        {
-            get { return _searchFilter; }
-            set
-            {
-                if (_searchFilter != value)
-                {
-                    _searchFilter = value;
-                    RaisePropertyChanged();
-                    RefreshFilters();
-                }
-            }
-        }
-
-        public string TypeFilter
-        {
-            get { return _typeFilter; }
-            set
-            {
-                if (_typeFilter != value)
-                {
-                    _typeFilter = value;
-                    RaisePropertyChanged();
-                    RefreshFilters();
-                }
-            }
-        }
-
         protected override bool FilterItem(ManualItem item)
         {
             if (!string.IsNullOrEmpty(SearchFilter) &&
@@ -73,19 +45,31 @@ namespace KAGTools.ViewModels.Manual
             return true;
         }
 
+        public string SearchFilter
+        {
+            get => _searchFilter;
+            set => this.SetProperty(ref _searchFilter, value, RefreshFilters);
+        }
+
+        public string TypeFilter
+        {
+            get => _typeFilter;
+            set => this.SetProperty(ref _typeFilter, value, RefreshFilters);
+        }
+
         public string FileName
         {
-            get { return _fileName; }
+            get => _fileName;
         }
 
         public bool HasTypes
         {
-            get { return _hasTypes; }
+            get => _hasTypes;
         }
 
         public ObservableCollection<string> Types
         {
-            get { return _types; }
+            get => _types;
         }
 
         public ICommand OpenFileCommand { get; private set; }

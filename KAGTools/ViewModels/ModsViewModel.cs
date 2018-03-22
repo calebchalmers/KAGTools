@@ -40,16 +40,8 @@ namespace KAGTools.ViewModels
 
         public string SearchFilter
         {
-            get { return _searchFilter; }
-            set
-            {
-                if (_searchFilter != value)
-                {
-                    _searchFilter = value;
-                    RaisePropertyChanged();
-                    RefreshFilters();
-                }
-            }
+            get => _searchFilter;
+            set => this.SetProperty(ref _searchFilter, value, RefreshFilters);
         }
 
         public ICommand OpenCommand { get; private set; }

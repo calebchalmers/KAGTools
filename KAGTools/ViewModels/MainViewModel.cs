@@ -82,98 +82,34 @@ namespace KAGTools.ViewModels
             _gamemode = gamemodeProperty.Value;
         }
 
-        private void SaveStartupInfo()
-        {
-            FileHelper.SetConfigInfo(
-                FileHelper.StartupConfigPath,
-                new ConfigPropertyDouble ("Window.Width", ScreenWidth),
-                new ConfigPropertyDouble ("Window.Height", ScreenHeight),
-                new ConfigPropertyBoolean ("Fullscreen", Fullscreen)
-                );
-
-            //FileHelper.SetStartupInfo(ScreenWidth, ScreenHeight, Fullscreen);
-        }
-
-        private void SaveAutoConfigInfo()
-        {
-            FileHelper.SetConfigInfo(
-                FileHelper.AutoConfigPath,
-                new ConfigPropertyString("sv_gamemode", Gamemode)
-                );
-        }
-
-        private bool IsComment(string line)
-        {
-            return line.StartsWith("#");
-        }
-
         public string Gamemode
         {
-            get { return _gamemode; }
-            set
-            {
-                if (_gamemode != value)
-                {
-                    _gamemode = value;
-                    RaisePropertyChanged();
-                    SaveAutoConfigInfo();
-                }
-            }
+            get => _gamemode;
+            set => this.SetProperty(ref _gamemode, value, SaveAutoConfigInfo);
         }
 
         public int ScreenWidth
         {
-            get { return _screenWidth; }
-            set
-            {
-                if(_screenWidth != value)
-                {
-                    _screenWidth = value;
-                    RaisePropertyChanged();
-                    SaveStartupInfo();
-                }
-            }
+            get => _screenWidth;
+            set => this.SetProperty(ref _screenWidth, value, SaveStartupInfo);
         }
 
         public int ScreenHeight
         {
-            get { return _screenHeight; }
-            set
-            {
-                if (_screenHeight != value)
-                {
-                    _screenHeight = value;
-                    RaisePropertyChanged();
-                    SaveStartupInfo();
-                }
-            }
+            get => _screenHeight;
+            set => this.SetProperty(ref _screenHeight, value, SaveStartupInfo);
         }
 
         public bool Fullscreen
         {
-            get { return _fullscreen; }
-            set
-            {
-                if (_fullscreen != value)
-                {
-                    _fullscreen = value;
-                    RaisePropertyChanged();
-                    SaveStartupInfo();
-                }
-            }
+            get => _fullscreen;
+            set => this.SetProperty(ref _fullscreen, value, SaveStartupInfo);
         }
 
         public ObservableCollection<string> Gamemodes
         {
-            get { return _gamemodes; }
-            set
-            {
-                if (_gamemodes != value)
-                {
-                    _gamemodes = value;
-                    RaisePropertyChanged();
-                }
-            }
+            get => _gamemodes;
+            set => this.SetProperty(ref _gamemodes, value);
         }
 
         public ICommand OpenKAGFolderCommand { get; private set; }
@@ -232,6 +168,31 @@ namespace KAGTools.ViewModels
         {
             ApiViewModel viewModel = new ApiViewModel();
             ServiceManager.GetService<IViewService>().OpenDialog(viewModel);
+        }
+
+        private void SaveStartupInfo()
+        {
+            FileHelper.SetConfigInfo(
+                FileHelper.StartupConfigPath,
+                new ConfigPropertyDouble("Window.Width", ScreenWidth),
+                new ConfigPropertyDouble("Window.Height", ScreenHeight),
+                new ConfigPropertyBoolean("Fullscreen", Fullscreen)
+                );
+
+            //FileHelper.SetStartupInfo(ScreenWidth, ScreenHeight, Fullscreen);
+        }
+
+        private void SaveAutoConfigInfo()
+        {
+            FileHelper.SetConfigInfo(
+                FileHelper.AutoConfigPath,
+                new ConfigPropertyString("sv_gamemode", Gamemode)
+                );
+        }
+
+        private bool IsComment(string line)
+        {
+            return line.StartsWith("#");
         }
 
         private void InitializeGamemodes(IEnumerable<Mod> activeMods)

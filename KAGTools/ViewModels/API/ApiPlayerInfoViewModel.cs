@@ -33,93 +33,44 @@ namespace KAGTools.ViewModels.API
 
         public string SearchFilter
         {
-            get { return _searchFilter; }
-            set
-            {
-                if (_searchFilter != value)
-                {
-                    _searchFilter = value;
-                    RaisePropertyChanged();
-                }
-            }
+            get => _searchFilter;
+            set => this.SetProperty(ref _searchFilter, value);
         }
 
         public ApiPlayerResults ResultPlayer
         {
-            get { return _resultPlayer; }
-            set
-            {
-                if (_resultPlayer != value)
-                {
-                    _resultPlayer = value;
-                    RaisePropertyChanged();
-                }
-            }
+            get => _resultPlayer;
+            set => this.SetProperty(ref _resultPlayer, value);
         }
 
         public BitmapImage AvatarBitmap
         {
-            get { return _avatarBitmap; }
-            set
-            {
-                if (_avatarBitmap != value)
-                {
-                    _avatarBitmap = value;
-                    RaisePropertyChanged();
-                }
-            }
+            get => _avatarBitmap;
+            set => this.SetProperty(ref _avatarBitmap, value);
         }
 
         public ApiServer ResultPlayerServer
         {
-            get { return _resultPlayerServer; }
-            set
-            {
-                if (_resultPlayerServer != value)
-                {
-                    _resultPlayerServer = value;
-                    RaisePropertyChanged();
-                }
-            }
+            get => _resultPlayerServer;
+            set => this.SetProperty(ref _resultPlayerServer, value);
         }
 
         public AsyncTaskState SearchState
         {
-            get { return _searchState; }
-            set
-            {
-                if (_searchState != value)
-                {
-                    _searchState = value;
-                    RaisePropertyChanged();
-                }
-            }
+            get => _searchState;
+            set => this.SetProperty(ref _searchState, value);
         }
 
         public AsyncTaskState ResultPlayerServerState
         {
-            get { return _resultPlayerServerState; }
-            set
-            {
-                if (_resultPlayerServerState != value)
-                {
-                    _resultPlayerServerState = value;
-                    RaisePropertyChanged();
-                }
-            }
+            get => _resultPlayerServerState;
+            set => this.SetProperty(ref _resultPlayerServerState, value);
         }
 
         public AsyncTaskState AvatarState
         {
-            get { return _avatarState; }
-            set
-            {
-                if (_avatarState != value)
-                {
-                    _avatarState = value;
-                    RaisePropertyChanged();
-                }
-            }
+            get => _avatarState;
+            set => this.SetProperty(ref _avatarState, value);
         }
 
         public ICommand SearchCommand { get; private set; }

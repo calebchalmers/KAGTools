@@ -34,41 +34,20 @@ namespace KAGTools.ViewModels
 
         public string Title
         {
-            get { return _title; }
-            set
-            {
-                if (_title != value)
-                {
-                    _title = value;
-                    RaisePropertyChanged();
-                }
-            }
+            get => _title;
+            set => this.SetProperty(ref _title, value);
         }
 
         public string InputLabelText
         {
-            get { return _inputLabelText; }
-            set
-            {
-                if (_inputLabelText != value)
-                {
-                    _inputLabelText = value;
-                    RaisePropertyChanged();
-                }
-            }
+            get => _inputLabelText;
+            set => this.SetProperty(ref _inputLabelText, value);
         }
 
         public string Input
         {
-            get { return _input; }
-            set
-            {
-                if (_input != value)
-                {
-                    _input = value;
-                    RaisePropertyChanged();
-                }
-            }
+            get => _input;
+            set => this.SetProperty(ref _input, value);
         }
 
         public ICommand OKCommand { get; private set; }

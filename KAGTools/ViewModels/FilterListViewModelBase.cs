@@ -50,40 +50,27 @@ namespace KAGTools.ViewModels
 
         protected SortDescriptionCollection SortDescriptions
         {
-            get { return _filteredItems.SortDescriptions; }
+            get => _filteredItems.SortDescriptions;
         }
 
         public ObservableCollection<T> Items
         {
-            get { return _items; }
-            set
-            {
-                if(_items != value)
-                {
-                    _items = value;
-                    _filteredItems.Source = value;
-                    RaisePropertyChanged();
-                    RaisePropertyChanged("FilteredItems");
-                }
-            }
+            get => _items;
+            set => this.SetProperty(ref _items, value, () => {
+                _filteredItems.Source = value;
+                RaisePropertyChanged(() => FilteredItems);
+            });
         }
 
         public ICollectionView FilteredItems
         {
-            get { return _filteredItems.View; }
+            get => _filteredItems.View;
         }
 
         public T Selected
         {
-            get { return _selected; }
-            set
-            {
-                if (_selected != value)
-                {
-                    _selected = value;
-                    RaisePropertyChanged();
-                }
-            }
+            get => _selected;
+            set => this.SetProperty(ref _selected, value);
         }
     }
 }
