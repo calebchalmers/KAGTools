@@ -57,16 +57,20 @@
                             <StatusBarItem Content="{Binding ServerCount}" Style="{StaticResource Special}"/>
                             servers
                         </StatusBar>
-                        <ListBox ItemsSource="{Binding FilteredItems}" SelectedItem="{Binding Selected}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <DockPanel>
-                                        <TextBlock Text="{Binding PlayerCount}" Foreground="{StaticResource DisabledBrush}" DockPanel.Dock="Right" ToolTip="Player Count"/>
-                                        <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
-                                    </DockPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                        <Grid>
+                            <ListBox ItemsSource="{Binding FilteredItems}" SelectedItem="{Binding Selected}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel>
+                                            <TextBlock Text="{Binding PlayerCount}" Foreground="{StaticResource DisabledBrush}" DockPanel.Dock="Right" ToolTip="Player Count"/>
+                                            <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <TextBlock Text="No servers found" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Foreground="Gray" IsHitTestVisible="False" TextWrapping="Wrap"
+                                       Visibility="{Binding RefreshState, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter={x:Static data:AsyncTaskState.Failed}}"/>
+                        </Grid>
                     </DockPanel>
 
                     <Grid Grid.Column="1" DataContext="{Binding Selected}">

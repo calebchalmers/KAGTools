@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using KAGTools.Data;
 using KAGTools.Data.API;
 using KAGTools.Helpers;
 using System;
@@ -18,6 +19,7 @@ namespace KAGTools.ViewModels.API
     {
         private BitmapImage _minimapBitmap;
         private string _searchFilter = "";
+        private AsyncTaskState _refreshState = AsyncTaskState.Standby;
 
         private CancellationTokenSource MinimapCancellationSource { get; set; } = new CancellationTokenSource();
         private bool RefreshingServers { get; set; } = false;
@@ -90,6 +92,19 @@ namespace KAGTools.ViewModels.API
             }
         }
 
+        public AsyncTaskState RefreshState
+        {
+            get { return _refreshState; }
+            set
+            {
+                if (_refreshState != value)
+                {
+                    _refreshState = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         public ICommand RefreshServersCommand { get; private set; }
 
         private async void ExecuteRefreshServersCommand()
@@ -106,6 +121,7 @@ namespace KAGTools.ViewModels.API
 
             try
             {
+                RefreshState = AsyncTaskState.Running;
                 ApiServer[] results = await ApiHelper.GetServers(
                     new ApiFilter[] {
                         new ApiFilter("current", true)
@@ -113,8 +129,12 @@ namespace KAGTools.ViewModels.API
                     CancellationToken.None
                     );
                 Items = new ObservableCollection<ApiServer>(results);
+                RefreshState = AsyncTaskState.Finished;
             }
-            catch (System.Net.Http.HttpRequestException) { }
+            catch (System.Net.Http.HttpRequestException)
+            {
+                RefreshState = AsyncTaskState.Failed;
+            }
 
             RefreshingServers = false;
 
