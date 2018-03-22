@@ -79,6 +79,8 @@ namespace KAGTools.ViewModels.API
         {
             if (string.IsNullOrWhiteSpace(SearchFilter))
                 return;
+            if (SearchFilter.Equals(ResultPlayer?.Info.Username, StringComparison.OrdinalIgnoreCase))
+                return;
 
             await FindResultPlayer();
 
