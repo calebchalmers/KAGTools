@@ -6,9 +6,12 @@
     <!-- Styles -->
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Styles/FilterBarStyle.xaml"/>
+        <ResourceDictionary Source="Styles/ButtonComboBoxStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Converters -->
+    <converters:EqualityToVisibilityConverter x:Key="EqualityToVisibilityConverter"/>
     <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
+    <converters:BooleanToYesNoConverter x:Key="BooleanToYesNoConverter"/>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 </ResourceDictionary>

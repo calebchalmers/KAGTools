@@ -91,6 +91,9 @@
       <HintPath>..\packages\WindowsAPICodePack-Shell.1.1.1\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -118,8 +121,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Data\API\ApiFilter.cs" />
+    <Compile Include="Data\API\ApiPlayerAvatarResults.cs" />
+    <Compile Include="Data\API\ApiServerResults.cs" />
+    <Compile Include="Data\AsyncTaskState.cs" />
     <Compile Include="Data\ConfigProperty.cs" />
     <Compile Include="Data\ManualItem.cs" />
+    <Compile Include="Data\API\ApiPlayerResults.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Helpers\ApiHelper.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\IViewService.cs" />
@@ -129,8 +139,11 @@
     <Compile Include="UserControls\ManualGenericUserControl.xaml.cs">
       <DependentUpon>ManualGenericUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ApiViewModel.cs" />
     <Compile Include="ViewModels\FilterListViewModelBase.cs" />
     <Compile Include="ViewModels\InputViewModel.cs" />
+    <Compile Include="ViewModels\API\ApiPlayerInfoViewModel.cs" />
+    <Compile Include="ViewModels\API\ApiServerBrowserViewModel.cs" />
     <Compile Include="ViewModels\Manual\ManualGenericViewModel.cs" />
     <Compile Include="ViewModels\Manual\ManualTypeDefsViewModel.cs" />
     <Compile Include="ViewModels\Manual\ManualVariablesViewModel.cs" />
@@ -141,6 +154,9 @@
     <Compile Include="ViewModels\ManualViewModel.cs" />
     <Compile Include="ViewModels\ModsViewModel.cs" />
     <Compile Include="Services\ViewService.cs" />
+    <Compile Include="Windows\ApiWindow.xaml.cs">
+      <DependentUpon>ApiWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ManualWindow.xaml.cs">
       <DependentUpon>ManualWindow.xaml</DependentUpon>
     </Compile>
@@ -154,6 +170,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\ApiWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -164,6 +184,8 @@
     </Compile>
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Data\Mod.cs" />
+    <Compile Include="Xaml\Converters\EqualityToVisibilityConverter.cs" />
+    <Compile Include="Xaml\Converters\BooleanToYesNoConverter.cs" />
     <Compile Include="Xaml\Converters\NullableBoolToBoolConverter.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
@@ -187,6 +209,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Xaml\Default.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Xaml\Styles\ButtonComboBoxStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

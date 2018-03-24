@@ -18,13 +18,14 @@ namespace KAGTools.ViewModels
 
         public FilterListViewModelBase(ObservableCollection<T> items)
         {
-            _items = items;
-
-            _filteredItems = new CollectionViewSource()
-            {
-                Source = Items
-            };
+            _filteredItems = new CollectionViewSource();
             _filteredItems.Filter += FilteredItems_Filter;
+            Items = items;
+        }
+
+        public FilterListViewModelBase() :
+            this(new ObservableCollection<T>())
+        {
         }
 
         public FilterListViewModelBase(IEnumerable<T> items) : 
@@ -47,35 +48,29 @@ namespace KAGTools.ViewModels
             FilteredItems.Refresh();
         }
 
+        protected SortDescriptionCollection SortDescriptions
+        {
+            get => _filteredItems.SortDescriptions;
+        }
+
         public ObservableCollection<T> Items
         {
-            get { return _items; }
-            set
-            {
-                if(_items != value)
-                {
-                    _items = value;
-                    RaisePropertyChanged();
-                }
-            }
+            get => _items;
+            set => this.SetProperty(ref _items, value, () => {
+                _filteredItems.Source = value;
+                RaisePropertyChanged(() => FilteredItems);
+            });
         }
 
         public ICollectionView FilteredItems
         {
-            get { return _filteredItems.View; }
+            get => _filteredItems.View;
         }
 
         public T Selected
         {
-            get { return _selected; }
-            set
-            {
-                if (_selected != value)
-                {
-                    _selected = value;
-                    RaisePropertyChanged();
-                }
-            }
+            get => _selected;
+            set => this.SetProperty(ref _selected, value);
         }
     }
 }

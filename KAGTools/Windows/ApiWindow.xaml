@@ -1,0 +1,284 @@
+﻿<Window x:Class="KAGTools.Windows.ApiWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:KAGTools.Windows"
+        xmlns:viewmodels="clr-namespace:KAGTools.ViewModels.API"
+        xmlns:data="clr-namespace:KAGTools.Data"
+        mc:Ignorable="d"
+        Title="API Browser" Height="470" Width="660" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style x:Key="PropertyPanel" TargetType="{x:Type StackPanel}">
+            <Setter Property="TextElement.FontSize" Value="13"/>
+            <Setter Property="Margin" Value="2"/>
+            <Style.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Margin" Value="4"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style x:Key="Special" TargetType="{x:Type Run}">
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+    </Window.Resources>
+    <TabControl>
+        <TabItem Header="Server Browser">
+            <TabItem.DataContext>
+                <viewmodels:ApiServerBrowserViewModel />
+            </TabItem.DataContext>
+            <Grid RenderOptions.BitmapScalingMode="NearestNeighbor">
+                <Grid x:Name="serverPanel">
+                    <Grid.Effect>
+                        <BlurEffect Radius="0"/>
+                    </Grid.Effect>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <DockPanel Grid.Column="0">
+                        <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
+                            <Button DockPanel.Dock="Right" Content="⟳" HorizontalContentAlignment="Center" Command="{Binding RefreshServersCommand}"/>
+                            <xctk:WatermarkTextBox Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
+                        </DockPanel>
+                        <StatusBar DockPanel.Dock="Bottom" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}" Padding="5,3">
+                            <StatusBar.Resources>
+                                <Style TargetType="{x:Type StatusBarItem}">
+                                    <Setter Property="Padding" Value="0"/>
+                                </Style>
+                                <Style x:Key="Special" TargetType="{x:Type StatusBarItem}" BasedOn="{StaticResource {x:Type StatusBarItem}}">
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                </Style>
+                            </StatusBar.Resources>
+                            <StatusBarItem Content="{Binding PlayerCount}" Style="{StaticResource Special}"/>
+                            players in
+                            <StatusBarItem Content="{Binding ServerCount}" Style="{StaticResource Special}"/>
+                            servers
+                        </StatusBar>
+                        <Grid>
+                            <ListBox ItemsSource="{Binding FilteredItems}" SelectedItem="{Binding Selected}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel>
+                                            <TextBlock Text="{Binding PlayerCount}" Foreground="{StaticResource DisabledBrush}" DockPanel.Dock="Right" ToolTip="Player Count"/>
+                                            <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <TextBlock Text="No servers found" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Foreground="Gray" IsHitTestVisible="False" TextWrapping="Wrap"
+                                       Visibility="{Binding RefreshState, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter={x:Static data:AsyncTaskState.Failed}}"/>
+                        </Grid>
+                    </DockPanel>
+
+                    <Grid Grid.Column="1" DataContext="{Binding Selected}">
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="118"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Image Grid.Row="0" Source="{Binding DataContext.MinimapBitmap, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TabItem}}" Stretch="Fill" Opacity="0.3" ClipToBounds="True">
+                            <Image.Effect>
+                                <BlurEffect Radius="8"/>
+                            </Image.Effect>
+                            <Image.Triggers>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation To="5" Duration="0:0:0.15" Storyboard.TargetProperty="Effect.Radius" Storyboard.TargetName="serverPanel"/>
+                                            <DoubleAnimation To="1" Duration="0:0:0.15" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="bigMinimapBackground"/>
+                                            <DoubleAnimation To="1" Duration="0:0:0.3" Storyboard.TargetProperty="RenderTransform.ScaleX" Storyboard.TargetName="bigMinimapImage">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <QuinticEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation To="1" Duration="0:0:0.3" Storyboard.TargetProperty="RenderTransform.ScaleY" Storyboard.TargetName="bigMinimapImage">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <QuinticEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation To="0" Duration="0:0:0.15" Storyboard.TargetProperty="Effect.Radius" Storyboard.TargetName="serverPanel"/>
+                                            <DoubleAnimation To="0" Duration="0:0:0.15" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="bigMinimapBackground"/>
+                                            <DoubleAnimation To="0.8" Duration="0:0:0.15" Storyboard.TargetProperty="RenderTransform.ScaleX" Storyboard.TargetName="bigMinimapImage"/>
+                                            <DoubleAnimation To="0.8" Duration="0:0:0.15" Storyboard.TargetProperty="RenderTransform.ScaleY" Storyboard.TargetName="bigMinimapImage"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Image.Triggers>
+                        </Image>
+
+                        <StackPanel x:Name="titlePanel" Grid.Row="0">
+                            <StackPanel.Effect>
+                                <BlurEffect Radius="0"/>
+                            </StackPanel.Effect>
+                            <TextBlock HorizontalAlignment="Center" Text="{Binding Name}" FontSize="16" FontWeight="SemiBold" Margin="6,4" TextTrimming="CharacterEllipsis" IsHitTestVisible="False"/>
+                            <TextBlock HorizontalAlignment="Left" Text="{Binding Description}" Foreground="Gray" Margin="6,4" TextWrapping="Wrap" IsHitTestVisible="False"/>
+                        </StackPanel>
+
+                        <Separator Grid.Row="1" Margin="0"/>
+
+                        <StackPanel Grid.Row="2" Style="{StaticResource PropertyPanel}">
+                            <TextBlock>Player Count: <Run Text="{Binding PlayerCount}" Style="{StaticResource Special}"/> (<Run Text="{Binding SpectatorPlayers}" Style="{StaticResource Special}"/> spectators) (<Run Text="{Binding BotCount}" Style="{StaticResource Special}"/> bots),</TextBlock>
+                            <TextBlock>Max Players: <Run Text="{Binding MaxPlayers}" Style="{StaticResource Special}"/> (+<Run Text="{Binding ReservedPlayers}" Style="{StaticResource Special}"/> reserved),</TextBlock>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>Gamemode: <Run Text="{Binding Gamemode}" Style="{StaticResource Special}"/>,</TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>Build: <Run Text="{Binding Build}" Style="{StaticResource Special}"/>,</TextBlock>
+                                <TextBlock>Map Size: <Run Text="{Binding MapWidth}" Style="{StaticResource Special}"/>×<Run Text="{Binding MapHeight}" Style="{StaticResource Special}"/>,</TextBlock>
+                                <TextBlock>Daytime: <Run Text="{Binding DNState}" Style="{StaticResource Special}"/>,</TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>Game State: <Run Text="{Binding GameState}" Style="{StaticResource Special}"/>,</TextBlock>
+                                <TextBlock>Modded: <Run Text="{Binding UsingMods, Converter={StaticResource BooleanToYesNoConverter}}" Style="{StaticResource Special}"/>,</TextBlock>
+                                <TextBlock>Locked: <Run Text="{Binding HasPassword, Converter={StaticResource BooleanToYesNoConverter}}" Style="{StaticResource Special}"/>,</TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>First Seen: <Run Text="{Binding FirstSeenDate, StringFormat=d}" Style="{StaticResource Special}" ToolTip="{Binding FirstSeenDate}"/>,</TextBlock>
+                            <TextBlock>Last Seen: <Run Text="{Binding LastUpdateDate, StringFormat=d}" Style="{StaticResource Special}" ToolTip="{Binding LastUpdateDate}"/>,</TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>IPv4: <Run Text="{Binding IPv4Address, TargetNullValue=N/A}" Style="{StaticResource Special}"/>,</TextBlock>
+                                <TextBlock>IPv6: <Run Text="{Binding IPv6Address, TargetNullValue=N/A}" Style="{StaticResource Special}"/>,</TextBlock>
+                                <TextBlock>Port: <Run Text="{Binding Port}" Style="{StaticResource Special}"/></TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <TextBlock Grid.Row="3" Text="Players:" Margin="5,0"/>
+
+                        <Border BorderThickness="1" BorderBrush="{StaticResource BorderBrush}" Grid.Row="4" Margin="4" MaxHeight="81">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <ItemsControl ItemsSource="{Binding Players}" FontWeight="SemiBold" FontSize="11.0" Padding="2">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding ., StringFormat='{}{0},'}" Margin="2"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Border>
+
+                    </Grid>
+                </Grid>
+
+                <Border x:Name="bigMinimapBackground" Grid.ColumnSpan="2" Opacity="0" IsHitTestVisible="False">
+                    <Border.Background>
+                        <SolidColorBrush Color="Black" Opacity="0.5"/>
+                    </Border.Background>
+                    <Image x:Name="bigMinimapImage" Source="{Binding MinimapBitmap}" Stretch="Uniform" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <ScaleTransform ScaleX="0.5" ScaleY="0.5"/>
+                        </Image.RenderTransform>
+                    </Image>
+                </Border>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Player Info">
+            <TabItem.DataContext>
+                <viewmodels:ApiPlayerInfoViewModel />
+            </TabItem.DataContext>
+            <DockPanel FocusManager.FocusedElement="{Binding ElementName=tbx_playerSearch}">
+                <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
+                    <Button Content="Search" DockPanel.Dock="Right" Command="{Binding SearchCommand}" IsDefault="True"/>
+                    <xctk:WatermarkTextBox x:Name="tbx_playerSearch" Watermark="Username..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
+                </DockPanel>
+                <Grid>
+                    <Grid Visibility="{Binding SearchState, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter={x:Static data:AsyncTaskState.Finished}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1.5*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Image Source="{Binding AvatarBitmap}" Stretch="Uniform" VerticalAlignment="Center" Margin="5"/>
+                            <TextBlock Text="Not found" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Foreground="Gray" IsHitTestVisible="False"
+                                       Visibility="{Binding AvatarState, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter={x:Static data:AsyncTaskState.Failed}}"/>
+                        </Grid>
+                        <StackPanel Grid.Column="1" Margin="10" DataContext="{Binding ResultPlayer}">
+
+                            <TextBlock Text="{Binding Info.Username}" HorizontalAlignment="Center" FontWeight="SemiBold" FontSize="22" Margin="5" />
+                        
+                            <Separator Margin="10"/>
+                        
+                            <StackPanel Orientation="Vertical" Style="{StaticResource PropertyPanel}">
+                                <TextBlock>Role: <Run Text="{Binding Info.Role}" Style="{StaticResource Special}"/>,</TextBlock>
+                                <TextBlock>Banned: <Run Text="{Binding Info.BanReason, TargetNullValue=No}" Style="{StaticResource Special}"/>,</TextBlock>
+                                <TextBlock>Gold: <Run Text="{Binding Info.HasGold, Converter={StaticResource BooleanToYesNoConverter}}" Style="{StaticResource Special}"/>,</TextBlock>
+                                <TextBlock>Registered: <Run Text="{Binding Info.RegisterDate, StringFormat=d}" ToolTip="{Binding Info.RegisterDate}" Style="{StaticResource Special}"/>,</TextBlock>
+                                <TextBlock>Last Seen: <Run Text="{Binding Status.LastUpdateDate, StringFormat=d}" ToolTip="{Binding Status.LastUpdateDate}" Style="{StaticResource Special}"/>,</TextBlock>
+                                <TextBlock>
+                                    <TextBlock.ToolTip>
+                                        <TextBlock>
+                                            IPv4: <Run Text="{Binding Status.Server.IPv4Address, TargetNullValue=N/A}" Style="{StaticResource Special}"/>, 
+                                            IPv6: <Run Text="{Binding Status.Server.IPv6Address, TargetNullValue=N/A}" Style="{StaticResource Special}"/>, 
+                                            Port: <Run Text="{Binding Status.Server.Port}" Style="{StaticResource Special}"/>
+                                        </TextBlock>
+                                    </TextBlock.ToolTip>
+                                    Last Server:
+                                    <Run DataContext="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TabItem}}">
+                                        <Run.Style>
+                                            <Style TargetType="{x:Type Run}" BasedOn="{StaticResource Special}">
+                                                <Setter Property="Text" Value="{Binding ResultPlayerServer.Name}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ResultPlayerServerState}" Value="{x:Static data:AsyncTaskState.Failed}">
+                                                        <Setter Property="Text" Value="[Server not found]"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Run.Style>
+                                    </Run>
+                                </TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+
+                    <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" IsHitTestVisible="False">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Foreground" Value="LightGray"/>
+                                <Setter Property="Text" Value=" "/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SearchState}" Value="{x:Static data:AsyncTaskState.Running}">
+                                        <Setter Property="Foreground" Value="Gray"/>
+                                        <Setter Property="Text" Value="Searching..."/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SearchState}" Value="{x:Static data:AsyncTaskState.Failed}">
+                                        <Setter Property="Foreground" Value="Maroon"/>
+                                        <Setter Property="Text" Value="Player not found"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SearchState}" Value="{x:Static data:AsyncTaskState.Standby}">
+                                        <Setter Property="Text" Value="Search for a player's info"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+            </DockPanel>
+        </TabItem>
+    </TabControl>
+</Window>

@@ -9,7 +9,13 @@
         xmlns:properties="clr-namespace:KAGTools.Properties"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="KAGTools.Windows.MainWindow"
         mc:Ignorable="d"
-        Title="KAG Tools" Height="245" Width="200" Left="{Binding Left, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" Top="{Binding Top, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" ResizeMode="NoResize" SizeToContent="Height">
+        Title="KAG Tools"
+        Left="{Binding Left, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+        Top="{Binding Top, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
+        Height="245"
+        Width="200"
+        ResizeMode="NoResize"
+        SizeToContent="Height">
     <Grid Margin="5">
         <Grid.Resources>
             <Style TargetType="{x:Type Button}">
@@ -39,13 +45,15 @@
         </Grid.Resources>
         <StackPanel>
             <Button Content="Open KAG Folder" Command="{Binding OpenKAGFolderCommand}"/>
-            <Button Content="Run Localhost" Command="{Binding RunLocalhostCommand}"/>
-            <Button Content="Run Server + Client" Command="{Binding RunServerClientCommand}"/>
+            <ComboBox Margin="2" SelectedIndex="{Binding RunTypeIndex, Source={x:Static properties:Settings.Default}}" Style="{StaticResource ButtonComboBoxStyle}">
+                <ComboBoxItem Content="▶ Run Localhost" Tag="{Binding RunLocalhostCommand}"/>
+                <ComboBoxItem Content="▶ Run Server + Client" Tag="{Binding RunServerClientCommand}"/>
+            </ComboBox>
+            <Button Content="API Browser..." Command="{Binding ApiCommand}"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Button Content="Manual..." Grid.Column="0" Command="{Binding ManualCommand}"/>
                 <Button Content="Mods..." Grid.Column="1" Command="{Binding ModsCommand}"/>

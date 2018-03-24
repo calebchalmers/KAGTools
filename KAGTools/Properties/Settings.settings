@@ -29,5 +29,8 @@
     <Setting Name="ManualWindowLeft" Type="System.Double" Scope="User">
       <Value Profile="(Default)">NaN</Value>
     </Setting>
+    <Setting Name="RunTypeIndex" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
