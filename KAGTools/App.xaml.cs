@@ -74,31 +74,30 @@ namespace KAGTools
         }
 
         #region Squirrel Events
+        // Runs after install
         private static void OnFirstRun()
         {
-            System.Diagnostics.Debug.WriteLine("OnFirstRun");
             MessageBoxHelper.Info("Install successful.");
         }
 
+        // Runs before app launch
         private static void OnAppInitialInstall(Version version, UpdateManager mgr)
         {
-            System.Diagnostics.Debug.WriteLine("OnAppInitialInstall");
             mgr.CreateShortcutsForExecutable(AssemblyHelper.AppFileName, ShortcutLocations, false);
             mgr.CreateUninstallerRegistryEntry();
         }
 
+        // Runs before app launch
         private static void OnAppUpdate(Version version, UpdateManager mgr)
         {
-            System.Diagnostics.Debug.WriteLine("OnAppUpdate");
             mgr.CreateShortcutsForExecutable(AssemblyHelper.AppFileName, ShortcutLocations, true);
             mgr.CreateUninstallerRegistryEntry();
 
             MessageBoxHelper.Info(string.Format("New version (v{0}) installed.", AssemblyHelper.FileVersionInfo.ProductVersion));
         }
-
+        
         private static void OnAppUninstall(Version version, UpdateManager mgr)
         {
-            System.Diagnostics.Debug.WriteLine("OnAppUninstall");
             mgr.RemoveShortcutsForExecutable(AssemblyHelper.AppFileName, ShortcutLocations);
             mgr.RemoveUninstallerRegistryEntry();
 
