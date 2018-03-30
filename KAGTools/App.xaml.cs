@@ -43,7 +43,7 @@ namespace KAGTools
 
             if (!UpdateHelper.RestoreSettings())
             {
-                MessageBoxHelper.Error("There was an error restoring settings.");
+                MessageBox.Show("There was an error restoring settings.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             /*if (Settings.UpgradeRequired)
@@ -77,7 +77,7 @@ namespace KAGTools
         // Runs after install
         private static void OnFirstRun()
         {
-            MessageBoxHelper.Info("Install successful.");
+            //MessageBox.Show("Install successful.");
         }
 
         // Runs before app launch
@@ -93,7 +93,7 @@ namespace KAGTools
             mgr.CreateShortcutsForExecutable(AssemblyHelper.AppFileName, ShortcutLocations, true);
             mgr.CreateUninstallerRegistryEntry();
 
-            MessageBoxHelper.Info(string.Format("New version (v{0}) installed.", AssemblyHelper.FileVersionInfo.ProductVersion));
+            //MessageBoxHelper.Info(string.Format("New version (v{0}) installed.", AssemblyHelper.FileVersionInfo.ProductVersion));
         }
         
         private static void OnAppUninstall(Version version, UpdateManager mgr)
@@ -101,7 +101,7 @@ namespace KAGTools
             mgr.RemoveShortcutsForExecutable(AssemblyHelper.AppFileName, ShortcutLocations);
             mgr.RemoveUninstallerRegistryEntry();
 
-            MessageBoxHelper.Info("Uninstall successful.");
+            MessageBox.Show(AssemblyHelper.AppName + " was successfully uninstalled.", "Uninstall", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         #endregion
 

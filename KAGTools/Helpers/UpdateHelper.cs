@@ -9,14 +9,15 @@ using System.Configuration;
 using System.IO;
 using System.Reflection;
 using KAGTools.Properties;
+using System.Windows;
 
 namespace KAGTools.Helpers
 {
     public static class UpdateHelper
     {
         private static readonly string BackupUserSettingsFilePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\..\user.config.backup";
-
-        public static async Task UpdateApp(bool notify = false)
+        
+        public static async Task<bool> UpdateApp(bool notify = false)
         {
             try
             {
@@ -26,17 +27,21 @@ namespace KAGTools.Helpers
                     if (updates.ReleasesToApply.Count > 0)
                     {
                         ReleaseEntry lastVersion = updates.ReleasesToApply.OrderBy(x => x.Version).Last();
-
-                        if (MessageBoxHelper.Ask(
-                            string.Format("An update is available (v{0}). Would you like to install it?", lastVersion.Version)
-                            ) == true)
+                        if (MessageBox.Show(
+                            string.Format("An update is available (v{0}).{1}Would you like to install it?", lastVersion.Version, Environment.NewLine),
+                            "Update",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Question,
+                            MessageBoxResult.Yes
+                            ) == MessageBoxResult.Yes)
                         {
                             await mgr.DownloadReleases(new[] { lastVersion });
                             await mgr.ApplyReleases(updates);
                             BackupSettings();
                             UpdateManager.RestartApp();
                         }
-                        return;
+
+                        return true;
                     }
                 }
             }
@@ -44,13 +49,8 @@ namespace KAGTools.Helpers
             {
                 Debug.WriteLine(e.Message);
             }
-            finally
-            {
-                if (notify)
-                {
-                    MessageBoxHelper.Info("No updates found.");
-                }
-            }
+
+            return false;
         }
         
         // Backup settings before applying update or else they get reset

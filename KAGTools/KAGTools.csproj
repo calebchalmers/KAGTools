@@ -165,7 +165,6 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Helpers\ApiHelper.cs" />
     <Compile Include="Helpers\AssemblyHelper.cs" />
-    <Compile Include="Helpers\MessageBoxHelper.cs" />
     <Compile Include="Helpers\UpdateHelper.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="Services\IService.cs" />
