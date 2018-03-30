@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>$id$</id>
+    <version>0.0.0</version>
+    <title>KAG Tools</title>
+    <authors>Caleb Chalmers</authors>
+    <description>$id$</description>
+    <iconUrl>https://raw.githubusercontent.com/CalebChalmers/KAGTools/master/KAGTools/Resources/Icon.ico</iconUrl>
+  </metadata>
+  <files>
+    <file src="*.*" target="lib\net45\" exclude="*.pdb;*.vshost.*;*.xml;*.nupkg"></file>
+  </files>
+</package>

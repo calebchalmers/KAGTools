@@ -309,7 +309,12 @@
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
   -->
+  <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Release' ">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="asmblyInfo" />
+    </GetAssemblyIdentity>
+    <Exec Command="nuget pack $(MSBuildProjectName).nuspec -Version %(asmblyInfo.Version) -properties Configuration=Release;id=$(MSBuildProjectName) -OutputDirectory $(OutDir) -BasePath $(OutDir)" />
+    <Exec Command="squirrel --releasify $(OutDir)$(MSBuildProjectName).$([System.Version]::Parse(%(asmblyInfo.Version)).ToString(3)).nupkg" />
+  </Target>
 </Project>
