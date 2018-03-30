@@ -25,7 +25,6 @@ namespace KAGTools
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            Settings.FirstRun = false;
             Settings.Save();
         }
 
