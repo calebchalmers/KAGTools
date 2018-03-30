@@ -15,7 +15,7 @@
         Height="245"
         Width="200"
         ResizeMode="NoResize"
-        SizeToContent="Height">
+        SizeToContent="Height" Loaded="Window_Loaded">
     <Grid Margin="5">
         <Grid.Resources>
             <Style TargetType="{x:Type Button}">

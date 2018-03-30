@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
+using KAGTools.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -36,6 +37,11 @@ namespace KAGTools.Windows
 
             Version version = Assembly.GetEntryAssembly().GetName().Version;
             Title += string.Format(" v{0}", version.ToString());
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            await UpdateHelper.UpdateApp();
         }
     }
 }
