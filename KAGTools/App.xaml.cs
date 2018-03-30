@@ -57,18 +57,20 @@ namespace KAGTools
 
         private bool FindKagDirectory()
         {
-            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-            dialog.Title = "Select your King Arthur's Gold install directory";
-            dialog.IsFolderPicker = true;
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog
+            {
+                Title = "Select your King Arthur's Gold install directory",
+                IsFolderPicker = true,
 
-            dialog.AddToMostRecentlyUsedList = false;
-            dialog.AllowNonFileSystemItems = false;
-            dialog.EnsureFileExists = true;
-            dialog.EnsurePathExists = true;
-            dialog.EnsureReadOnly = false;
-            dialog.EnsureValidNames = true;
-            dialog.Multiselect = false;
-            dialog.ShowPlacesList = true;
+                AddToMostRecentlyUsedList = false,
+                AllowNonFileSystemItems = false,
+                EnsureFileExists = true,
+                EnsurePathExists = true,
+                EnsureReadOnly = false,
+                EnsureValidNames = true,
+                Multiselect = false,
+                ShowPlacesList = true
+            };
 
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
