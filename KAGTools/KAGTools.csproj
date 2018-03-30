@@ -128,6 +128,7 @@
       <HintPath>..\packages\squirrel.windows.1.7.9\lib\Net45\Squirrel.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -163,6 +164,9 @@
     <Compile Include="Data\API\ApiPlayerResults.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Helpers\ApiHelper.cs" />
+    <Compile Include="Helpers\AssemblyHelper.cs" />
+    <Compile Include="Helpers\MessageBoxHelper.cs" />
+    <Compile Include="Helpers\UpdateHelper.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\IViewService.cs" />
