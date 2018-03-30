@@ -31,11 +31,16 @@ namespace KAGTools
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            SquirrelAwareApp.HandleEvents(                    
-                onFirstRun: OnFirstRun,
-                onInitialInstall: (v) => OnAppInitialInstall(v, null),
-                onAppUpdate: (v) => OnAppUpdate(v, null),
-                onAppUninstall: (v) => OnAppUninstall(v, null));
+#if !DEBUG
+            using (UpdateManager mgr = new UpdateManager(""))
+            {
+                SquirrelAwareApp.HandleEvents(
+                    onFirstRun: OnFirstRun,
+                    onInitialInstall: (v) => OnAppInitialInstall(v, mgr),
+                    onAppUpdate: (v) => OnAppUpdate(v, mgr),
+                    onAppUninstall: (v) => OnAppUninstall(v, mgr));
+            }
+#endif
 
             if (!UpdateHelper.RestoreSettings())
             {
