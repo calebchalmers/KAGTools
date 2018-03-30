@@ -1,7 +1,9 @@
-﻿using KAGTools.Services;
+﻿using KAGTools.Helpers;
+using KAGTools.Services;
 using KAGTools.ViewModels;
 using KAGTools.Windows;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using Squirrel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -18,6 +20,7 @@ namespace KAGTools
     /// </summary>
     public partial class App : Application
     {
+        private const ShortcutLocation ShortcutLocations = ShortcutLocation.StartMenu | ShortcutLocation.Desktop;
         private static KAGTools.Properties.Settings Settings = KAGTools.Properties.Settings.Default;
 
         private void Application_Exit(object sender, ExitEventArgs e)
@@ -28,12 +31,23 @@ namespace KAGTools
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            if(Settings.UpgradeRequired)
+            SquirrelAwareApp.HandleEvents(                    
+                onFirstRun: OnFirstRun,
+                onInitialInstall: (v) => OnAppInitialInstall(v, null),
+                onAppUpdate: (v) => OnAppUpdate(v, null),
+                onAppUninstall: (v) => OnAppUninstall(v, null));
+
+            if (!UpdateHelper.RestoreSettings())
+            {
+                MessageBoxHelper.Error("There was an error restoring settings.");
+            }
+
+            /*if (Settings.UpgradeRequired)
             {
                 Settings.Upgrade();
                 Settings.UpgradeRequired = false;
                 Settings.Save();
-            }
+            }*/
 
             if (!Directory.Exists(Settings.KagDirectory))
             {
@@ -54,6 +68,39 @@ namespace KAGTools
 
             ServiceManager.GetService<IViewService>().OpenWindow(new MainViewModel());
         }
+
+        #region Squirrel Events
+        private static void OnFirstRun()
+        {
+            System.Diagnostics.Debug.WriteLine("OnFirstRun");
+            MessageBoxHelper.Info("Install successful.");
+        }
+
+        private static void OnAppInitialInstall(Version version, UpdateManager mgr)
+        {
+            System.Diagnostics.Debug.WriteLine("OnAppInitialInstall");
+            mgr.CreateShortcutsForExecutable(AssemblyHelper.AppFileName, ShortcutLocations, false);
+            mgr.CreateUninstallerRegistryEntry();
+        }
+
+        private static void OnAppUpdate(Version version, UpdateManager mgr)
+        {
+            System.Diagnostics.Debug.WriteLine("OnAppUpdate");
+            mgr.CreateShortcutsForExecutable(AssemblyHelper.AppFileName, ShortcutLocations, true);
+            mgr.CreateUninstallerRegistryEntry();
+
+            MessageBoxHelper.Info(string.Format("New version (v{0}) installed.", AssemblyHelper.FileVersionInfo.ProductVersion));
+        }
+
+        private static void OnAppUninstall(Version version, UpdateManager mgr)
+        {
+            System.Diagnostics.Debug.WriteLine("OnAppUninstall");
+            mgr.RemoveShortcutsForExecutable(AssemblyHelper.AppFileName, ShortcutLocations);
+            mgr.RemoveUninstallerRegistryEntry();
+
+            MessageBoxHelper.Info("Uninstall successful.");
+        }
+        #endregion
 
         private bool FindKagDirectory()
         {
