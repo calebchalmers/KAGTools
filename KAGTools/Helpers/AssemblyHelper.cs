@@ -13,40 +13,34 @@ namespace KAGTools.Helpers
     {
         public static FileVersionInfo _fileVersionInfo = null;
 
+        static AssemblyHelper()
+        {
+            _fileVersionInfo = FileVersionInfo.GetVersionInfo(AppFilePath);
+        }
+
         public static FileVersionInfo FileVersionInfo
         {
-            get
-            {
-                if(_fileVersionInfo == null)
-                {
-                    _fileVersionInfo = FileVersionInfo.GetVersionInfo(AppFilePath);
-                }
-                return _fileVersionInfo;
-            }
+            get => _fileVersionInfo;
         }
 
         public static string AppName
         {
-            get
-            {
-                return FileVersionInfo.ProductName;
-            }
+            get => FileVersionInfo.ProductName;
         }
 
         public static string AppFileName
         {
-            get
-            {
-                return Path.GetFileName(AppFilePath);
-            }
+            get => Path.GetFileName(AppFilePath);
         }
 
         public static string AppFilePath
         {
-            get
-            {
-                return Assembly.GetEntryAssembly().Location;
-            }
+            get => Assembly.GetEntryAssembly().Location;
+        }
+
+        public static string Version
+        {
+            get => FileVersionInfo.ProductVersion;
         }
     }
 }
