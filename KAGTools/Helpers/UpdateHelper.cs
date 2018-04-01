@@ -17,7 +17,7 @@ namespace KAGTools.Helpers
     {
         private static readonly string BackupUserSettingsFilePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\..\user.config.backup";
         
-        public static async Task<bool> UpdateApp(bool notify = false)
+        public static async Task<bool> UpdateApp()
         {
             try
             {
@@ -28,7 +28,7 @@ namespace KAGTools.Helpers
                     {
                         ReleaseEntry lastVersion = updates.ReleasesToApply.OrderBy(x => x.Version).Last();
                         if (MessageBox.Show(
-                            string.Format("An update is available (v{0}).{1}Would you like to install it?", lastVersion.Version, Environment.NewLine),
+                            string.Format("An update for {0} is available (v{1}).{2}Would you like to install it?", AssemblyHelper.AppName, lastVersion.Version, Environment.NewLine),
                             "Update",
                             MessageBoxButton.YesNo,
                             MessageBoxImage.Question,
