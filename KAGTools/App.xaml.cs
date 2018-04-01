@@ -58,7 +58,7 @@ namespace KAGTools
                 // KAG Directory not specified or doesn't exist. Show dialog...
                 if (!FindKagDirectory())
                 {
-                    Application.Current.Shutdown();
+                    Shutdown(0);
                     return;
                 }
             }
