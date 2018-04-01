@@ -38,7 +38,8 @@ namespace KAGTools.Helpers
                             await mgr.DownloadReleases(new[] { lastVersion });
                             await mgr.ApplyReleases(updates);
                             BackupSettings();
-                            UpdateManager.RestartApp();
+                            await UpdateManager.RestartAppWhenExited();
+                            Application.Current.Shutdown(0);
                         }
 
                         return true;
