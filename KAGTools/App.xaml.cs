@@ -46,13 +46,6 @@ namespace KAGTools
                 MessageBox.Show("There was an error restoring settings.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            /*if (Settings.UpgradeRequired)
-            {
-                Settings.Upgrade();
-                Settings.UpgradeRequired = false;
-                Settings.Save();
-            }*/
-
             if (!Directory.Exists(Settings.KagDirectory))
             {
                 // KAG Directory not specified or doesn't exist. Show dialog...
