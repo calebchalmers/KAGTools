@@ -70,7 +70,7 @@ namespace KAGTools
         // Runs after install
         private static void OnFirstRun()
         {
-            //MessageBox.Show("Install successful.");
+            MessageBox.Show(AssemblyHelper.AppName + " was successfully installed.", "Install", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         // Runs before app launch
@@ -86,7 +86,7 @@ namespace KAGTools
             mgr.CreateShortcutsForExecutable(AssemblyHelper.AppFileName, ShortcutLocations, true);
             mgr.CreateUninstallerRegistryEntry();
 
-            //MessageBoxHelper.Info(string.Format("New version (v{0}) installed.", AssemblyHelper.FileVersionInfo.ProductVersion));
+            MessageBox.Show(string.Format("{0} version (v{1}) was successfully installed.", AssemblyHelper.AppName, AssemblyHelper.Version), "Update", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         
         private static void OnAppUninstall(Version version, UpdateManager mgr)
