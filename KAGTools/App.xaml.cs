@@ -120,27 +120,43 @@ namespace KAGTools
 
         private bool FindKagDirectory()
         {
-            CommonOpenFileDialog dialog = new CommonOpenFileDialog
+            while(true) // keep asking until they give a valid directory or cancel
             {
-                Title = "Select your King Arthur's Gold install directory",
-                IsFolderPicker = true,
+                CommonOpenFileDialog dialog = new CommonOpenFileDialog
+                {
+                    Title = "Select your King Arthur's Gold install directory",
+                    IsFolderPicker = true,
 
-                AddToMostRecentlyUsedList = false,
-                AllowNonFileSystemItems = false,
-                EnsureFileExists = true,
-                EnsurePathExists = true,
-                EnsureReadOnly = false,
-                EnsureValidNames = true,
-                Multiselect = false,
-                ShowPlacesList = true
-            };
+                    AddToMostRecentlyUsedList = false,
+                    AllowNonFileSystemItems = false,
+                    EnsureFileExists = true,
+                    EnsurePathExists = true,
+                    EnsureReadOnly = false,
+                    EnsureValidNames = true,
+                    Multiselect = false,
+                    ShowPlacesList = true
+                };
 
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                Settings.KagDirectory = dialog.FileName;
-                return true;
+                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                {
+                    string dir = dialog.FileName;
+                    if (File.Exists(Path.Combine(dir, FileHelper.KAGExecutablePath))) // check if folder contains KAG executable
+                    {
+                        Settings.KagDirectory = dialog.FileName;
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                            string.Format("KAG.exe was not found in '{0}'.{1}Please select your King Arthur's Gold install directory.", dir, Environment.NewLine), 
+                            "Invalid Directory", 
+                            MessageBoxButton.OK, 
+                            MessageBoxImage.Error);
+                        continue;
+                    }
+                }
+                return false;
             }
-            return false;
         }
     }
 }
