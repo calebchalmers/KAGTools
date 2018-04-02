@@ -40,9 +40,7 @@ namespace KAGTools.Windows
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-#if !DEBUG
             await UpdateHelper.UpdateApp();
-#endif
         }
     }
 }
