@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -15,11 +16,11 @@ namespace KAGTools.Helpers
 {
     public static class ApiHelper
     {
-        private const string UrlPlayer = "https://api.kag2d.com/v1/player/{0}";
-        private const string UrlPlayerAvatar = "https://api.kag2d.com/v1/player/{0}/avatar";
-        private const string UrlServers = "https://api.kag2d.com/v1/game/thd/kag/servers";
-        private const string UrlServer = "https://api.kag2d.com/v1/game/thd/kag/server/{0}/{1}/status";
-        private const string UrlServerMinimap = "https://api.kag2d.com/v1/game/thd/kag/server/{0}/{1}/minimap";
+        private static readonly string UrlPlayer = ConfigurationManager.AppSettings["ApiPlayerUrl"];
+        private static readonly string UrlPlayerAvatar = ConfigurationManager.AppSettings["ApiPlayerAvatarUrl"];
+        private static readonly string UrlServers = ConfigurationManager.AppSettings["ApiServersUrl"];
+        private static readonly string UrlServer = ConfigurationManager.AppSettings["ApiServerUrl"];
+        private static readonly string UrlServerMinimap = ConfigurationManager.AppSettings["ApiServerMinimapUrl"];
 
         private static readonly HttpClient httpClient;
 

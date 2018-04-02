@@ -121,18 +121,6 @@ namespace KAGTools.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/CalebChalmers/KAGTools")]
-        public string UpdateUrl {
-            get {
-                return ((string)(this["UpdateUrl"]));
-            }
-            set {
-                this["UpdateUrl"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool UsePreReleases {
             get {
