@@ -313,7 +313,9 @@
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
       <Output TaskParameter="Assemblies" ItemName="asmblyInfo" />
     </GetAssemblyIdentity>
-    <Exec Command="nuget pack $(MSBuildProjectName).nuspec -Version %(asmblyInfo.Version) -properties Configuration=Release;id=$(MSBuildProjectName) -OutputDirectory $(OutDir) -BasePath $(OutDir)" />
-    <Exec Command="squirrel --releasify $(OutDir)$(MSBuildProjectName).$([System.Version]::Parse(%(asmblyInfo.Version)).ToString(3)).nupkg" />
+    <Exec Command="nuget pack $(MSBuildProjectName).nuspec -Version %(asmblyInfo.Version) -properties Configuration=Release;id=$(MSBuildProjectName) -OutputDirectory $(OutDir) -BasePath $(OutDir)" /> <!-- Pack release files -->
+    <Exec Command="squirrel --releasify $(OutDir)$(MSBuildProjectName).$([System.Version]::Parse(%(asmblyInfo.Version)).ToString(3)).nupkg --no-msi --setupIcon Resources/Icon.ico" /> <!-- Create Setup.exe and delta packages -->
+    <Move SourceFiles="Releases/Setup.exe" DestinationFiles="Releases/$(MSBuildProjectName) Setup $([System.Version]::Parse(%(asmblyInfo.Version)).ToString(3)).exe" /> <!-- Rename Setup.exe -->
+    <Exec Command="start $(MSBuildThisFileDirectory)Releases" /> <!-- Open Releases folder -->
   </Target>
 </Project>
