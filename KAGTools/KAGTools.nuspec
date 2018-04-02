@@ -9,6 +9,6 @@
     <iconUrl>https://raw.githubusercontent.com/CalebChalmers/KAGTools/master/KAGTools/Resources/Icon.ico</iconUrl>
   </metadata>
   <files>
-    <file src="*.*" target="lib\net45\" exclude="*.pdb;*.vshost.*;*.xml;*.nupkg"></file>
+    <file src="**.*" target="lib\net45\" exclude="*.pdb;*.vshost.*;*.xml;*.nupkg"></file>
   </files>
 </package>
