@@ -1,18 +1,18 @@
 # KAG Tools
 A set of useful modding tools for the game [King Arthur's Gold](https://www.kag2d.com).
 
-![Screenshot](http://i.imgur.com/l9GZo1R.png)
+![Screenshot](https://i.imgur.com/Z9zD5Sd.png)
 
 ### Features
-* Shortcuts for useful folders such as the KAG install folder.
-* Quickly test your mods in singleplayer or multiplayer environments with the click of a button.
-* Easy to use mod selector with a search bar to quickly choose which mods to use when testing.
-* Create new mods and duplicate existing ones for quick updates.
-* GUI for various useful settings such as Gamemode, Width, Height, etc. to avoid manual file editing.
-* Manual interface for quickly finding engine functions/variables as needed.
+* Launch KAG in singleplayer or with a server.
+* Server browser and player info viewer.
+* Manual search interface.
+* Select active mods for testing.
+* Create new and duplicate mods.
+* GUI for useful settings (Gamemode, Width, Height, etc).
+* Quickly open KAG install folder.
 
 ### Installation
-1. Download and run the installer [here](https://raw.githubusercontent.com/CalebChalmers/KAGTools/master/KAGTools/publish/setup.exe).  
+1. Download and run the latest installer [here](https://github.com/CalebChalmers/KAGTools/releases).
 <sup>(If you get a "Windows Defender SmartScreen prevented an unrecognized app from starting." message, click "More Info" then "Run anyway")</sup>
-2. Once installed you will be prompted to select your KAG install folder.
-3. Enjoy!
+2. Select your King Arthur's Gold installation folder.
