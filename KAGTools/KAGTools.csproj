@@ -15,10 +15,10 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
-    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Web</InstallFrom>
+    <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
@@ -26,10 +26,6 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>https://raw.githubusercontent.com/CalebChalmers/KAGTools/master/KAGTools/publish/</InstallUrl>
-    <UpdateUrl>https://raw.githubusercontent.com/CalebChalmers/KAGTools/master/KAGTools/publish/</UpdateUrl>
-    <ProductName>KAG Tools</ProductName>
-    <PublisherName>Caleb Chalmers</PublisherName>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>0.5.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
@@ -65,7 +61,7 @@
     <ManifestKeyFile>KAGTools_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -313,9 +309,13 @@
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
       <Output TaskParameter="Assemblies" ItemName="asmblyInfo" />
     </GetAssemblyIdentity>
-    <Exec Command="nuget pack $(MSBuildProjectName).nuspec -Version %(asmblyInfo.Version) -properties Configuration=Release;id=$(MSBuildProjectName) -OutputDirectory $(OutDir) -BasePath $(OutDir)" /> <!-- Pack release files -->
-    <Exec Command="squirrel --releasify $(OutDir)$(MSBuildProjectName).$([System.Version]::Parse(%(asmblyInfo.Version)).ToString(3)).nupkg --no-msi --setupIcon Resources/Icon.ico" /> <!-- Create Setup.exe and delta packages -->
-    <Move SourceFiles="Releases/Setup.exe" DestinationFiles="Releases/$(MSBuildProjectName) Setup $([System.Version]::Parse(%(asmblyInfo.Version)).ToString(3)).exe" /> <!-- Rename Setup.exe -->
-    <Exec Command="start $(MSBuildThisFileDirectory)Releases" /> <!-- Open Releases folder -->
+    <!-- Pack release files -->
+    <Exec Command="nuget pack $(MSBuildProjectName).nuspec -Version %(asmblyInfo.Version) -properties Configuration=Release;id=$(MSBuildProjectName) -OutputDirectory $(OutDir) -BasePath $(OutDir)" />
+    <!-- Create Setup.exe and delta packages -->
+    <Exec Command="squirrel --releasify $(OutDir)$(MSBuildProjectName).$([System.Version]::Parse(%(asmblyInfo.Version)).ToString(3)).nupkg --no-msi --setupIcon Resources/Icon.ico" />
+    <!-- Rename Setup.exe -->
+    <Move SourceFiles="Releases/Setup.exe" DestinationFiles="Releases/$(MSBuildProjectName) Setup $([System.Version]::Parse(%(asmblyInfo.Version)).ToString(3)).exe" />
+    <!-- Open Releases folder -->
+    <Exec Command="start $(MSBuildThisFileDirectory)Releases" />
   </Target>
 </Project>
