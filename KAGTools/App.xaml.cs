@@ -118,9 +118,9 @@ namespace KAGTools
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
                     string dir = dialog.FileName;
-                    if (File.Exists(Path.Combine(dir, FileHelper.KAGExecutablePath))) // check if folder contains KAG executable
+                    if (File.Exists(Path.Combine(dir, "KAG.exe"))) // check if folder contains KAG executable
                     {
-                        Settings.KagDirectory = dialog.FileName;
+                        Settings.KagDirectory = dir;
                         return true;
                     }
                     else
