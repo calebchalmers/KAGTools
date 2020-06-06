@@ -30,27 +30,6 @@ namespace KAGTools
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-#if !DEBUG
-            if(!File.Exists(Path.Combine(Path.GetDirectoryName(AssemblyHelper.AppFilePath), "../Update.exe")))
-            {
-                MessageBox.Show(
-                    string.Format(
-                    "The installer for KAG Tools has been replaced.{0}" +
-                    "To continue using the app and receiving future updates, please manually install the latest version online and uninstall this one.{0}{0}" +
-                    "Sorry for the inconvenience!{0}" +
-                    "You will be redirected to the download page.", 
-                    Environment.NewLine), 
-                    "KAG Tools",
-                    MessageBoxButton.OK, 
-                    MessageBoxImage.Information);
-
-                // Open download page and close the app so people have to update
-                System.Diagnostics.Process.Start("https://forum.thd.vg/resources/open-source-kag-tools.478/");
-                
-                Shutdown(0);
-                return;
-            }
-
             using (UpdateManager mgr = new UpdateManager(""))
             {
                 SquirrelAwareApp.HandleEvents(
@@ -59,7 +38,6 @@ namespace KAGTools
                     onAppUpdate: (v) => OnAppUpdate(v, mgr),
                     onAppUninstall: (v) => OnAppUninstall(v, mgr));
             }
-#endif
 
             if (!UpdateHelper.RestoreSettings())
             {
