@@ -69,7 +69,10 @@ namespace KAGTools.Helpers
 
         public static async Task<T> GetApiResultObject<T>(string requestUri, CancellationToken cancellationToken) where T : class
         {
-            return JsonConvert.DeserializeObject<T>(await HttpGetString(requestUri, cancellationToken));
+            return JsonConvert.DeserializeObject<T>(await HttpGetString(requestUri, cancellationToken), new JsonSerializerSettings
+            {
+                DateTimeZoneHandling = DateTimeZoneHandling.Utc
+            });
         }
 
         private static async Task<string> HttpGetString(string requestUri, CancellationToken cancellationToken)

@@ -13,5 +13,6 @@
     <converters:EqualityToVisibilityConverter x:Key="EqualityToVisibilityConverter"/>
     <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
     <converters:BooleanToYesNoConverter x:Key="BooleanToYesNoConverter"/>
+    <converters:UtcToLocalDateTimeConverter x:Key="UtcToLocalDateTimeConverter"/>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 </ResourceDictionary>

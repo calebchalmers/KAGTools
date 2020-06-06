@@ -154,8 +154,8 @@
                                 <TextBlock>Locked: <Run Text="{Binding HasPassword, Converter={StaticResource BooleanToYesNoConverter}}" Style="{StaticResource Special}"/>,</TextBlock>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock>First Seen: <Run Text="{Binding FirstSeenDate, StringFormat=d}" Style="{StaticResource Special}" ToolTip="{Binding FirstSeenDate}"/>,</TextBlock>
-                            <TextBlock>Last Seen: <Run Text="{Binding LastUpdateDate, StringFormat=d}" Style="{StaticResource Special}" ToolTip="{Binding LastUpdateDate}"/>,</TextBlock>
+                                <TextBlock>First Seen: <Run Text="{Binding FirstSeenDate, Converter={StaticResource UtcToLocalDateTimeConverter}, StringFormat=d}" Style="{StaticResource Special}" ToolTip="{Binding FirstSeenDate, Converter={StaticResource UtcToLocalDateTimeConverter}}"/>,</TextBlock>
+                                <TextBlock>Last Seen: <Run Text="{Binding LastUpdateDate, Converter={StaticResource UtcToLocalDateTimeConverter}, StringFormat=d}" Style="{StaticResource Special}" ToolTip="{Binding LastUpdateDate, Converter={StaticResource UtcToLocalDateTimeConverter}}"/>,</TextBlock>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock>IPv4: <Run Text="{Binding IPv4Address, TargetNullValue=N/A}" Style="{StaticResource Special}"/>,</TextBlock>
@@ -228,8 +228,8 @@
                                 <TextBlock>Role: <Run Text="{Binding Info.Role}" Style="{StaticResource Special}"/>,</TextBlock>
                                 <TextBlock>Banned: <Run Text="{Binding Info.BanReason, TargetNullValue=No}" Style="{StaticResource Special}"/>,</TextBlock>
                                 <TextBlock>Gold: <Run Text="{Binding Info.HasGold, Converter={StaticResource BooleanToYesNoConverter}}" Style="{StaticResource Special}"/>,</TextBlock>
-                                <TextBlock>Registered: <Run Text="{Binding Info.RegisterDate, StringFormat=d}" ToolTip="{Binding Info.RegisterDate}" Style="{StaticResource Special}"/>,</TextBlock>
-                                <TextBlock>Last Seen: <Run Text="{Binding Status.LastUpdateDate, StringFormat=d}" ToolTip="{Binding Status.LastUpdateDate}" Style="{StaticResource Special}"/>,</TextBlock>
+                                <TextBlock>Registered: <Run Text="{Binding Info.RegisterDate, Converter={StaticResource UtcToLocalDateTimeConverter}, StringFormat=d}" ToolTip="{Binding Info.RegisterDate, Converter={StaticResource UtcToLocalDateTimeConverter}}" Style="{StaticResource Special}"/>,</TextBlock>
+                                <TextBlock>Last Seen: <Run Text="{Binding Status.LastUpdateDate, Converter={StaticResource UtcToLocalDateTimeConverter}, StringFormat=d}" ToolTip="{Binding Status.LastUpdateDate, Converter={StaticResource UtcToLocalDateTimeConverter}}" Style="{StaticResource Special}"/>,</TextBlock>
                                 <TextBlock>
                                     <TextBlock.ToolTip>
                                         <TextBlock>
