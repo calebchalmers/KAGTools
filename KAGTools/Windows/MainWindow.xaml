@@ -46,8 +46,8 @@
         <StackPanel>
             <Button Content="Open KAG Folder" Command="{Binding OpenKAGFolderCommand}"/>
             <ComboBox Margin="2" SelectedIndex="{Binding RunTypeIndex, Source={x:Static properties:Settings.Default}}" Style="{StaticResource ButtonComboBoxStyle}">
-                <ComboBoxItem Content="▶ Run Localhost" Tag="{Binding RunLocalhostCommand}"/>
-                <ComboBoxItem Content="▶ Run Server + Client" Tag="{Binding RunServerClientCommand}"/>
+                <ComboBoxItem Content="▶ Test Singleplayer" Tag="{Binding RunLocalhostCommand}"/>
+                <ComboBoxItem Content="▶ Test Server &amp; Client" Tag="{Binding RunServerClientCommand}"/>
             </ComboBox>
             <Button Content="API Browser..." Command="{Binding ApiCommand}"/>
             <Grid>

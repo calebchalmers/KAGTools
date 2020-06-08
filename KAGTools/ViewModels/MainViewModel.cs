@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using KAGTools.Data;
 using KAGTools.Helpers;
+using System.Net.Sockets;
 
 namespace KAGTools.ViewModels
 {
@@ -129,14 +130,14 @@ namespace KAGTools.ViewModels
             Process.Start(new ProcessStartInfo()
             {
                 FileName = FileHelper.KAGExecutablePath,
-                Arguments = "noautoupdate nolauncher autostart Scripts/server_autostart.as autoconfig autoconfig.cfg",
+                Arguments = string.Format("noautoupdate nolauncher autostart \"{0}\" autoconfig autoconfig.cfg", FileHelper.ServerAutoStartScriptPath),
                 WorkingDirectory = FileHelper.KagDir
             });
-            
+
             Process.Start(new ProcessStartInfo()
             {
                 FileName = FileHelper.KAGExecutablePath,
-                Arguments = string.Format("noautoupdate nolauncher autostart \"{0}\"", FileHelper.ClientLocalhostScriptPath),
+                Arguments = string.Format("noautoupdate nolauncher autostart \"{0}\"", FileHelper.ClientAutoStartScriptPath),
                 WorkingDirectory = FileHelper.KagDir
             });
         }
