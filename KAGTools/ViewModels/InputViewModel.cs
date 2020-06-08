@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using KAGTools.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

@@ -168,10 +168,6 @@
     <Compile Include="Helpers\UpdateHelper.cs" />
     <Compile Include="Helpers\WindowHelper.cs" />
     <Compile Include="Messages.cs" />
-    <Compile Include="Services\IService.cs" />
-    <Compile Include="Services\IViewService.cs" />
-    <Compile Include="Services\ServiceManager.cs" />
-    <Compile Include="Services\ViewService.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="UserControls\ManualGenericUserControl.xaml.cs">
       <DependentUpon>ManualGenericUserControl.xaml</DependentUpon>
