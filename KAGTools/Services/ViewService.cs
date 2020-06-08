@@ -82,17 +82,17 @@ namespace KAGTools.Services
             }
 
             // Listen for the close event
-            Messenger.Default.Register<RequestCloseMessage>(window, viewModel, OnRequestClose);
+            Messenger.Default.Register<CloseWindowMessage>(window, viewModel, OnRequestClose);
 
             return window;
         }
 
-        void OnRequestClose(RequestCloseMessage message)
+        void OnRequestClose(CloseWindowMessage message)
         {
             var window = _openedWindows.SingleOrDefault(w => w.DataContext == message.ViewModel);
             if (window != null)
             {
-                Messenger.Default.Unregister<RequestCloseMessage>(window, message.ViewModel, OnRequestClose);
+                Messenger.Default.Unregister<CloseWindowMessage>(window, message.ViewModel, OnRequestClose);
                 window.DialogResult = message.DialogResult;
                 window.Close();
             }

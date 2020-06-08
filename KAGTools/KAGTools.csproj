@@ -170,8 +170,8 @@
     <Compile Include="Messages.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\IViewService.cs" />
-    <Compile Include="Services\RequestCloseMessage.cs" />
     <Compile Include="Services\ServiceManager.cs" />
+    <Compile Include="Services\ViewService.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="UserControls\ManualGenericUserControl.xaml.cs">
       <DependentUpon>ManualGenericUserControl.xaml</DependentUpon>
@@ -190,7 +190,6 @@
     <Compile Include="ViewModels\Manual\ManualObjectsViewModel.cs" />
     <Compile Include="ViewModels\ManualViewModel.cs" />
     <Compile Include="ViewModels\ModsViewModel.cs" />
-    <Compile Include="Services\ViewService.cs" />
     <Compile Include="Windows\ApiWindow.xaml.cs">
       <DependentUpon>ApiWindow.xaml</DependentUpon>
     </Compile>
