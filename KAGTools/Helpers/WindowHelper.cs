@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -31,19 +32,19 @@ namespace KAGTools.Helpers
             viewMap.Add(viewModelType, windowType);
         }
 
-        public static void OpenWindow(ViewModelBase viewModel)
+        public static void OpenWindow(ViewModelBase viewModel, bool forceNew = false)
         {
-            Window window = CreateWindow(viewModel);
+            Window window = CreateWindow(viewModel, forceNew);
             window.Show();
         }
 
         public static bool? OpenDialog(ViewModelBase viewModel)
         {
-            Window window = CreateWindow(viewModel);
+            Window window = CreateWindow(viewModel, true);
             return window.ShowDialog();
         }
 
-        private static Window CreateWindow(ViewModelBase viewModel)
+        private static Window CreateWindow(ViewModelBase viewModel, bool forceNew)
         {
             Type viewModelType = viewModel.GetType();
 
@@ -53,6 +54,24 @@ namespace KAGTools.Helpers
             }
 
             Type windowType = viewMap[viewModelType];
+
+            if(!forceNew)
+            {
+                Window focusWindow = openWindows.LastOrDefault(w => w.GetType() == windowType);
+
+                // Activate window and show if minimized
+                if (focusWindow != null)
+                {
+                    if(focusWindow.WindowState == WindowState.Minimized)
+                    {
+                        focusWindow.WindowState = WindowState.Normal;
+                    }
+
+                    focusWindow.Activate();
+                    return focusWindow;
+                }
+            }
+
             Window window = (Window)Activator.CreateInstance(windowType);
             window.DataContext = viewModel;
             window.Owner = openWindows.ElementAtOrDefault(0); // Owner is the first opened window
