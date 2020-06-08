@@ -54,12 +54,12 @@ namespace KAGTools.ViewModels
 
         private void ExecuteOKCommand()
         {
-            MessengerInstance.Send(new CloseWindowMessage(this, true), this);
+            MessengerInstance.Send(new CloseWindowMessage(this, true));
         }
 
         private void ExecuteCancelCommand()
         {
-            MessengerInstance.Send(new CloseWindowMessage(this, false), this);
+            MessengerInstance.Send(new CloseWindowMessage(this, false));
         }
     }
 }

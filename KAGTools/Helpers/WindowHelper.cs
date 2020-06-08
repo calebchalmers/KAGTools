@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -56,9 +57,20 @@ namespace KAGTools.Helpers
             window.DataContext = viewModel;
             window.Owner = openWindows.ElementAtOrDefault(0); // Owner is the first opened window
             window.Closed += (s, e) => openWindows.Remove((Window)s);
-
             openWindows.Add(window);
+
             return window;
+        }
+
+        public static void OnCloseWindowMessage(CloseWindowMessage msg)
+        {
+            Window targetWindow = openWindows.FirstOrDefault(w => w.DataContext == msg.ViewModel);
+
+            if(targetWindow != null)
+            {
+                targetWindow.DialogResult = msg.DialogResult;
+                targetWindow.Close();
+            }
         }
     }
 }

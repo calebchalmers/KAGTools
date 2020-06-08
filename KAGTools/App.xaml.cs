@@ -1,4 +1,5 @@
-﻿using KAGTools.Helpers;
+﻿using GalaSoft.MvvmLight.Messaging;
+using KAGTools.Helpers;
 using KAGTools.ViewModels;
 using KAGTools.Windows;
 using Microsoft.WindowsAPICodePack.Dialogs;
@@ -53,12 +54,17 @@ namespace KAGTools
                 }
             }
 
+            // Assign windows to viewmodels
             WindowHelper.Register(typeof(MainViewModel), typeof(MainWindow));
             WindowHelper.Register(typeof(ModsViewModel), typeof(ModsWindow));
             WindowHelper.Register(typeof(InputViewModel), typeof(InputWindow));
             WindowHelper.Register(typeof(ManualViewModel), typeof(ManualWindow));
             WindowHelper.Register(typeof(ApiViewModel), typeof(ApiWindow));
 
+            // Listen for close window messages
+            Messenger.Default.Register<CloseWindowMessage>(this, WindowHelper.OnCloseWindowMessage);
+
+            // Open main window
             WindowHelper.OpenWindow(new MainViewModel());
         }
 
