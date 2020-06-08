@@ -54,14 +54,13 @@ namespace KAGTools
                 }
             }
 
-            IViewService viewService = ServiceManager.RegisterService<IViewService>(new ViewService());
-            viewService.RegisterView(typeof(MainWindow), typeof(MainViewModel));
-            viewService.RegisterView(typeof(ModsWindow), typeof(ModsViewModel));
-            viewService.RegisterView(typeof(InputWindow), typeof(InputViewModel));
-            viewService.RegisterView(typeof(ManualWindow), typeof(ManualViewModel));
-            viewService.RegisterView(typeof(ApiWindow), typeof(ApiViewModel));
+            WindowHelper.Register(typeof(MainViewModel), typeof(MainWindow));
+            WindowHelper.Register(typeof(ModsViewModel), typeof(ModsWindow));
+            WindowHelper.Register(typeof(InputViewModel), typeof(InputWindow));
+            WindowHelper.Register(typeof(ManualViewModel), typeof(ManualWindow));
+            WindowHelper.Register(typeof(ApiViewModel), typeof(ApiWindow));
 
-            ServiceManager.GetService<IViewService>().OpenWindow(new MainViewModel());
+            WindowHelper.OpenWindow(new MainViewModel());
         }
 
         #region Squirrel Events

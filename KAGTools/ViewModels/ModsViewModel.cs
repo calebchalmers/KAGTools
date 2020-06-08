@@ -76,7 +76,9 @@ namespace KAGTools.ViewModels
         private void ExecuteNewCommand()
         {
             InputViewModel viewModel = new InputViewModel("New Mod", "Name:");
-            if(ServiceManager.GetService<IViewService>().OpenDialog(viewModel) == true)
+            bool? dialogResult = WindowHelper.OpenDialog(viewModel);
+
+            if(dialogResult == true)
             {
                 CreateMod(viewModel.Input);
             }
@@ -85,8 +87,11 @@ namespace KAGTools.ViewModels
         private void ExecuteDuplicateCommand()
         {
             if (Selected == null) return;
+
             InputViewModel viewModel = new InputViewModel("Duplicate Mod", "Name:", Selected.Name);
-            if (ServiceManager.GetService<IViewService>().OpenDialog(viewModel) == true)
+            bool? dialogResult = WindowHelper.OpenDialog(viewModel);
+
+            if (dialogResult == true)
             {
                 CreateMod(viewModel.Input, Selected);
             }
