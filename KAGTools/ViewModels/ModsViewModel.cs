@@ -114,7 +114,7 @@ namespace KAGTools.ViewModels
 
         private void CreateMod(string name, Mod from = null)
         {
-            if (!FileHelper.IsValidPath(name))
+            if (string.IsNullOrWhiteSpace(name) || !FileHelper.IsValidPath(name))
             {
                 MessageBox.Show("Invalid name!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
