@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,14 +26,9 @@ namespace KAGTools.UserControls
             InitializeComponent();
         }
 
-        private void AutoSelectTextBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            ((Xceed.Wpf.Toolkit.AutoSelectTextBox)sender).SelectAll();
-        }
-
-        private void AutoSelectTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            ((Xceed.Wpf.Toolkit.AutoSelectTextBox)sender).SelectionLength = 0;
+            txtbox_Search.Focus();
         }
     }
 }
