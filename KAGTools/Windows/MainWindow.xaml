@@ -46,8 +46,8 @@
         <StackPanel>
             <Button Content="Open KAG Folder" Command="{Binding OpenKAGFolderCommand}"/>
             <ComboBox Margin="2" SelectedIndex="{Binding RunTypeIndex, Source={x:Static properties:Settings.Default}}" Style="{StaticResource ButtonComboBoxStyle}">
-                <ComboBoxItem Content="▶ Run Localhost" Tag="{Binding RunLocalhostCommand}"/>
-                <ComboBoxItem Content="▶ Run Server + Client" Tag="{Binding RunServerClientCommand}"/>
+                <ComboBoxItem Content="▶ Run Localhost" Tag="{Binding RunLocalhostCommand}" ToolTip="Runs a client and server in the same process.&#x0a;This is the same as playing solo in-game."/>
+                <ComboBoxItem Content="▶ Run Server + Client" Tag="{Binding RunServerClientCommand}" ToolTip="Runs a client and server as separate processes.&#x0a;This is the same as playing multiplayer in-game."/>
             </ComboBox>
             <Button Content="API Browser..." Command="{Binding ApiCommand}"/>
             <Grid>

@@ -40,7 +40,7 @@
 
                     <DockPanel Grid.Column="0">
                         <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
-                            <Button DockPanel.Dock="Right" Content="⟳" HorizontalContentAlignment="Center" Command="{Binding RefreshServersCommand}" TabIndex="2"/>
+                            <Button DockPanel.Dock="Right" Content="⟳" HorizontalContentAlignment="Center" Command="{Binding RefreshServersCommand}" ToolTip="Refresh" TabIndex="2"/>
                             <xctk:WatermarkTextBox x:Name="searchBox" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="1"/>
                         </DockPanel>
                         <StatusBar DockPanel.Dock="Bottom" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}" Padding="5,3">

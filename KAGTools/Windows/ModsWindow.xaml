@@ -32,8 +32,8 @@
                         <DockPanel.InputBindings>
                             <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DataContext.OpenCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
                         </DockPanel.InputBindings>
-                        <CheckBox IsChecked="{Binding IsActive}" VerticalAlignment="Center" Command="{Binding DataContext.UpdateActiveModsCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
-                        <TextBlock Text="{Binding Name}" Padding="0" VerticalAlignment="Center" Margin="5,1"/>
+                        <CheckBox IsChecked="{Binding IsActive}" VerticalAlignment="Center" Command="{Binding DataContext.UpdateActiveModsCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" ToolTip="Active Status" />
+                        <TextBlock Text="{Binding Name}" Padding="0" VerticalAlignment="Center" Margin="5,1" ToolTip="{Binding Name}"/>
                     </DockPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
