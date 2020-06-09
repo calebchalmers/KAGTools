@@ -8,7 +8,7 @@
         xmlns:viewmodels="clr-namespace:KAGTools.ViewModels.API"
         xmlns:data="clr-namespace:KAGTools.Data"
         mc:Ignorable="d"
-        Title="API Browser" Height="470" Width="660" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+        Title="API Browser" Height="470" Width="660" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" FocusManager.FocusedElement="{Binding ElementName=searchBox}">
     <Window.Resources>
         <Style x:Key="PropertyPanel" TargetType="{x:Type StackPanel}">
             <Setter Property="TextElement.FontSize" Value="13"/>
@@ -40,8 +40,8 @@
 
                     <DockPanel Grid.Column="0">
                         <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
-                            <Button DockPanel.Dock="Right" Content="⟳" HorizontalContentAlignment="Center" Command="{Binding RefreshServersCommand}"/>
-                            <xctk:WatermarkTextBox Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Button DockPanel.Dock="Right" Content="⟳" HorizontalContentAlignment="Center" Command="{Binding RefreshServersCommand}" TabIndex="2"/>
+                            <xctk:WatermarkTextBox x:Name="searchBox" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="1"/>
                         </DockPanel>
                         <StatusBar DockPanel.Dock="Bottom" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}" Padding="5,3">
                             <StatusBar.Resources>
@@ -58,7 +58,7 @@
                             servers
                         </StatusBar>
                         <Grid>
-                            <ListBox ItemsSource="{Binding FilteredItems}" SelectedItem="{Binding Selected}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch">
+                            <ListBox ItemsSource="{Binding FilteredItems}" SelectedItem="{Binding Selected}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch" TabIndex="3">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <DockPanel>
@@ -168,7 +168,7 @@
 
                         <Border BorderThickness="1" BorderBrush="{StaticResource BorderBrush}" Grid.Row="4" Margin="4" MaxHeight="81">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                <ItemsControl ItemsSource="{Binding Players}" FontWeight="SemiBold" FontSize="11.0" Padding="2">
+                                <ItemsControl ItemsSource="{Binding Players}" FontWeight="SemiBold" FontSize="11.0" Padding="2" TabIndex="4">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding ., StringFormat='{}{0},'}" Margin="2"/>
@@ -204,8 +204,8 @@
             </TabItem.DataContext>
             <DockPanel FocusManager.FocusedElement="{Binding ElementName=tbx_playerSearch}">
                 <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
-                    <Button Content="Search" DockPanel.Dock="Right" Command="{Binding SearchCommand}" IsDefault="True"/>
-                    <xctk:WatermarkTextBox x:Name="tbx_playerSearch" Watermark="Username..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Content="Search" DockPanel.Dock="Right" Command="{Binding SearchCommand}" IsDefault="True" TabIndex="2"/>
+                    <xctk:WatermarkTextBox x:Name="tbx_playerSearch" Watermark="Username..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="1"/>
                 </DockPanel>
                 <Grid>
                     <Grid Visibility="{Binding SearchState, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter={x:Static data:AsyncTaskState.Finished}}">
