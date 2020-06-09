@@ -21,15 +21,11 @@ namespace KAGTools.ViewModels
     {
         private string _searchFilter = "";
 
-        public ModsViewModel() :
-            base(FileHelper.GetMods())
+        public ModsViewModel() : base(FileHelper.GetMods())
         {
             OpenCommand = new RelayCommand(ExecuteOpenCommand);
-            DeleteCommand = new RelayCommand(ExecuteDeleteCommand);
-            UpdateActiveModsCommand = new RelayCommand(ExecuteUpdateActiveModsCommand);
-            NewCommand = new RelayCommand(ExecuteNewCommand);
-            DuplicateCommand = new RelayCommand(ExecuteDuplicateCommand);
             InfoCommand = new RelayCommand(ExecuteInfoCommand);
+            UpdateActiveModsCommand = new RelayCommand(ExecuteUpdateActiveModsCommand);
         }
 
         protected override bool FilterItem(Mod item)
@@ -44,56 +40,13 @@ namespace KAGTools.ViewModels
         }
 
         public ICommand OpenCommand { get; private set; }
-        public ICommand DeleteCommand { get; private set; }
-        public ICommand UpdateActiveModsCommand { get; private set; }
-        public ICommand NewCommand { get; private set; }
-        public ICommand DuplicateCommand { get; private set; }
         public ICommand InfoCommand { get; private set; }
+        public ICommand UpdateActiveModsCommand { get; private set; }
 
         private void ExecuteOpenCommand()
         {
             if (Selected == null) return;
             Process.Start(Selected.Directory);
-        }
-
-        private void ExecuteDeleteCommand()
-        {
-            if (Selected == null) return;
-            if(MessageBox.Show("Are you sure you want to delete '" + Selected.Name + "'?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                Directory.Delete(Selected.Directory, true);
-                Items.Remove(Selected);
-                UpdateActiveMods();
-            }
-        }
-
-        private void ExecuteUpdateActiveModsCommand()
-        {
-            UpdateActiveMods();
-        }
-
-        private void ExecuteNewCommand()
-        {
-            InputViewModel viewModel = new InputViewModel("New Mod", "Name:");
-            bool? dialogResult = WindowHelper.OpenDialog(viewModel);
-
-            if(dialogResult == true)
-            {
-                CreateMod(viewModel.Input);
-            }
-        }
-
-        private void ExecuteDuplicateCommand()
-        {
-            if (Selected == null) return;
-
-            InputViewModel viewModel = new InputViewModel("Duplicate Mod", "Name:", Selected.Name);
-            bool? dialogResult = WindowHelper.OpenDialog(viewModel);
-
-            if (dialogResult == true)
-            {
-                CreateMod(viewModel.Input, Selected);
-            }
         }
 
         private void ExecuteInfoCommand()
@@ -107,42 +60,14 @@ namespace KAGTools.ViewModels
             MessageBox.Show(infoBuilder.ToString(), "Mod Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
+        private void ExecuteUpdateActiveModsCommand()
+        {
+            UpdateActiveMods();
+        }
+
         private void UpdateActiveMods()
         {
             FileHelper.SetActiveMods(Items.Where(mod => mod.IsActive).ToArray());
-        }
-
-        private void CreateMod(string name, Mod from = null)
-        {
-            if (string.IsNullOrWhiteSpace(name) || !FileHelper.IsValidPath(name))
-            {
-                MessageBox.Show("Invalid name!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            string modDir = Path.Combine(FileHelper.ModsDir, name);
-
-            if (Directory.Exists(modDir))
-            {
-                MessageBox.Show(name + " already exists!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            Directory.CreateDirectory(modDir);
-
-            if (from != null)
-            {
-                FileHelper.CopyDirectory(from.Directory, modDir);
-            }
-
-            Mod newMod = new Mod(modDir, true);
-            Items.Add(newMod);
-
-            Process.Start(modDir);
-
-            Selected = newMod;
-            MessengerInstance.Send(new FocusSelectedItemMessage());
-            UpdateActiveMods();
         }
     }
 }
