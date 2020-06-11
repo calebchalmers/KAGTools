@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using KAGTools.Data;
 using KAGTools.Helpers;
+using System.Text.RegularExpressions;
+using System.Drawing.Text;
 
 namespace KAGTools.ViewModels.Manual
 {
@@ -19,6 +21,8 @@ namespace KAGTools.ViewModels.Manual
         private ObservableCollection<string> _types = null;
         private string _fileName = "";
         private bool _hasTypes = false;
+
+        private string searchRegexPattern = @".*";
 
         public ManualGenericViewModel(string fileName, bool hasTypes) :
             base(FileHelper.GetManualFunctions(fileName, hasTypes))
@@ -36,19 +40,27 @@ namespace KAGTools.ViewModels.Manual
 
         protected override bool FilterItem(ManualItem item)
         {
-            if (!string.IsNullOrEmpty(SearchFilter) &&
-               item.Value.IndexOf(SearchFilter, StringComparison.OrdinalIgnoreCase) == -1)
-                return false;
             if (!string.IsNullOrEmpty(TypeFilter) &&
-               item.Type.IndexOf(TypeFilter, StringComparison.OrdinalIgnoreCase) == -1)
+                item.Type.IndexOf(TypeFilter, StringComparison.OrdinalIgnoreCase) == -1)
                 return false;
+
+            if (!string.IsNullOrEmpty(SearchFilter) && 
+                !Regex.IsMatch(item.Value, searchRegexPattern, RegexOptions.IgnoreCase))
+                return false;
+
             return true;
         }
 
         public string SearchFilter
         {
             get => _searchFilter;
-            set => this.SetProperty(ref _searchFilter, value, RefreshFilters);
+            set
+            {
+                string escapedFilter = Regex.Replace(value, @"[.*+?^${}()|[\]\\]", @"\$&");
+                searchRegexPattern = string.Format(@"^{0}.*$", Regex.Replace(escapedFilter, @"([^ ]+) *", "(?=.*$1)"));
+
+                this.SetProperty(ref _searchFilter, value, RefreshFilters);
+            }
         }
 
         public string TypeFilter
