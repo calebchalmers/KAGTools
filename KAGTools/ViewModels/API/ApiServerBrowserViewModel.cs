@@ -29,8 +29,6 @@ namespace KAGTools.ViewModels.API
         {
             RefreshServersCommand = new RelayCommand(ExecuteRefreshServersCommand);
 
-            SortDescriptions.Add(new SortDescription("PlayerCount", ListSortDirection.Descending));
-
             PropertyChanged += async (s, e) =>
             {
                 if (e.PropertyName == "Selected" && Selected != null)

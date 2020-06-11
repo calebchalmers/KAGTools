@@ -58,7 +58,7 @@
                             servers
                         </StatusBar>
                         <Grid>
-                            <ListBox ItemsSource="{Binding FilteredItems}" SelectedItem="{Binding Selected}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch" TabIndex="3">
+                            <ListBox x:Name="serverList" ItemsSource="{Binding FilteredItems}" SelectedItem="{Binding Selected}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch" TabIndex="3">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <DockPanel>
