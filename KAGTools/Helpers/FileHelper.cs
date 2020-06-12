@@ -38,7 +38,7 @@ namespace KAGTools.Helpers
         // Auto-Start scripts
         public static string ClientAutoStartScriptPath => Path.GetFullPath(@"Resources\client_autostart.as");
         public static string ServerAutoStartScriptPath => Path.GetFullPath(@"Resources\server_autostart.as");
-        public static string SingleplayerAutoStartScriptPath => Path.GetFullPath(@"Resources\singleplayer_autostart.as");
+        public static string SoloAutoStartScriptPath => Path.GetFullPath(@"Resources\solo_autostart.as");
 
         public static void GetConfigInfo(string filePath, params ConfigProperty[] properties)
         {

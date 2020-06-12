@@ -146,7 +146,7 @@ namespace KAGTools.ViewModels
             Process.Start(new ProcessStartInfo()
             {
                 FileName = FileHelper.KAGExecutablePath,
-                Arguments = string.Format("noautoupdate nolauncher autostart \"{0}\"", FileHelper.SingleplayerAutoStartScriptPath),
+                Arguments = string.Format("noautoupdate nolauncher autostart \"{0}\"", FileHelper.SoloAutoStartScriptPath),
                 WorkingDirectory = FileHelper.KagDir
             });
         }
