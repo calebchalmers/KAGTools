@@ -9,7 +9,7 @@ void Configure()
 
 void InitializeGame()
 {
-	print("Starting KAGTools Singleplayer Test"); 
+	print("Starting KAGTools Solo Test"); 
 	LoadDefaultMapLoaders();
 	LoadDefaultMenuMusic();
 	RunLocalhost();

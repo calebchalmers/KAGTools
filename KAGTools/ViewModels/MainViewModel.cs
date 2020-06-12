@@ -45,7 +45,7 @@ namespace KAGTools.ViewModels
 
             OpenKAGFolderCommand = new RelayCommand(ExecuteOpenKAGFolderCommand);
             TestMultiplayerCommand = new RelayCommand(ExecuteTestMultiplayerCommand);
-            TestSingleplayerCommand = new RelayCommand(ExecuteTestSingleplayerCommand);
+            TestSoloCommand = new RelayCommand(ExecuteTestSoloCommand);
             ModsCommand = new RelayCommand(ExecuteModsCommand);
             ManualCommand = new RelayCommand(ExecuteManualCommand);
             ApiCommand = new RelayCommand(ExecuteApiCommand);
@@ -114,7 +114,7 @@ namespace KAGTools.ViewModels
 
         public ICommand OpenKAGFolderCommand { get; private set; }
         public ICommand TestMultiplayerCommand { get; private set; }
-        public ICommand TestSingleplayerCommand { get; private set; }
+        public ICommand TestSoloCommand { get; private set; }
         public ICommand ModsCommand { get; private set; }
         public ICommand ManualCommand { get; private set; }
         public ICommand ApiCommand { get; private set; }
@@ -141,7 +141,7 @@ namespace KAGTools.ViewModels
             });
         }
 
-        private void ExecuteTestSingleplayerCommand()
+        private void ExecuteTestSoloCommand()
         {
             Process.Start(new ProcessStartInfo()
             {
