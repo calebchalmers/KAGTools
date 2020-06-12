@@ -1,241 +1,23 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A04EE051-6C4E-4FC4-A443-F4100B7AEF66}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KAGTools</RootNamespace>
-    <AssemblyName>KAGTools</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
+    <TargetFramework>net462</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyTitle>KAG Tools</AssemblyTitle>
+    <Company>Caleb Chalmers</Company>
+    <Product>KAG Tools</Product>
+    <Description>A set of useful modding tools for the game King Arthur's Gold.</Description>
+    <Copyright>Copyright © Caleb Chalmers 2018</Copyright>
+    <Version>0.5.0</Version>
+    <Authors>Caleb Chalmers</Authors>
+    <PackageIconUrl>https://raw.githubusercontent.com/CalebChalmers/KAGTools/master/KAGTools/Resources/Icon.ico</PackageIconUrl>
     <ApplicationIcon>Resources\Icon.ico</ApplicationIcon>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-  </ItemGroup>
-  <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="Data\API\ApiFilter.cs" />
-    <Compile Include="Data\API\ApiPlayerAvatarResults.cs" />
-    <Compile Include="Data\API\ApiServerResults.cs" />
-    <Compile Include="Data\AsyncTaskState.cs" />
-    <Compile Include="Data\ConfigProperty.cs" />
-    <Compile Include="Data\ManualItem.cs" />
-    <Compile Include="Data\API\ApiPlayerResults.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="Helpers\ApiHelper.cs" />
-    <Compile Include="Helpers\AssemblyHelper.cs" />
-    <Compile Include="Helpers\UpdateHelper.cs" />
-    <Compile Include="Helpers\WindowHelper.cs" />
-    <Compile Include="Messages.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="UserControls\ManualGenericUserControl.xaml.cs">
-      <DependentUpon>ManualGenericUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\ApiViewModel.cs" />
-    <Compile Include="ViewModels\FilterListViewModelBase.cs" />
-    <Compile Include="ViewModels\InputViewModel.cs" />
-    <Compile Include="ViewModels\API\ApiPlayerInfoViewModel.cs" />
-    <Compile Include="ViewModels\API\ApiServerBrowserViewModel.cs" />
-    <Compile Include="ViewModels\Manual\ManualGenericViewModel.cs" />
-    <Compile Include="ViewModels\Manual\ManualTypeDefsViewModel.cs" />
-    <Compile Include="ViewModels\Manual\ManualVariablesViewModel.cs" />
-    <Compile Include="ViewModels\Manual\ManualEnumsViewModel.cs" />
-    <Compile Include="ViewModels\Manual\ManualFunctionsViewModel.cs" />
-    <Compile Include="ViewModels\Manual\ManualHooksViewModel.cs" />
-    <Compile Include="ViewModels\Manual\ManualObjectsViewModel.cs" />
-    <Compile Include="ViewModels\ManualViewModel.cs" />
-    <Compile Include="ViewModels\ModsViewModel.cs" />
-    <Compile Include="Windows\ApiWindow.xaml.cs">
-      <DependentUpon>ApiWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\ManualWindow.xaml.cs">
-      <DependentUpon>ManualWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\ModsWindow.xaml.cs">
-      <DependentUpon>ModsWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\InputWindow.xaml.cs">
-      <DependentUpon>InputWindow.xaml</DependentUpon>
-    </Compile>
-    <Page Include="UserControls\ManualGenericUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\ApiWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Helpers\FileHelper.cs" />
-    <Compile Include="Data\Mod.cs" />
-    <Compile Include="Xaml\Converters\EqualityToVisibilityConverter.cs" />
-    <Compile Include="Xaml\Converters\BooleanToYesNoConverter.cs" />
-    <Compile Include="Xaml\Converters\NullableBoolToBoolConverter.cs" />
-    <Compile Include="Xaml\Converters\UtcToLocalDateTimeConverter.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="Windows\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="Windows\ManualWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\ModsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\InputWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Xaml\Brushes.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Xaml\Default.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Xaml\Styles\ButtonComboBoxStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Xaml\Styles\FilterBarStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <AppDesigner Include="Properties\" />
-    <Content Include="Resources\client_localhost.as">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="CommonServiceLocator">
-      <Version>2.0.5</Version>
-    </PackageReference>
-    <PackageReference Include="Extended.Wpf.Toolkit">
-      <Version>3.8.1</Version>
-    </PackageReference>
-    <PackageReference Include="MvvmLightLibs">
-      <Version>5.4.1.1</Version>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.3</Version>
-    </PackageReference>
-    <PackageReference Include="NuGet.CommandLine">
-      <Version>5.5.1</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="squirrel.windows">
-      <Version>1.9.1</Version>
-    </PackageReference>
-    <PackageReference Include="WindowsAPICodePack-Core">
-      <Version>1.1.2</Version>
-    </PackageReference>
-    <PackageReference Include="WindowsAPICodePack-Shell">
-      <Version>1.1.1</Version>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  -->
-  <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Release' ">
+  <Target Name="BuildInstaller" AfterTargets="Pack" Condition=" '$(Configuration)' == 'Release' ">
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
       <Output TaskParameter="Assemblies" ItemName="asmblyInfo" />
     </GetAssemblyIdentity>
-    <!-- Pack release files -->
-    <Exec Command="nuget pack $(MSBuildProjectName).nuspec -Version %(asmblyInfo.Version) -properties Configuration=Release;id=$(MSBuildProjectName) -OutputDirectory $(OutDir) -BasePath $(OutDir)" />
     <!-- Create Setup.exe and delta packages -->
     <Exec Command="squirrel --releasify $(OutDir)$(MSBuildProjectName).$([System.Version]::Parse(%(asmblyInfo.Version)).ToString(3)).nupkg --no-msi --setupIcon Resources/Icon.ico" />
     <!-- Rename Setup.exe -->
@@ -243,4 +25,28 @@
     <!-- Open Releases folder -->
     <Exec Command="start $(MSBuildThisFileDirectory)Releases" />
   </Target>
+  <ItemGroup>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\client_localhost.as">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommonServiceLocator" Version="2.0.5" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="3.8.1" />
+    <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="NuGet.CommandLine" Version="5.5.1">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="squirrel.windows" Version="1.9.1" />
+    <PackageReference Include="WindowsAPICodePack-Core" Version="1.1.2" />
+    <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
+  </ItemGroup>
 </Project>

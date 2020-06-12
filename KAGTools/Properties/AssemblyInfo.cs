@@ -4,18 +4,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle("KAG Tools")]
-[assembly: AssemblyDescription("A set of useful modding tools for the game King Arthur's Gold.")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Caleb Chalmers")]
-[assembly: AssemblyProduct("KAG Tools")]
-[assembly: AssemblyCopyright("Copyright © Caleb Chalmers 2018")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-
 [assembly: AssemblyMetadata("SquirrelAwareVersion", "1")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -41,17 +29,3 @@ using System.Windows;
                                               //(used if a resource is not found in the page, 
                                               // app, or any theme specific resource dictionaries)
 )]
-
-
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers 
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.5.0")]
-[assembly: AssemblyFileVersion("0.5.0")]
