@@ -8,9 +8,6 @@
         xmlns:viewmodels="clr-namespace:KAGTools.ViewModels"
         mc:Ignorable="d"
         Title="Mods" Height="400" Width="300" WindowStartupLocation="CenterOwner" FocusManager.FocusedElement="{Binding ElementName=searchBox}" ResizeMode="NoResize">
-    <Window.InputBindings>
-        <KeyBinding Key="Delete" Command="{Binding DeleteCommand}" />
-    </Window.InputBindings>
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
             <xctk:WatermarkTextBox x:Name="searchBox" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="1"/>
