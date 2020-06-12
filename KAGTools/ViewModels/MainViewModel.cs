@@ -44,8 +44,8 @@ namespace KAGTools.ViewModels
             }
 
             OpenKAGFolderCommand = new RelayCommand(ExecuteOpenKAGFolderCommand);
-            RunServerClientCommand = new RelayCommand(ExecuteRunServerClientCommand);
-            RunLocalhostCommand = new RelayCommand(ExecuteRunLocalhostCommand);
+            TestMultiplayerCommand = new RelayCommand(ExecuteTestMultiplayerCommand);
+            TestSingleplayerCommand = new RelayCommand(ExecuteTestSingleplayerCommand);
             ModsCommand = new RelayCommand(ExecuteModsCommand);
             ManualCommand = new RelayCommand(ExecuteManualCommand);
             ApiCommand = new RelayCommand(ExecuteApiCommand);
@@ -113,8 +113,8 @@ namespace KAGTools.ViewModels
         }
 
         public ICommand OpenKAGFolderCommand { get; private set; }
-        public ICommand RunServerClientCommand { get; private set; }
-        public ICommand RunLocalhostCommand { get; private set; }
+        public ICommand TestMultiplayerCommand { get; private set; }
+        public ICommand TestSingleplayerCommand { get; private set; }
         public ICommand ModsCommand { get; private set; }
         public ICommand ManualCommand { get; private set; }
         public ICommand ApiCommand { get; private set; }
@@ -124,7 +124,7 @@ namespace KAGTools.ViewModels
             Process.Start(FileHelper.KagDir);
         }
 
-        private void ExecuteRunServerClientCommand()
+        private void ExecuteTestMultiplayerCommand()
         {
             Process.Start(new ProcessStartInfo()
             {
@@ -141,7 +141,7 @@ namespace KAGTools.ViewModels
             });
         }
 
-        private void ExecuteRunLocalhostCommand()
+        private void ExecuteTestSingleplayerCommand()
         {
             Process.Start(new ProcessStartInfo()
             {
