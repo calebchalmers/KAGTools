@@ -27,28 +27,6 @@ namespace KAGTools.Windows
 
             listbox.Items.SortDescriptions.Add(new SortDescription("IsActive", ListSortDirection.Descending));
             listbox.Items.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
-
-            Messenger.Default.Register<FocusSelectedItemMessage>(this, e =>
-            {
-                listbox.Focus();
-                listbox.ScrollIntoView(listbox.SelectedItem);
-            });
-        }
-
-        private void listbox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if(e.Key != Key.Delete)
-            {
-                searchBox.Focus();
-            }
-        }
-
-        private void Window_KeyDown(object sender, KeyEventArgs e)
-        {
-            if(e.Key == Key.Escape)
-            {
-                this.Close();
-            }
         }
     }
 }

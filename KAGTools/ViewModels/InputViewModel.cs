@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using KAGTools.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -55,12 +54,12 @@ namespace KAGTools.ViewModels
 
         private void ExecuteOKCommand()
         {
-            MessengerInstance.Send(new RequestCloseMessage(this, true), this);
+            MessengerInstance.Send(new CloseWindowMessage(this, true));
         }
 
         private void ExecuteCancelCommand()
         {
-            MessengerInstance.Send(new RequestCloseMessage(this, false), this);
+            MessengerInstance.Send(new CloseWindowMessage(this, false));
         }
     }
 }

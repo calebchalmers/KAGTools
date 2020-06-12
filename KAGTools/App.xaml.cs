@@ -1,5 +1,5 @@
-﻿using KAGTools.Helpers;
-using KAGTools.Services;
+﻿using GalaSoft.MvvmLight.Messaging;
+using KAGTools.Helpers;
 using KAGTools.ViewModels;
 using KAGTools.Windows;
 using Microsoft.WindowsAPICodePack.Dialogs;
@@ -54,14 +54,18 @@ namespace KAGTools
                 }
             }
 
-            IViewService viewService = ServiceManager.RegisterService<IViewService>(new ViewService());
-            viewService.RegisterView(typeof(MainWindow), typeof(MainViewModel));
-            viewService.RegisterView(typeof(ModsWindow), typeof(ModsViewModel));
-            viewService.RegisterView(typeof(InputWindow), typeof(InputViewModel));
-            viewService.RegisterView(typeof(ManualWindow), typeof(ManualViewModel));
-            viewService.RegisterView(typeof(ApiWindow), typeof(ApiViewModel));
+            // Assign windows to viewmodels
+            WindowHelper.Register(typeof(MainViewModel), typeof(MainWindow));
+            WindowHelper.Register(typeof(ModsViewModel), typeof(ModsWindow));
+            WindowHelper.Register(typeof(InputViewModel), typeof(InputWindow));
+            WindowHelper.Register(typeof(ManualViewModel), typeof(ManualWindow));
+            WindowHelper.Register(typeof(ApiViewModel), typeof(ApiWindow));
 
-            ServiceManager.GetService<IViewService>().OpenWindow(new MainViewModel());
+            // Listen for close window messages
+            Messenger.Default.Register<CloseWindowMessage>(this, WindowHelper.OnCloseWindowMessage);
+
+            // Open main window
+            WindowHelper.OpenWindow(new MainViewModel());
         }
 
         #region Squirrel Events

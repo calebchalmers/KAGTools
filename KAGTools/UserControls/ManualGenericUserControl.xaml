@@ -7,19 +7,19 @@
              xmlns:local="clr-namespace:KAGTools.UserControls"
              xmlns:viewmodels="clr-namespace:KAGTools.ViewModels.Manual"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
     <DockPanel>
-        <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}" FocusManager.FocusedElement="{Binding ElementName=txtbox_Search}">
-            <xctk:WatermarkComboBox Watermark="Type..." Padding="5,3" Text="{Binding TypeFilter}" TabIndex="1" IsEditable="True" MinWidth="70" ItemsSource="{Binding Types}" Visibility="{Binding HasTypes, Converter={StaticResource BooleanToVisibilityConverter}}" IsTabStop="True"/>
+        <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
+            <xctk:WatermarkComboBox Watermark="Type..." Padding="5,3" Text="{Binding TypeFilter}" TabIndex="1" IsEditable="True" MinWidth="70" ItemsSource="{Binding Types}" Visibility="{Binding HasTypes, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <Button Content="📖" DockPanel.Dock="Right" Command="{Binding OpenFileCommand}" ToolTip="Open File..." TabIndex="3"/>
             <xctk:WatermarkTextBox x:Name="txtbox_Search" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="2"/>
         </DockPanel>
-        <ListBox ItemsSource="{Binding FilteredItems}" BorderThickness="1,0,1,1" TabIndex="4">
+        <ListBox ItemsSource="{Binding FilteredItems}" BorderThickness="1,0,1,1" TabIndex="4" HorizontalContentAlignment="Stretch">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <DockPanel ToolTip="{Binding Value}">
                         <TextBlock Text="{Binding Type}" Padding="1" Margin="0,0,5,0" Foreground="{StaticResource DisabledBrush}" Visibility="{Binding DataContext.HasTypes, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                        <xctk:AutoSelectTextBox Text="{Binding Value, Mode=OneWay}" Background="Transparent" AutoSelectBehavior="Never" BorderThickness="0" IsReadOnly="True" TextWrapping="Wrap" IsReadOnlyCaretVisible="True" MouseDoubleClick="AutoSelectTextBox_MouseDoubleClick" LostFocus="AutoSelectTextBox_LostFocus"/>
+                        <xctk:AutoSelectTextBox Text="{Binding Value, Mode=OneWay}" Background="Transparent" AutoSelectBehavior="OnFocus" BorderThickness="0" IsReadOnly="True" TextWrapping="Wrap" IsReadOnlyCaretVisible="True" />
                     </DockPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

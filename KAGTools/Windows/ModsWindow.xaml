@@ -7,21 +7,18 @@
         xmlns:local="clr-namespace:KAGTools.Windows"
         xmlns:viewmodels="clr-namespace:KAGTools.ViewModels"
         mc:Ignorable="d"
-        Title="Mods" Height="400" Width="300" WindowStartupLocation="CenterOwner" FocusManager.FocusedElement="{Binding ElementName=searchBox}" KeyDown="Window_KeyDown" ResizeMode="NoResize">
+        Title="Mods" Height="400" Width="300" WindowStartupLocation="CenterOwner" FocusManager.FocusedElement="{Binding ElementName=searchBox}" ResizeMode="NoResize">
     <Window.InputBindings>
         <KeyBinding Key="Delete" Command="{Binding DeleteCommand}" />
     </Window.InputBindings>
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
-            <Button DockPanel.Dock="Right" Content="New" Command="{Binding NewCommand}"/>
-            <xctk:WatermarkTextBox x:Name="searchBox" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"/>
+            <xctk:WatermarkTextBox x:Name="searchBox" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="1"/>
         </DockPanel>
-        <ListBox x:Name="listbox" ItemsSource="{Binding FilteredItems}" SelectedItem="{Binding Selected}" BorderThickness="1,0,1,1" HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" KeyDown="listbox_KeyDown">
+        <ListBox x:Name="listbox" ItemsSource="{Binding FilteredItems}" SelectedItem="{Binding Selected}" BorderThickness="1,0,1,1" HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" TabIndex="2">
             <ListBox.Resources>
                 <ContextMenu x:Key="ModContextMenu" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
                     <MenuItem Header="Open" Command="{Binding OpenCommand}"/>
-                    <MenuItem Header="Duplicate" Command="{Binding DuplicateCommand}"/>
-                    <MenuItem Header="Delete" Command="{Binding DeleteCommand}"/>
                     <Separator/>
                     <MenuItem Header="Info..." Command="{Binding InfoCommand}"/>
                 </ContextMenu>
@@ -35,8 +32,8 @@
                         <DockPanel.InputBindings>
                             <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DataContext.OpenCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
                         </DockPanel.InputBindings>
-                        <CheckBox IsChecked="{Binding IsActive}" VerticalAlignment="Center" Command="{Binding DataContext.UpdateActiveModsCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
-                        <TextBlock Text="{Binding Name}" Padding="0" VerticalAlignment="Center" Margin="5,1"/>
+                        <CheckBox IsChecked="{Binding IsActive}" VerticalAlignment="Center" Command="{Binding DataContext.UpdateActiveModsCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" ToolTip="Active Status" />
+                        <TextBlock Text="{Binding Name}" Padding="0" VerticalAlignment="Center" Margin="5,1" ToolTip="{Binding Name}"/>
                     </DockPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

@@ -1,7 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
-using KAGTools.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -154,7 +153,7 @@ namespace KAGTools.ViewModels
         private void ExecuteModsCommand()
         {
             ModsViewModel viewModel = new ModsViewModel();
-            ServiceManager.GetService<IViewService>().OpenDialog(viewModel);
+            WindowHelper.OpenDialog(viewModel);
 
             InitializeGamemodes(viewModel.Items.Where(mod => mod.IsActive));
         }
@@ -162,13 +161,13 @@ namespace KAGTools.ViewModels
         private void ExecuteManualCommand()
         {
             ManualViewModel viewModel = new ManualViewModel();
-            ServiceManager.GetService<IViewService>().OpenWindow(viewModel);
+            WindowHelper.OpenWindow(viewModel);
         }
 
         private void ExecuteApiCommand()
         {
             ApiViewModel viewModel = new ApiViewModel();
-            ServiceManager.GetService<IViewService>().OpenDialog(viewModel);
+            WindowHelper.OpenDialog(viewModel);
         }
 
         private void SaveStartupInfo()
