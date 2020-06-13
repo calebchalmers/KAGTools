@@ -6,60 +6,50 @@ using System.Threading.Tasks;
 
 namespace KAGTools.Data
 {
-    public class ConfigProperty
+    public class BaseConfigProperty
     {
-        protected string _propertyName;
-        protected object _value;
-        
-        public string PropertyName
-        {
-            get { return _propertyName; }
-            set { _propertyName = value; }
-        }
+        public string Name { get; }
+        public string Value { get; set; }
 
-        public object Value
+        public BaseConfigProperty(string name)
         {
-            get { return _value; }
-            set { _value = value; }
+            Name = name;
         }
+    }
 
-        public ConfigProperty(string propertyName, object value)
+    public class StringConfigProperty : BaseConfigProperty
+    {
+        public StringConfigProperty(string name, string value) : base(name)
         {
-            PropertyName = propertyName;
             Value = value;
         }
     }
 
-    public class ConfigPropertyDouble : ConfigProperty
+    public class IntConfigProperty : BaseConfigProperty
     {
-        public new double Value
+        public new int Value
         {
-            get { return (double)_value; }
-            set { _value = value; }
+            get { return int.TryParse(base.Value, out var result) ? result : -1; }
+            set { base.Value = value.ToString(); }
         }
 
-        public ConfigPropertyDouble(string propertyName, double value) : base(propertyName, value) { }
-    }
-
-    public class ConfigPropertyString : ConfigProperty
-    {
-        public new string Value
+        public IntConfigProperty(string name, int value) : base(name)
         {
-            get { return (string)_value; }
-            set { _value = value; }
+            Value = value;
         }
-
-        public ConfigPropertyString(string propertyName, string value) : base(propertyName, value) { }
     }
 
-    public class ConfigPropertyBoolean : ConfigProperty
+    public class BoolConfigProperty : BaseConfigProperty
     {
         public new bool Value
         {
-            get { return (bool)_value; }
-            set { _value = value; }
+            get { return base.Value == "1"; }
+            set { base.Value = value ? "1" : "0"; }
         }
 
-        public ConfigPropertyBoolean(string propertyName, bool value) : base(propertyName, value) { }
+        public BoolConfigProperty(string name, bool value) : base(name)
+        {
+            Value = value;
+        }
     }
 }

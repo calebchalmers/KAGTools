@@ -48,8 +48,8 @@ namespace KAGTools.Data
             string gamemodeConfigPath = FileHelper.FindFirstFile(Directory, "gamemode.cfg");
             if (gamemodeConfigPath != null)
             {
-                ConfigPropertyString gamemodeProperty = new ConfigPropertyString("gamemode_name", null);
-                FileHelper.GetConfigInfo(gamemodeConfigPath, gamemodeProperty);
+                var gamemodeProperty = new StringConfigProperty("gamemode_name", null);
+                FileHelper.ReadConfigProperties(gamemodeConfigPath, gamemodeProperty);
 
                 if (!string.IsNullOrEmpty(gamemodeProperty.Value))
                 {

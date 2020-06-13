@@ -49,34 +49,30 @@ namespace KAGTools.ViewModels
             ManualCommand = new RelayCommand(ExecuteManualCommand);
             ApiCommand = new RelayCommand(ExecuteApiCommand);
 
-            //FileHelper.GetStartupInfo(ref _screenWidth, ref _screenHeight, ref _fullscreen);
-
             InitializeGamemodes(FileHelper.GetMods(true));
 
             // Get settings from config files
             // startup_config.cfg
-            var screenWidthProperty = new ConfigPropertyDouble("Window.Width", ScreenWidth);
-            var screenHeightProperty = new ConfigPropertyDouble("Window.Height", ScreenHeight);
-            var fullscreenProperty = new ConfigPropertyBoolean("Fullscreen", Fullscreen);
+            var screenWidthProperty = new IntConfigProperty("Window.Width", ScreenWidth);
+            var screenHeightProperty = new IntConfigProperty("Window.Height", ScreenHeight);
+            var fullscreenProperty = new BoolConfigProperty("Fullscreen", Fullscreen);
 
-            FileHelper.GetConfigInfo(
-                FileHelper.StartupConfigPath,
+            FileHelper.ReadConfigProperties(FileHelper.StartupConfigPath,
                 screenWidthProperty,
                 screenHeightProperty,
                 fullscreenProperty
-                );
+            );
 
-            _screenWidth = (int)screenWidthProperty.Value;
-            _screenHeight = (int)screenHeightProperty.Value;
+            _screenWidth = screenWidthProperty.Value;
+            _screenHeight = screenHeightProperty.Value;
             _fullscreen = fullscreenProperty.Value;
 
             // autoconfig.cfg
-            var gamemodeProperty = new ConfigPropertyString("sv_gamemode", Gamemode);
+            var gamemodeProperty = new StringConfigProperty("sv_gamemode", Gamemode);
 
-            FileHelper.GetConfigInfo(
-                FileHelper.AutoConfigPath,
+            FileHelper.ReadConfigProperties(FileHelper.AutoConfigPath,
                 gamemodeProperty
-                );
+            );
 
             _gamemode = gamemodeProperty.Value;
         }
@@ -171,22 +167,18 @@ namespace KAGTools.ViewModels
 
         private void SaveStartupInfo()
         {
-            FileHelper.SetConfigInfo(
-                FileHelper.StartupConfigPath,
-                new ConfigPropertyDouble("Window.Width", ScreenWidth),
-                new ConfigPropertyDouble("Window.Height", ScreenHeight),
-                new ConfigPropertyBoolean("Fullscreen", Fullscreen)
-                );
-
-            //FileHelper.SetStartupInfo(ScreenWidth, ScreenHeight, Fullscreen);
+            FileHelper.WriteConfigProperties(FileHelper.StartupConfigPath,
+                new IntConfigProperty("Window.Width", ScreenWidth),
+                new IntConfigProperty("Window.Height", ScreenHeight),
+                new BoolConfigProperty("Fullscreen", Fullscreen)
+            );
         }
 
         private void SaveAutoConfigInfo()
         {
-            FileHelper.SetConfigInfo(
-                FileHelper.AutoConfigPath,
-                new ConfigPropertyString("sv_gamemode", Gamemode)
-                );
+            FileHelper.WriteConfigProperties(FileHelper.AutoConfigPath,
+                new StringConfigProperty("sv_gamemode", Gamemode)
+            );
         }
 
         private bool IsComment(string line)
