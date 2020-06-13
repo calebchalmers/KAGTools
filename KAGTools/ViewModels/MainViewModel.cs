@@ -181,11 +181,6 @@ namespace KAGTools.ViewModels
             );
         }
 
-        private bool IsComment(string line)
-        {
-            return line.StartsWith("#");
-        }
-
         private void InitializeGamemodes(IEnumerable<Mod> activeMods)
         {
             var newGamemodes = new List<string>(DEFAULT_GAMEMODES.Length);
