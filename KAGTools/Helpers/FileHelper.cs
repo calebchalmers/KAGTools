@@ -82,7 +82,7 @@ namespace KAGTools.Helpers
                 var targetPropertyIndex = configPropertyList.FindIndex(p => p.Name == propertyName);
                 if (targetPropertyIndex != -1)
                 {
-                    var targetProperty = configProperties[targetPropertyIndex];
+                    var targetProperty = configPropertyList[targetPropertyIndex];
 
                     if (writePropertiesToFile)
                     {
