@@ -22,7 +22,7 @@ namespace KAGTools.Data
             {
                 if(_gamemode == null)
                 {
-                    EvaluateGamemode();
+                    _gamemode = FileHelper.FindGamemodeOfMod(Directory);
                 }
 
                 return _gamemode;
@@ -39,23 +39,6 @@ namespace KAGTools.Data
         public override string ToString()
         {
             return Name;
-        }
-
-        public void EvaluateGamemode()
-        {
-            _gamemode = "N/A";
-
-            string gamemodeConfigPath = FileHelper.FindFirstFile(Directory, "gamemode.cfg");
-            if (gamemodeConfigPath != null)
-            {
-                var gamemodeProperty = new StringConfigProperty("gamemode_name", null);
-                FileHelper.ReadConfigProperties(gamemodeConfigPath, gamemodeProperty);
-
-                if (!string.IsNullOrEmpty(gamemodeProperty.Value))
-                {
-                    _gamemode = gamemodeProperty.Value;
-                }
-            }
         }
     }
 }

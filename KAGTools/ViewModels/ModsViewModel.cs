@@ -55,7 +55,7 @@ namespace KAGTools.ViewModels
 
             StringBuilder infoBuilder = new StringBuilder();
             infoBuilder.AppendLine("Name: " + Selected.Name);
-            infoBuilder.AppendLine("Gamemode: " + Selected.Gamemode);
+            infoBuilder.AppendLine("Gamemode: " + (Selected.Gamemode ?? "N/A"));
 
             MessageBox.Show(infoBuilder.ToString(), "Mod Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }

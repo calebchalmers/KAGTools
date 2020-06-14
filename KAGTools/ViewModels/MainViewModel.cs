@@ -189,7 +189,7 @@ namespace KAGTools.ViewModels
 
             foreach (Mod mod in activeMods)
             {
-                if (mod.Gamemode != "N/A" && !newGamemodes.Contains(mod.Gamemode))
+                if (mod.Gamemode != null && !newGamemodes.Contains(mod.Gamemode))
                 {
                     newGamemodes.Add(mod.Gamemode);
                     hasCustomGamemodes = true;

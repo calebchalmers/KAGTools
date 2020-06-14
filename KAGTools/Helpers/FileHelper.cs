@@ -169,6 +169,23 @@ namespace KAGTools.Helpers
             return Directory.GetFiles(dir, fileName, includeSubs ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
         }
 
+        public static string FindGamemodeOfMod(string modDir)
+        {
+            string gamemodeConfigPath = FindFirstFile(modDir, "gamemode.cfg");
+            if (gamemodeConfigPath != null)
+            {
+                var gamemodeProperty = new StringConfigProperty("gamemode_name", null);
+                ReadConfigProperties(gamemodeConfigPath, gamemodeProperty);
+
+                if (!string.IsNullOrEmpty(gamemodeProperty.Value))
+                {
+                    return gamemodeProperty.Value;
+                }
+            }
+
+            return null;
+        }
+
         public static List<ManualItem> GetManualFunctions(string fileName, bool findTypes = false)
         {
             List<ManualItem> items = new List<ManualItem>();
