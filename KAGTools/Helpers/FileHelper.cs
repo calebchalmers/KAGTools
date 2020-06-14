@@ -25,7 +25,7 @@ namespace KAGTools.Helpers
         public static string AutoConfigPath => Path.Combine(KagDir, "autoconfig.cfg");
         public static string RunLocalhostPath => Path.Combine(KagDir, "runlocalhost.bat");
         public static string RunDedicatedServerPath => Path.Combine(KagDir, "dedicatedserver.bat");
-        public static string KAGExecutablePath => Path.Combine(KagDir, "KAG.exe");
+        public static string KagExecutablePath => Path.Combine(KagDir, "KAG.exe");
 
         // Manual
         public static string ManualDir => Path.Combine(KagDir, "Manual", "interface");

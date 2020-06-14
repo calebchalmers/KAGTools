@@ -42,7 +42,7 @@ namespace KAGTools.ViewModels
                 return;
             }
 
-            OpenKAGFolderCommand = new RelayCommand(ExecuteOpenKAGFolderCommand);
+            OpenKagFolderCommand = new RelayCommand(ExecuteOpenKagFolderCommand);
             RunServerClientCommand = new RelayCommand(ExecuteRunServerClientCommand);
             RunLocalhostCommand = new RelayCommand(ExecuteRunLocalhostCommand);
             ModsCommand = new RelayCommand(ExecuteModsCommand);
@@ -107,14 +107,14 @@ namespace KAGTools.ViewModels
             set => this.SetProperty(ref _gamemodes, value);
         }
 
-        public ICommand OpenKAGFolderCommand { get; private set; }
+        public ICommand OpenKagFolderCommand { get; private set; }
         public ICommand RunServerClientCommand { get; private set; }
         public ICommand RunLocalhostCommand { get; private set; }
         public ICommand ModsCommand { get; private set; }
         public ICommand ManualCommand { get; private set; }
         public ICommand ApiCommand { get; private set; }
 
-        private void ExecuteOpenKAGFolderCommand()
+        private void ExecuteOpenKagFolderCommand()
         {
             Process.Start(FileHelper.KagDir);
         }
@@ -123,14 +123,14 @@ namespace KAGTools.ViewModels
         {
             Process.Start(new ProcessStartInfo()
             {
-                FileName = FileHelper.KAGExecutablePath,
+                FileName = FileHelper.KagExecutablePath,
                 Arguments = "noautoupdate nolauncher autostart Scripts/server_autostart.as autoconfig autoconfig.cfg",
                 WorkingDirectory = FileHelper.KagDir
             });
             
             Process.Start(new ProcessStartInfo()
             {
-                FileName = FileHelper.KAGExecutablePath,
+                FileName = FileHelper.KagExecutablePath,
                 Arguments = string.Format("noautoupdate nolauncher autostart \"{0}\"", FileHelper.ClientLocalhostScriptPath),
                 WorkingDirectory = FileHelper.KagDir
             });
