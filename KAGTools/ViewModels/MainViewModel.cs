@@ -204,6 +204,7 @@ namespace KAGTools.ViewModels
             newGamemodes.AddRange(DEFAULT_GAMEMODES);
 
             Gamemodes = new ObservableCollection<string>(newGamemodes);
+            RaisePropertyChanged("Gamemode"); // Make sure that gamemode doesn't get cleared after updating the options
         }
     }
 }
