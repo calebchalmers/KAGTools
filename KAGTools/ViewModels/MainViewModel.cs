@@ -43,41 +43,37 @@ namespace KAGTools.ViewModels
                 return;
             }
 
-            OpenKAGFolderCommand = new RelayCommand(ExecuteOpenKAGFolderCommand);
+            OpenKagFolderCommand = new RelayCommand(ExecuteOpenKagFolderCommand);
             TestMultiplayerCommand = new RelayCommand(ExecuteTestMultiplayerCommand);
             TestSoloCommand = new RelayCommand(ExecuteTestSoloCommand);
             ModsCommand = new RelayCommand(ExecuteModsCommand);
             ManualCommand = new RelayCommand(ExecuteManualCommand);
             ApiCommand = new RelayCommand(ExecuteApiCommand);
 
-            //FileHelper.GetStartupInfo(ref _screenWidth, ref _screenHeight, ref _fullscreen);
-
             InitializeGamemodes(FileHelper.GetMods(true));
 
             // Get settings from config files
             // startup_config.cfg
-            var screenWidthProperty = new ConfigPropertyDouble("Window.Width", ScreenWidth);
-            var screenHeightProperty = new ConfigPropertyDouble("Window.Height", ScreenHeight);
-            var fullscreenProperty = new ConfigPropertyBoolean("Fullscreen", Fullscreen);
+            var screenWidthProperty = new IntConfigProperty("Window.Width", ScreenWidth);
+            var screenHeightProperty = new IntConfigProperty("Window.Height", ScreenHeight);
+            var fullscreenProperty = new BoolConfigProperty("Fullscreen", Fullscreen);
 
-            FileHelper.GetConfigInfo(
-                FileHelper.StartupConfigPath,
+            FileHelper.ReadConfigProperties(FileHelper.StartupConfigPath,
                 screenWidthProperty,
                 screenHeightProperty,
                 fullscreenProperty
-                );
+            );
 
-            _screenWidth = (int)screenWidthProperty.Value;
-            _screenHeight = (int)screenHeightProperty.Value;
+            _screenWidth = screenWidthProperty.Value;
+            _screenHeight = screenHeightProperty.Value;
             _fullscreen = fullscreenProperty.Value;
 
             // autoconfig.cfg
-            var gamemodeProperty = new ConfigPropertyString("sv_gamemode", Gamemode);
+            var gamemodeProperty = new StringConfigProperty("sv_gamemode", Gamemode);
 
-            FileHelper.GetConfigInfo(
-                FileHelper.AutoConfigPath,
+            FileHelper.ReadConfigProperties(FileHelper.AutoConfigPath,
                 gamemodeProperty
-                );
+            );
 
             _gamemode = gamemodeProperty.Value;
         }
@@ -112,14 +108,14 @@ namespace KAGTools.ViewModels
             set => this.SetProperty(ref _gamemodes, value);
         }
 
-        public ICommand OpenKAGFolderCommand { get; private set; }
+        public ICommand OpenKagFolderCommand { get; private set; }
         public ICommand TestMultiplayerCommand { get; private set; }
         public ICommand TestSoloCommand { get; private set; }
         public ICommand ModsCommand { get; private set; }
         public ICommand ManualCommand { get; private set; }
         public ICommand ApiCommand { get; private set; }
 
-        private void ExecuteOpenKAGFolderCommand()
+        private void ExecuteOpenKagFolderCommand()
         {
             Process.Start(FileHelper.KagDir);
         }
@@ -128,14 +124,14 @@ namespace KAGTools.ViewModels
         {
             Process.Start(new ProcessStartInfo()
             {
-                FileName = FileHelper.KAGExecutablePath,
+                FileName = FileHelper.KagExecutablePath,
                 Arguments = string.Format("noautoupdate nolauncher autostart \"{0}\" autoconfig autoconfig.cfg", FileHelper.ServerAutoStartScriptPath),
                 WorkingDirectory = FileHelper.KagDir
             });
 
             Process.Start(new ProcessStartInfo()
             {
-                FileName = FileHelper.KAGExecutablePath,
+                FileName = FileHelper.KagExecutablePath,
                 Arguments = string.Format("noautoupdate nolauncher autostart \"{0}\"", FileHelper.ClientAutoStartScriptPath),
                 WorkingDirectory = FileHelper.KagDir
             });
@@ -145,7 +141,7 @@ namespace KAGTools.ViewModels
         {
             Process.Start(new ProcessStartInfo()
             {
-                FileName = FileHelper.KAGExecutablePath,
+                FileName = FileHelper.KagExecutablePath,
                 Arguments = string.Format("noautoupdate nolauncher autostart \"{0}\"", FileHelper.SoloAutoStartScriptPath),
                 WorkingDirectory = FileHelper.KagDir
             });
@@ -173,27 +169,18 @@ namespace KAGTools.ViewModels
 
         private void SaveStartupInfo()
         {
-            FileHelper.SetConfigInfo(
-                FileHelper.StartupConfigPath,
-                new ConfigPropertyDouble("Window.Width", ScreenWidth),
-                new ConfigPropertyDouble("Window.Height", ScreenHeight),
-                new ConfigPropertyBoolean("Fullscreen", Fullscreen)
-                );
-
-            //FileHelper.SetStartupInfo(ScreenWidth, ScreenHeight, Fullscreen);
+            FileHelper.WriteConfigProperties(FileHelper.StartupConfigPath,
+                new IntConfigProperty("Window.Width", ScreenWidth),
+                new IntConfigProperty("Window.Height", ScreenHeight),
+                new BoolConfigProperty("Fullscreen", Fullscreen)
+            );
         }
 
         private void SaveAutoConfigInfo()
         {
-            FileHelper.SetConfigInfo(
-                FileHelper.AutoConfigPath,
-                new ConfigPropertyString("sv_gamemode", Gamemode)
-                );
-        }
-
-        private bool IsComment(string line)
-        {
-            return line.StartsWith("#");
+            FileHelper.WriteConfigProperties(FileHelper.AutoConfigPath,
+                new StringConfigProperty("sv_gamemode", Gamemode)
+            );
         }
 
         private void InitializeGamemodes(IEnumerable<Mod> activeMods)
@@ -204,7 +191,7 @@ namespace KAGTools.ViewModels
 
             foreach (Mod mod in activeMods)
             {
-                if (mod.Gamemode != "N/A" && !newGamemodes.Contains(mod.Gamemode))
+                if (mod.Gamemode != null && !newGamemodes.Contains(mod.Gamemode))
                 {
                     newGamemodes.Add(mod.Gamemode);
                     hasCustomGamemodes = true;
@@ -219,6 +206,7 @@ namespace KAGTools.ViewModels
             newGamemodes.AddRange(DEFAULT_GAMEMODES);
 
             Gamemodes = new ObservableCollection<string>(newGamemodes);
+            RaisePropertyChanged("Gamemode"); // Make sure that gamemode doesn't get cleared after updating the options
         }
     }
 }

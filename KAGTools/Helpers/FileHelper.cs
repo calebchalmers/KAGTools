@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using KAGTools.Data;
+using NuGet;
+using Xceed.Wpf.Toolkit.PropertyGrid;
 
 namespace KAGTools.Helpers
 {
@@ -21,7 +25,7 @@ namespace KAGTools.Helpers
         public static string AutoConfigPath => Path.Combine(KagDir, "autoconfig.cfg");
         public static string RunLocalhostPath => Path.Combine(KagDir, "runlocalhost.bat");
         public static string RunDedicatedServerPath => Path.Combine(KagDir, "dedicatedserver.bat");
-        public static string KAGExecutablePath => Path.Combine(KagDir, "KAG.exe");
+        public static string KagExecutablePath => Path.Combine(KagDir, "KAG.exe");
 
         // Manual
         public static string ManualDir => Path.Combine(KagDir, "Manual", "interface");
@@ -40,80 +44,68 @@ namespace KAGTools.Helpers
         public static string ServerAutoStartScriptPath => Path.GetFullPath(@"Resources\server_autostart.as");
         public static string SoloAutoStartScriptPath => Path.GetFullPath(@"Resources\solo_autostart.as");
 
-        public static void GetConfigInfo(string filePath, params ConfigProperty[] properties)
+        public static void ReadConfigProperties(string filePath, params BaseConfigProperty[] configProperties)
         {
-            string[] lines = File.ReadAllLines(filePath);
-            for (int i = 0; i < lines.Length; i++)
-            {
-                string line = Regex.Replace(lines[i], @"\s+", "");
-                string[] args = line.Split('=');
-                if (args.Length > 1)
-                {
-                    string rawvalue = args[1];
-
-                    int commentIndex = rawvalue.IndexOf('#');
-                    if (commentIndex != -1)
-                    {
-                        rawvalue = rawvalue.Remove(commentIndex);
-                    }
-
-                    //Debug.WriteLine(rawvalue);
-
-                    foreach (var property in properties)
-                    {
-                        if (line.StartsWith(property.PropertyName))
-                        {
-                            object value = rawvalue;
-
-                            if (property is ConfigPropertyDouble)
-                            {
-                                double result = 0;
-                                double.TryParse(rawvalue, out result);
-                                value = result;
-                            }
-                            else if (property is ConfigPropertyBoolean)
-                            {
-                                value = rawvalue == "1";
-                            }
-
-                            property.Value = value;
-                        }
-                    }
-                }
-            }
+            ReadWriteConfigProperties(filePath, false, configProperties);
         }
 
-        public static void SetConfigInfo(string filePath, params ConfigProperty[] properties)
+        public static void WriteConfigProperties(string filePath, params BaseConfigProperty[] configProperties)
         {
+            ReadWriteConfigProperties(filePath, true, configProperties);
+        }
+
+        private static void ReadWriteConfigProperties(string filePath, bool writePropertiesToFile, params BaseConfigProperty[] configProperties)
+        {
+            var configPropertyList = new List<BaseConfigProperty>(configProperties);
+
             string[] lines = File.ReadAllLines(filePath);
             for (int i = 0; i < lines.Length; i++)
             {
-                string rawline = lines[i];
-                string line = Regex.Replace(rawline, @"\s+", "");
+                if (configPropertyList.Count == 0)
+                    break;
 
-                foreach (var property in properties)
+                string line = lines[i];
+                string lineNoComment = line;
+                string comment = null;
+
+                int commentStartIndex = line.IndexOf('#');
+                if (commentStartIndex != -1)
                 {
-                    if (line.StartsWith(property.PropertyName))
+                    lineNoComment = lineNoComment.Remove(commentStartIndex);
+                    comment = line.Substring(commentStartIndex);
+                }
+
+                int splitIndex = lineNoComment.IndexOf('=');
+                if (splitIndex == -1) continue;
+
+                string propertyName = lineNoComment.Substring(0, splitIndex).Trim();
+                string propertyValue = lineNoComment.Substring(splitIndex + 1).Trim();
+
+                var targetPropertyIndex = configPropertyList.FindIndex(p => p.Name == propertyName);
+                if (targetPropertyIndex != -1)
+                {
+                    var targetProperty = configProperties[targetPropertyIndex];
+
+                    if (writePropertiesToFile)
                     {
-                        string value = property.Value.ToString();
-
-                        if (property is ConfigPropertyBoolean)
+                        if(targetProperty.Value != propertyValue)
                         {
-                            value = (bool)property.Value ? "1" : "0";
+                            lines[i] = $"{propertyName} = {targetProperty.Value}" + (comment != null ? $" {comment}" : "");
                         }
-
-                        string comment = "";
-                        int commentIndex = rawline.IndexOf('#');
-                        if (commentIndex != -1)
-                        {
-                            comment = rawline.Substring(commentIndex);
-                        }
-
-                        lines[i] = property.PropertyName + " = " + value + "\t" + comment;
                     }
+                    else
+                    {
+                        targetProperty.Value = propertyValue;
+                    }
+
+                    configPropertyList.RemoveAt(targetPropertyIndex);
                 }
             }
-            File.WriteAllLines(filePath, lines);
+
+            if(writePropertiesToFile)
+            {
+                File.WriteAllLines(filePath, lines);
+            }
         }
 
         public static List<string> GetActiveModNames()
@@ -177,6 +169,23 @@ namespace KAGTools.Helpers
         public static string[] FindFiles(string dir, string fileName, bool includeSubs = true)
         {
             return Directory.GetFiles(dir, fileName, includeSubs ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
+        }
+
+        public static string FindGamemodeOfMod(string modDir)
+        {
+            string gamemodeConfigPath = FindFirstFile(modDir, "gamemode.cfg");
+            if (gamemodeConfigPath != null)
+            {
+                var gamemodeProperty = new StringConfigProperty("gamemode_name", null);
+                ReadConfigProperties(gamemodeConfigPath, gamemodeProperty);
+
+                if (!string.IsNullOrEmpty(gamemodeProperty.Value))
+                {
+                    return gamemodeProperty.Value;
+                }
+            }
+
+            return null;
         }
 
         public static List<ManualItem> GetManualFunctions(string fileName, bool findTypes = false)
