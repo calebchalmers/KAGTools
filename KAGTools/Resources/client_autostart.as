@@ -9,7 +9,7 @@ void Configure()
 
 void InitializeGame()
 {
-	print("INTIALIZING TEST CLIENT");
+	print("INITIALIZING TEST CLIENT");
 	LoadDefaultMapLoaders();
 	LoadDefaultMenuMusic();
 	ConnectLocalhost();

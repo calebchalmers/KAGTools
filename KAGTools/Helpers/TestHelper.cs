@@ -14,6 +14,8 @@ namespace KAGTools.Helpers
 {
     public static class TestHelper
     {
+        private static readonly string DEFAULT_RCONPASSWORD = "test";
+
         public static void TestSolo()
         {
             StartKagProcess(FileHelper.SoloAutoStartScriptPath);
@@ -23,17 +25,18 @@ namespace KAGTools.Helpers
         {
             var tcprProperty = new BoolConfigProperty("sv_tcpr", false);
             var portProperty = new IntConfigProperty("sv_port", -1);
+            var passwordProperty = new StringConfigProperty("sv_rconpassword", "");
             FileHelper.ReadConfigProperties(FileHelper.AutoConfigPath, 
                 tcprProperty,
-                portProperty
+                portProperty,
+                passwordProperty
             );
-
-            if (portProperty.Value == -1) return;
             
-            if(tcprProperty.Value == false)
+            if(tcprProperty.Value == false || passwordProperty.Value == "")
             {
                 tcprProperty.Value = true;
-                FileHelper.WriteConfigProperties(FileHelper.AutoConfigPath, tcprProperty);
+                passwordProperty.Value = DEFAULT_RCONPASSWORD; // default password
+                FileHelper.WriteConfigProperties(FileHelper.AutoConfigPath, tcprProperty, passwordProperty);
             }
 
             var serverProcess = StartKagProcess(FileHelper.ServerAutoStartScriptPath); // Start server process

@@ -5,16 +5,12 @@ void Configure()
 {
 	s_soundon = 0; // disable audio
 	v_driver = 0;  // disable video
-
-	if(sv_rconpassword == "")
-	{
-		sv_rconpassword = "test";
-	}
 }
 
 void InitializeGame()
 {
-	print("INTIALIZING TEST SERVER");
+	print("INITIALIZING TEST SERVER");
 	LoadDefaultMapLoaders();
+	//LoadDefaultMenuMusic();
 	RunServer();
 }
