@@ -120,31 +120,14 @@ namespace KAGTools.ViewModels
             Process.Start(FileHelper.KagDir);
         }
 
-        private void ExecuteTestMultiplayerCommand()
+        private async void ExecuteTestMultiplayerCommand()
         {
-            Process.Start(new ProcessStartInfo()
-            {
-                FileName = FileHelper.KagExecutablePath,
-                Arguments = string.Format("noautoupdate nolauncher autostart \"{0}\" autoconfig autoconfig.cfg", FileHelper.ServerAutoStartScriptPath),
-                WorkingDirectory = FileHelper.KagDir
-            });
-
-            Process.Start(new ProcessStartInfo()
-            {
-                FileName = FileHelper.KagExecutablePath,
-                Arguments = string.Format("noautoupdate nolauncher autostart \"{0}\"", FileHelper.ClientAutoStartScriptPath),
-                WorkingDirectory = FileHelper.KagDir
-            });
+            await TestHelper.TestMultiplayer();
         }
 
         private void ExecuteTestSoloCommand()
         {
-            Process.Start(new ProcessStartInfo()
-            {
-                FileName = FileHelper.KagExecutablePath,
-                Arguments = string.Format("noautoupdate nolauncher autostart \"{0}\"", FileHelper.SoloAutoStartScriptPath),
-                WorkingDirectory = FileHelper.KagDir
-            });
+            TestHelper.TestSolo();
         }
 
         private void ExecuteModsCommand()
