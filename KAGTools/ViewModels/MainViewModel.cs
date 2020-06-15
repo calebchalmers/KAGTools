@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using KAGTools.Data;
 using KAGTools.Helpers;
+using System.Net.Sockets;
 
 namespace KAGTools.ViewModels
 {
@@ -43,8 +44,8 @@ namespace KAGTools.ViewModels
             }
 
             OpenKagFolderCommand = new RelayCommand(ExecuteOpenKagFolderCommand);
-            RunServerClientCommand = new RelayCommand(ExecuteRunServerClientCommand);
-            RunLocalhostCommand = new RelayCommand(ExecuteRunLocalhostCommand);
+            TestMultiplayerCommand = new RelayCommand(ExecuteTestMultiplayerCommand);
+            TestSoloCommand = new RelayCommand(ExecuteTestSoloCommand);
             ModsCommand = new RelayCommand(ExecuteModsCommand);
             ManualCommand = new RelayCommand(ExecuteManualCommand);
             ApiCommand = new RelayCommand(ExecuteApiCommand);
@@ -108,8 +109,8 @@ namespace KAGTools.ViewModels
         }
 
         public ICommand OpenKagFolderCommand { get; private set; }
-        public ICommand RunServerClientCommand { get; private set; }
-        public ICommand RunLocalhostCommand { get; private set; }
+        public ICommand TestMultiplayerCommand { get; private set; }
+        public ICommand TestSoloCommand { get; private set; }
         public ICommand ModsCommand { get; private set; }
         public ICommand ManualCommand { get; private set; }
         public ICommand ApiCommand { get; private set; }
@@ -119,30 +120,14 @@ namespace KAGTools.ViewModels
             Process.Start(FileHelper.KagDir);
         }
 
-        private void ExecuteRunServerClientCommand()
+        private async void ExecuteTestMultiplayerCommand()
         {
-            Process.Start(new ProcessStartInfo()
-            {
-                FileName = FileHelper.KagExecutablePath,
-                Arguments = "noautoupdate nolauncher autostart Scripts/server_autostart.as autoconfig autoconfig.cfg",
-                WorkingDirectory = FileHelper.KagDir
-            });
-            
-            Process.Start(new ProcessStartInfo()
-            {
-                FileName = FileHelper.KagExecutablePath,
-                Arguments = string.Format("noautoupdate nolauncher autostart \"{0}\"", FileHelper.ClientLocalhostScriptPath),
-                WorkingDirectory = FileHelper.KagDir
-            });
+            await TestHelper.TestMultiplayer();
         }
 
-        private void ExecuteRunLocalhostCommand()
+        private void ExecuteTestSoloCommand()
         {
-            Process.Start(new ProcessStartInfo()
-            {
-                FileName = FileHelper.RunLocalhostPath,
-                WorkingDirectory = FileHelper.KagDir
-            });
+            TestHelper.TestSolo();
         }
 
         private void ExecuteModsCommand()

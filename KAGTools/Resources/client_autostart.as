@@ -1,9 +1,6 @@
-// initialize script
-
 #include "Default/DefaultStart.as"
 #include "Default/DefaultLoaders.as"
 
-//we can use this to set autoconfig stuff here
 void Configure()
 {
 	s_soundon = 1; // sound on
@@ -12,8 +9,8 @@ void Configure()
 
 void InitializeGame()
 {
-	print("Initializing Game Script");
+	print("INITIALIZING TEST CLIENT");
 	LoadDefaultMapLoaders();
 	LoadDefaultMenuMusic();
-    ConnectLocalhost();
+	ConnectLocalhost();
 }

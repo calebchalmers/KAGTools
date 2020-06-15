@@ -39,8 +39,10 @@ namespace KAGTools.Helpers
         private const int ManualHeaderLineCount = 3;
         private const char ManualIndentCharacter = '\t';
 
-        // Resources
-        public static string ClientLocalhostScriptPath => Path.GetFullPath(@"Resources\client_localhost.as");
+        // Auto-Start scripts
+        public static string ClientAutoStartScriptPath => Path.GetFullPath(@"Resources\client_autostart.as");
+        public static string ServerAutoStartScriptPath => Path.GetFullPath(@"Resources\server_autostart.as");
+        public static string SoloAutoStartScriptPath => Path.GetFullPath(@"Resources\solo_autostart.as");
 
         public static void ReadConfigProperties(string filePath, params BaseConfigProperty[] configProperties)
         {
