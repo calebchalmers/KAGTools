@@ -17,7 +17,7 @@ namespace KAGTools.Helpers
     public static class FileHelper
     {
         // KAG directories/files
-        public static string KagDir => Properties.Settings.Default.KagDirectory;
+        public static string KagDir => App.Settings.KagDirectory;
         public static string ScreenshotsDir => Path.Combine(KagDir, "Screenshots");
         public static string ModsDir => Path.Combine(KagDir, "Mods");
         public static string StartupConfigPath => Path.Combine(KagDir, "startup_config.cfg");

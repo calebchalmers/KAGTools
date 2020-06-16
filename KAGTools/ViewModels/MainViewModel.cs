@@ -19,8 +19,6 @@ namespace KAGTools.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private static Properties.Settings Settings = Properties.Settings.Default;
-
         private static readonly string[] DEFAULT_GAMEMODES = 
         {
             "CTF",
@@ -38,11 +36,6 @@ namespace KAGTools.ViewModels
 
         public MainViewModel()
         {
-            if (string.IsNullOrEmpty(Settings.KagDirectory))
-            {
-                return;
-            }
-
             OpenKagFolderCommand = new RelayCommand(ExecuteOpenKagFolderCommand);
             TestMultiplayerCommand = new RelayCommand(ExecuteTestMultiplayerCommand);
             TestSoloCommand = new RelayCommand(ExecuteTestSoloCommand);

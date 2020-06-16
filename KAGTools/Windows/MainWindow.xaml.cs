@@ -28,7 +28,7 @@ namespace KAGTools.Windows
     {
         public MainWindow()
         {
-            if (double.IsNaN(Properties.Settings.Default.Left) || double.IsNaN(Properties.Settings.Default.Top))
+            if (double.IsNaN(App.Settings.Left) || double.IsNaN(App.Settings.Top))
             {
                 WindowStartupLocation = WindowStartupLocation.CenterScreen;
             }

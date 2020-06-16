@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:KAGTools.Windows"
         xmlns:usercontrols="clr-namespace:KAGTools.UserControls"
         xmlns:viewmodels="clr-namespace:KAGTools.ViewModels.Manual"
-        xmlns:properties="clr-namespace:KAGTools.Properties"
+        xmlns:base="clr-namespace:KAGTools"
         mc:Ignorable="d"
         Title="Manual"
-        Height="{Binding ManualWindowHeight, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
-        Width="{Binding ManualWindowWidth, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
-        Top="{Binding ManualWindowTop, Mode=TwoWay, Source={x:Static properties:Settings.Default}}"
-        Left="{Binding ManualWindowLeft, Mode=TwoWay, Source={x:Static properties:Settings.Default}}">
+        Height="{Binding ManualWindowHeight, Mode=TwoWay, Source={x:Static base:App.Settings}}"
+        Width="{Binding ManualWindowWidth, Mode=TwoWay, Source={x:Static base:App.Settings}}"
+        Top="{Binding ManualWindowTop, Mode=TwoWay, Source={x:Static base:App.Settings}}"
+        Left="{Binding ManualWindowLeft, Mode=TwoWay, Source={x:Static base:App.Settings}}">
     <TabControl>
         <TabItem Header="Objects">
             <usercontrols:ManualGenericUserControl>

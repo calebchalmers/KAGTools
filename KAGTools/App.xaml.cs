@@ -3,6 +3,7 @@ using KAGTools.Helpers;
 using KAGTools.ViewModels;
 using KAGTools.Windows;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using Newtonsoft.Json;
 using Squirrel;
 using System;
 using System.Collections.Generic;
@@ -21,11 +22,41 @@ namespace KAGTools
     public partial class App : Application
     {
         private const ShortcutLocation ShortcutLocations = ShortcutLocation.StartMenu | ShortcutLocation.Desktop;
-        private static KAGTools.Properties.Settings Settings = KAGTools.Properties.Settings.Default;
+
+        #region Settings
+        public static Data.Settings Settings;
+        private static string ConfigPath = Path.Combine("..", "config");
+        private static string SettingsFileName = "settings.json";
+        private static string SettingsFilePath = Path.Combine(ConfigPath, SettingsFileName);
+        private static JsonSerializerSettings SettingsSerializerSettings = new JsonSerializerSettings()
+        {
+            DefaultValueHandling = DefaultValueHandling.Populate,
+            Formatting = Formatting.Indented,
+            FloatFormatHandling = FloatFormatHandling.String,
+            FloatParseHandling = FloatParseHandling.Double
+        };
+
+        public static void LoadSettings()
+        {
+            string json = "{}";
+            if(File.Exists(SettingsFilePath))
+            {
+                json = File.ReadAllText(SettingsFilePath);
+            }
+            Settings = JsonConvert.DeserializeObject<Data.Settings>(json, SettingsSerializerSettings);
+        }
+
+        public static void SaveSettings()
+        {
+            Directory.CreateDirectory(ConfigPath);
+            string json = JsonConvert.SerializeObject(Settings, SettingsSerializerSettings);
+            File.WriteAllText(SettingsFilePath, json);
+        }
+        #endregion
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            Settings.Save();
+            SaveSettings();
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
@@ -39,10 +70,7 @@ namespace KAGTools
                     onAppUninstall: (v) => OnAppUninstall(v, mgr));
             }
 
-            if (!UpdateHelper.RestoreSettings())
-            {
-                MessageBox.Show("There was an error restoring settings.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            LoadSettings();
 
             if (!Directory.Exists(Settings.KagDirectory))
             {

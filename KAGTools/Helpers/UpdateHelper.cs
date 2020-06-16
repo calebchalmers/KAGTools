@@ -21,7 +21,7 @@ namespace KAGTools.Helpers
         {
             try
             {
-                using (UpdateManager mgr = await UpdateManager.GitHubUpdateManager(ConfigurationManager.AppSettings["UpdateUrl"], prerelease: Settings.Default.UsePreReleases))
+                using (UpdateManager mgr = await UpdateManager.GitHubUpdateManager(ConfigurationManager.AppSettings["UpdateUrl"], prerelease: App.Settings.UsePreReleases))
                 {
                     UpdateInfo updates = await mgr.CheckForUpdate();
                     if (updates.ReleasesToApply.Count > 0)
