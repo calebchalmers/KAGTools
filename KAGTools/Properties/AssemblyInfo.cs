@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("KAG Tools")]
 [assembly: AssemblyDescription("A set of useful modding tools for the game King Arthur's Gold.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Caleb Chalmers")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("KAG Tools")]
-[assembly: AssemblyCopyright("Copyright © Caleb Chalmers 2018")]
+[assembly: AssemblyCopyright("Copyright © Caleb Chalmers 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
