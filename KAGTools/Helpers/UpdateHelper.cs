@@ -1,14 +1,9 @@
 ﻿using Squirrel;
 using System;
-using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Configuration;
-using System.IO;
-using System.Reflection;
-using KAGTools.Properties;
 using System.Windows;
 
 namespace KAGTools.Helpers

@@ -1,16 +1,12 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using KAGTools.Data;
+using KAGTools.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using KAGTools.Data;
-using KAGTools.Helpers;
 using System.Text.RegularExpressions;
-using System.Drawing.Text;
+using System.Windows.Input;
 
 namespace KAGTools.ViewModels.Manual
 {
@@ -44,7 +40,7 @@ namespace KAGTools.ViewModels.Manual
                 item.Type.IndexOf(TypeFilter, StringComparison.OrdinalIgnoreCase) == -1)
                 return false;
 
-            if (!string.IsNullOrEmpty(SearchFilter) && 
+            if (!string.IsNullOrEmpty(SearchFilter) &&
                 !Regex.IsMatch(item.Value, searchRegexPattern, RegexOptions.IgnoreCase))
                 return false;
 

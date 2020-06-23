@@ -1,11 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace KAGTools.ViewModels
@@ -28,7 +24,7 @@ namespace KAGTools.ViewModels
         {
         }
 
-        public FilterListViewModelBase(IEnumerable<T> items) : 
+        public FilterListViewModelBase(IEnumerable<T> items) :
             this(new ObservableCollection<T>(items))
         {
         }
@@ -56,7 +52,8 @@ namespace KAGTools.ViewModels
         public ObservableCollection<T> Items
         {
             get => _items;
-            set => this.SetProperty(ref _items, value, () => {
+            set => this.SetProperty(ref _items, value, () =>
+            {
                 _filteredItems.Source = value;
                 RaisePropertyChanged(() => FilteredItems);
             });

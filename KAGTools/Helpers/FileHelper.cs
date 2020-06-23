@@ -1,16 +1,8 @@
-﻿using System;
+﻿using KAGTools.Data;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using KAGTools.Data;
-using NuGet;
-using Xceed.Wpf.Toolkit.PropertyGrid;
 
 namespace KAGTools.Helpers
 {
@@ -88,7 +80,7 @@ namespace KAGTools.Helpers
 
                     if (writePropertiesToFile)
                     {
-                        if(targetProperty.Value != propertyValue)
+                        if (targetProperty.Value != propertyValue)
                         {
                             lines[i] = $"{propertyName} = {targetProperty.Value}" + (comment != null ? $" {comment}" : "");
                         }
@@ -102,7 +94,7 @@ namespace KAGTools.Helpers
                 }
             }
 
-            if(writePropertiesToFile)
+            if (writePropertiesToFile)
             {
                 File.WriteAllLines(filePath, lines);
             }
@@ -195,22 +187,22 @@ namespace KAGTools.Helpers
             using (StreamReader reader = new StreamReader(fileName))
             {
                 string line = "";
-                
-                for(int i = 0; i < ManualHeaderLineCount; i++) // Remove manual header
+
+                for (int i = 0; i < ManualHeaderLineCount; i++) // Remove manual header
                 {
                     reader.ReadLine();
                 }
 
                 string lastType = null;
 
-                while((line = reader.ReadLine()) != null)
+                while ((line = reader.ReadLine()) != null)
                 {
                     if (string.IsNullOrEmpty(line))
                         continue;
 
                     if (findTypes)
                     {
-                        if(!line.StartsWith(ManualIndentCharacter.ToString())) // Is a class declaration
+                        if (!line.StartsWith(ManualIndentCharacter.ToString())) // Is a class declaration
                         {
                             lastType = line;
                             continue;

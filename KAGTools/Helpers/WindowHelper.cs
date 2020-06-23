@@ -1,12 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace KAGTools.Helpers
@@ -24,7 +19,7 @@ namespace KAGTools.Helpers
 
         public static void Register(Type viewModelType, Type windowType)
         {
-            if(viewMap.ContainsKey(viewModelType))
+            if (viewMap.ContainsKey(viewModelType))
             {
                 throw new ArgumentException("ViewModel already registered.");
             }
@@ -55,14 +50,14 @@ namespace KAGTools.Helpers
 
             Type windowType = viewMap[viewModelType];
 
-            if(!forceNew)
+            if (!forceNew)
             {
                 Window focusWindow = openWindows.LastOrDefault(w => w.GetType() == windowType);
 
                 // Activate window and show if minimized
                 if (focusWindow != null)
                 {
-                    if(focusWindow.WindowState == WindowState.Minimized)
+                    if (focusWindow.WindowState == WindowState.Minimized)
                     {
                         focusWindow.WindowState = WindowState.Normal;
                     }
@@ -85,7 +80,7 @@ namespace KAGTools.Helpers
         {
             Window targetWindow = openWindows.FirstOrDefault(w => w.DataContext == msg.ViewModel);
 
-            if(targetWindow != null)
+            if (targetWindow != null)
             {
                 targetWindow.DialogResult = msg.DialogResult;
                 targetWindow.Close();

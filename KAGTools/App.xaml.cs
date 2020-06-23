@@ -6,12 +6,7 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
 using Squirrel;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace KAGTools
@@ -39,7 +34,7 @@ namespace KAGTools
         public static void LoadSettings()
         {
             string json = "{}";
-            if(File.Exists(SettingsFilePath))
+            if (File.Exists(SettingsFilePath))
             {
                 json = File.ReadAllText(SettingsFilePath);
             }
@@ -118,7 +113,7 @@ namespace KAGTools
 
             MessageBox.Show(string.Format("{0} version (v{1}) was successfully installed.", AssemblyHelper.AppName, AssemblyHelper.Version), "Update", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-        
+
         private static void OnAppUninstall(Version version, UpdateManager mgr)
         {
             mgr.RemoveShortcutsForExecutable(AssemblyHelper.AppFileName, ShortcutLocations);
@@ -130,7 +125,7 @@ namespace KAGTools
 
         private bool FindKagDirectory()
         {
-            while(true) // keep asking until they give a valid directory or cancel
+            while (true) // keep asking until they give a valid directory or cancel
             {
                 CommonOpenFileDialog dialog = new CommonOpenFileDialog
                 {
@@ -158,9 +153,9 @@ namespace KAGTools
                     else
                     {
                         MessageBox.Show(
-                            string.Format("KAG.exe was not found in '{0}'.{1}Please select your King Arthur's Gold install directory.", dir, Environment.NewLine), 
-                            "Invalid Directory", 
-                            MessageBoxButton.OK, 
+                            string.Format("KAG.exe was not found in '{0}'.{1}Please select your King Arthur's Gold install directory.", dir, Environment.NewLine),
+                            "Invalid Directory",
+                            MessageBoxButton.OK,
                             MessageBoxImage.Error);
                         continue;
                     }

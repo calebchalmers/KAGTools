@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using KAGTools.Helpers;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using KAGTools.Helpers;
 
 namespace KAGTools.Data
 {
@@ -20,7 +15,7 @@ namespace KAGTools.Data
         {
             get
             {
-                if(_gamemode == null)
+                if (_gamemode == null)
                 {
                     _gamemode = FileHelper.FindGamemodeOfMod(Directory);
                 }

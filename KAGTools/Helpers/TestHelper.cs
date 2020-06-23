@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using KAGTools.Data;
+using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using KAGTools.Data;
 
 namespace KAGTools.Helpers
 {
@@ -26,13 +20,13 @@ namespace KAGTools.Helpers
             var tcprProperty = new BoolConfigProperty("sv_tcpr", false);
             var portProperty = new IntConfigProperty("sv_port", -1);
             var passwordProperty = new StringConfigProperty("sv_rconpassword", "");
-            FileHelper.ReadConfigProperties(FileHelper.AutoConfigPath, 
+            FileHelper.ReadConfigProperties(FileHelper.AutoConfigPath,
                 tcprProperty,
                 portProperty,
                 passwordProperty
             );
-            
-            if(tcprProperty.Value == false || passwordProperty.Value == "")
+
+            if (tcprProperty.Value == false || passwordProperty.Value == "")
             {
                 tcprProperty.Value = true;
                 passwordProperty.Value = DEFAULT_RCONPASSWORD; // default password
@@ -42,8 +36,8 @@ namespace KAGTools.Helpers
             var serverProcess = StartKagProcess(FileHelper.ServerAutoStartScriptPath); // Start server process
 
             TcpClient tcpClient = new TcpClient(AddressFamily.InterNetwork);
-            
-            for(int i = 0; i < 100; i++)
+
+            for (int i = 0; i < 100; i++)
             {
                 if (serverProcess.HasExited) break;
 

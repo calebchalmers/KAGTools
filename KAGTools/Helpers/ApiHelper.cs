@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using KAGTools.Data.API;
+using Newtonsoft.Json;
+using System;
 using System.Configuration;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using KAGTools.Data.API;
-using Newtonsoft.Json;
 
 namespace KAGTools.Helpers
 {

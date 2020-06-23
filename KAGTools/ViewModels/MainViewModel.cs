@@ -1,25 +1,18 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
-using System;
+using KAGTools.Data;
+using KAGTools.Helpers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using KAGTools.Data;
-using KAGTools.Helpers;
-using System.Net.Sockets;
 
 namespace KAGTools.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private static readonly string[] DEFAULT_GAMEMODES = 
+        private static readonly string[] DEFAULT_GAMEMODES =
         {
             "CTF",
             "TDM",
