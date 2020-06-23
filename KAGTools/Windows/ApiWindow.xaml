@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:local="clr-namespace:KAGTools.Windows"
         xmlns:viewmodels="clr-namespace:KAGTools.ViewModels.API"
         xmlns:data="clr-namespace:KAGTools.Data"
@@ -28,6 +29,14 @@
             <TabItem.DataContext>
                 <viewmodels:ApiServerBrowserViewModel />
             </TabItem.DataContext>
+            <TabItem.Resources>
+                <CollectionViewSource Source="{Binding FilteredItems}" x:Key="ServerListItemsSource">
+                    <CollectionViewSource.SortDescriptions>
+                        <scm:SortDescription PropertyName="PlayerCount" Direction="Descending" />
+                        <scm:SortDescription PropertyName="Name" Direction="Ascending" />
+                    </CollectionViewSource.SortDescriptions>
+                </CollectionViewSource>
+            </TabItem.Resources>
             <Grid RenderOptions.BitmapScalingMode="NearestNeighbor">
                 <Grid x:Name="ServerPanel">
                     <Grid.Effect>
@@ -58,7 +67,7 @@
                             servers
                         </StatusBar>
                         <Grid>
-                            <ListBox x:Name="ServerList" ItemsSource="{Binding FilteredItems}" SelectedItem="{Binding Selected}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch" TabIndex="3">
+                            <ListBox ItemsSource="{Binding Source={StaticResource ServerListItemsSource}}" SelectedItem="{Binding Selected}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch" TabIndex="3">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <DockPanel>

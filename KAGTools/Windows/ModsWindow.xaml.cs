@@ -11,9 +11,6 @@ namespace KAGTools.Windows
         public ModsWindow()
         {
             InitializeComponent();
-
-            ListBox.Items.SortDescriptions.Add(new SortDescription("IsActive", ListSortDirection.Descending));
-            ListBox.Items.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
         }
     }
 }

@@ -11,8 +11,6 @@ namespace KAGTools.Windows
         public ApiWindow()
         {
             InitializeComponent();
-
-            ServerList.Items.SortDescriptions.Add(new SortDescription("PlayerCount", ListSortDirection.Descending));
         }
     }
 }

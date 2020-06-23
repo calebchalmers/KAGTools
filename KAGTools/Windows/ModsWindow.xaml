@@ -4,15 +4,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:local="clr-namespace:KAGTools.Windows"
         xmlns:viewmodels="clr-namespace:KAGTools.ViewModels"
         mc:Ignorable="d"
         Title="Mods" Height="400" Width="300" WindowStartupLocation="CenterOwner" FocusManager.FocusedElement="{Binding ElementName=SearchControl}" ResizeMode="NoResize">
+    <Window.Resources>
+        <CollectionViewSource Source="{Binding FilteredItems}" x:Key="ItemsSource">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="IsActive" Direction="Descending"/>
+                <scm:SortDescription PropertyName="Name" Direction="Ascending"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+    </Window.Resources>
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
             <xctk:WatermarkTextBox x:Name="SearchControl" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="1"/>
         </DockPanel>
-        <ListBox x:Name="ListBox" ItemsSource="{Binding FilteredItems}" SelectedItem="{Binding Selected}" BorderThickness="1,0,1,1" HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" TabIndex="2">
+        <ListBox ItemsSource="{Binding Source={StaticResource ItemsSource}}" SelectedItem="{Binding Selected}" BorderThickness="1,0,1,1" HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" TabIndex="2">
             <ListBox.Resources>
                 <ContextMenu x:Key="ModContextMenu" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
                     <MenuItem Header="Open" Command="{Binding OpenCommand}"/>
