@@ -1,7 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
+using System.Linq;
 using System.Windows.Data;
 
 namespace KAGTools.ViewModels
@@ -9,13 +9,11 @@ namespace KAGTools.ViewModels
     public abstract class FilterListViewModelBase<T> : ViewModelBase where T : class
     {
         private ObservableCollection<T> _items;
-        private CollectionViewSource _filteredItems;
+        private ObservableCollection<T> _filteredItems;
         private T _selected;
 
         public FilterListViewModelBase(ObservableCollection<T> items)
         {
-            _filteredItems = new CollectionViewSource();
-            _filteredItems.Filter += FilteredItems_Filter;
             Items = items;
         }
 
@@ -24,7 +22,7 @@ namespace KAGTools.ViewModels
         {
         }
 
-        public FilterListViewModelBase(IEnumerable<T> items) :
+        public FilterListViewModelBase(IEnumerable<T> items) : 
             this(new ObservableCollection<T>(items))
         {
         }
@@ -41,27 +39,19 @@ namespace KAGTools.ViewModels
 
         protected void RefreshFilters()
         {
-            FilteredItems.Refresh();
-        }
-
-        protected SortDescriptionCollection SortDescriptions
-        {
-            get => _filteredItems.SortDescriptions;
+            FilteredItems = new ObservableCollection<T>(Items.Where(FilterItem));
         }
 
         public ObservableCollection<T> Items
         {
             get => _items;
-            set => this.SetProperty(ref _items, value, () =>
-            {
-                _filteredItems.Source = value;
-                RaisePropertyChanged(() => FilteredItems);
-            });
+            set => this.SetProperty(ref _items, value, RefreshFilters);
         }
 
-        public ICollectionView FilteredItems
+        public ObservableCollection<T> FilteredItems
         {
-            get => _filteredItems.View;
+            get => _filteredItems;
+            private set => this.SetProperty(ref _filteredItems, value);
         }
 
         public T Selected
