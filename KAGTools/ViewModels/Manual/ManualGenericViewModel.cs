@@ -18,7 +18,7 @@ namespace KAGTools.ViewModels.Manual
         private string _fileName = "";
         private bool _hasTypes = false;
 
-        private string searchRegexPattern = @".*";
+        private Regex searchRegex;
 
         public ManualGenericViewModel(string fileName, bool hasTypes) :
             base(FileHelper.GetManualFunctions(fileName, hasTypes))
@@ -40,8 +40,8 @@ namespace KAGTools.ViewModels.Manual
                 item.Type.IndexOf(TypeFilter, StringComparison.OrdinalIgnoreCase) == -1)
                 return false;
 
-            if (!string.IsNullOrEmpty(SearchFilter) &&
-                !Regex.IsMatch(item.Value, searchRegexPattern, RegexOptions.IgnoreCase))
+            if (!string.IsNullOrEmpty(SearchFilter) && 
+                !searchRegex.IsMatch(item.Value))
                 return false;
 
             return true;
@@ -53,7 +53,7 @@ namespace KAGTools.ViewModels.Manual
             set
             {
                 string escapedFilter = Regex.Replace(value, @"[.*+?^${}()|[\]\\]", @"\$&");
-                searchRegexPattern = string.Format(@"^{0}.*$", Regex.Replace(escapedFilter, @"([^ ]+) *", "(?=.*$1)"));
+                searchRegex = new Regex(string.Format(@"^{0}.*$", Regex.Replace(escapedFilter, @"([^ ]+) *", "(?=.*$1)")), RegexOptions.IgnoreCase);
 
                 this.SetProperty(ref _searchFilter, value, RefreshFilters);
             }
