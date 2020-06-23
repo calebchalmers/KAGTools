@@ -7,12 +7,12 @@
         xmlns:local="clr-namespace:KAGTools.Windows"
         xmlns:viewmodels="clr-namespace:KAGTools.ViewModels"
         mc:Ignorable="d"
-        Title="Mods" Height="400" Width="300" WindowStartupLocation="CenterOwner" FocusManager.FocusedElement="{Binding ElementName=searchBox}" ResizeMode="NoResize">
+        Title="Mods" Height="400" Width="300" WindowStartupLocation="CenterOwner" FocusManager.FocusedElement="{Binding ElementName=SearchControl}" ResizeMode="NoResize">
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
-            <xctk:WatermarkTextBox x:Name="searchBox" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="1"/>
+            <xctk:WatermarkTextBox x:Name="SearchControl" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="1"/>
         </DockPanel>
-        <ListBox x:Name="listbox" ItemsSource="{Binding FilteredItems}" SelectedItem="{Binding Selected}" BorderThickness="1,0,1,1" HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" TabIndex="2">
+        <ListBox x:Name="ListBox" ItemsSource="{Binding FilteredItems}" SelectedItem="{Binding Selected}" BorderThickness="1,0,1,1" HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" TabIndex="2">
             <ListBox.Resources>
                 <ContextMenu x:Key="ModContextMenu" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
                     <MenuItem Header="Open" Command="{Binding OpenCommand}"/>

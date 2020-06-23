@@ -12,8 +12,8 @@ namespace KAGTools.Windows
         {
             InitializeComponent();
 
-            listbox.Items.SortDescriptions.Add(new SortDescription("IsActive", ListSortDirection.Descending));
-            listbox.Items.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+            ListBox.Items.SortDescriptions.Add(new SortDescription("IsActive", ListSortDirection.Descending));
+            ListBox.Items.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
         }
     }
 }

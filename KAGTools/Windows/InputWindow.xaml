@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:KAGTools.Windows"
         mc:Ignorable="d"
         Title="{Binding Title}" Height="127" Width="300" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" SizeToContent="Height"
-        FocusManager.FocusedElement="{Binding ElementName=inputBox}">
+        FocusManager.FocusedElement="{Binding ElementName=InputControl}">
     <StackPanel Margin="5">
         <StackPanel.Resources>
             <Style TargetType="{x:Type Button}">
@@ -30,7 +30,7 @@
             </Style>
         </StackPanel.Resources>
         <Label Content="{Binding InputLabelText}"/>
-        <TextBox x:Name="inputBox" Text="{Binding Input, Mode=TwoWay}"/>
+        <TextBox x:Name="InputControl" Text="{Binding Input, Mode=TwoWay}"/>
         <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Margin="0,7,0,0">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type Button}">

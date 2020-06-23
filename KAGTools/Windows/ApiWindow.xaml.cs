@@ -12,7 +12,7 @@ namespace KAGTools.Windows
         {
             InitializeComponent();
 
-            serverList.Items.SortDescriptions.Add(new SortDescription("PlayerCount", ListSortDirection.Descending));
+            ServerList.Items.SortDescriptions.Add(new SortDescription("PlayerCount", ListSortDirection.Descending));
         }
     }
 }

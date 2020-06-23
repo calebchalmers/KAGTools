@@ -15,7 +15,7 @@ namespace KAGTools.UserControls
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            txtbox_Search.Focus();
+            SearchControl.Focus();
         }
     }
 }

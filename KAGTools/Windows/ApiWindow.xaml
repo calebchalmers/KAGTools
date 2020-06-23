@@ -8,7 +8,7 @@
         xmlns:viewmodels="clr-namespace:KAGTools.ViewModels.API"
         xmlns:data="clr-namespace:KAGTools.Data"
         mc:Ignorable="d"
-        Title="API Browser" Height="470" Width="660" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" FocusManager.FocusedElement="{Binding ElementName=searchBox}">
+        Title="API Browser" Height="470" Width="660" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" FocusManager.FocusedElement="{Binding ElementName=ServerSearchControl}">
     <Window.Resources>
         <Style x:Key="PropertyPanel" TargetType="{x:Type StackPanel}">
             <Setter Property="TextElement.FontSize" Value="13"/>
@@ -29,7 +29,7 @@
                 <viewmodels:ApiServerBrowserViewModel />
             </TabItem.DataContext>
             <Grid RenderOptions.BitmapScalingMode="NearestNeighbor">
-                <Grid x:Name="serverPanel">
+                <Grid x:Name="ServerPanel">
                     <Grid.Effect>
                         <BlurEffect Radius="0"/>
                     </Grid.Effect>
@@ -41,7 +41,7 @@
                     <DockPanel Grid.Column="0">
                         <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
                             <Button DockPanel.Dock="Right" Content="⟳" HorizontalContentAlignment="Center" Command="{Binding RefreshServersCommand}" ToolTip="Refresh" TabIndex="2"/>
-                            <xctk:WatermarkTextBox x:Name="searchBox" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="1"/>
+                            <xctk:WatermarkTextBox x:Name="ServerSearchControl" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="1"/>
                         </DockPanel>
                         <StatusBar DockPanel.Dock="Bottom" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}" Padding="5,3">
                             <StatusBar.Resources>
@@ -58,7 +58,7 @@
                             servers
                         </StatusBar>
                         <Grid>
-                            <ListBox x:Name="serverList" ItemsSource="{Binding FilteredItems}" SelectedItem="{Binding Selected}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch" TabIndex="3">
+                            <ListBox x:Name="ServerList" ItemsSource="{Binding FilteredItems}" SelectedItem="{Binding Selected}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch" TabIndex="3">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <DockPanel>
@@ -99,14 +99,14 @@
                                 <EventTrigger RoutedEvent="MouseEnter">
                                     <BeginStoryboard>
                                         <Storyboard>
-                                            <DoubleAnimation To="5" Duration="0:0:0.15" Storyboard.TargetProperty="Effect.Radius" Storyboard.TargetName="serverPanel"/>
-                                            <DoubleAnimation To="1" Duration="0:0:0.15" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="bigMinimapBackground"/>
-                                            <DoubleAnimation To="1" Duration="0:0:0.3" Storyboard.TargetProperty="RenderTransform.ScaleX" Storyboard.TargetName="bigMinimapImage">
+                                            <DoubleAnimation To="5" Duration="0:0:0.15" Storyboard.TargetProperty="Effect.Radius" Storyboard.TargetName="ServerPanel"/>
+                                            <DoubleAnimation To="1" Duration="0:0:0.15" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="BigMinimapBackground"/>
+                                            <DoubleAnimation To="1" Duration="0:0:0.3" Storyboard.TargetProperty="RenderTransform.ScaleX" Storyboard.TargetName="BigMinimapImage">
                                                 <DoubleAnimation.EasingFunction>
                                                     <QuinticEase EasingMode="EaseOut"/>
                                                 </DoubleAnimation.EasingFunction>
                                             </DoubleAnimation>
-                                            <DoubleAnimation To="1" Duration="0:0:0.3" Storyboard.TargetProperty="RenderTransform.ScaleY" Storyboard.TargetName="bigMinimapImage">
+                                            <DoubleAnimation To="1" Duration="0:0:0.3" Storyboard.TargetProperty="RenderTransform.ScaleY" Storyboard.TargetName="BigMinimapImage">
                                                 <DoubleAnimation.EasingFunction>
                                                     <QuinticEase EasingMode="EaseOut"/>
                                                 </DoubleAnimation.EasingFunction>
@@ -117,17 +117,17 @@
                                 <EventTrigger RoutedEvent="MouseLeave">
                                     <BeginStoryboard>
                                         <Storyboard>
-                                            <DoubleAnimation To="0" Duration="0:0:0.15" Storyboard.TargetProperty="Effect.Radius" Storyboard.TargetName="serverPanel"/>
-                                            <DoubleAnimation To="0" Duration="0:0:0.15" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="bigMinimapBackground"/>
-                                            <DoubleAnimation To="0.8" Duration="0:0:0.15" Storyboard.TargetProperty="RenderTransform.ScaleX" Storyboard.TargetName="bigMinimapImage"/>
-                                            <DoubleAnimation To="0.8" Duration="0:0:0.15" Storyboard.TargetProperty="RenderTransform.ScaleY" Storyboard.TargetName="bigMinimapImage"/>
+                                            <DoubleAnimation To="0" Duration="0:0:0.15" Storyboard.TargetProperty="Effect.Radius" Storyboard.TargetName="ServerPanel"/>
+                                            <DoubleAnimation To="0" Duration="0:0:0.15" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="BigMinimapBackground"/>
+                                            <DoubleAnimation To="0.8" Duration="0:0:0.15" Storyboard.TargetProperty="RenderTransform.ScaleX" Storyboard.TargetName="BigMinimapImage"/>
+                                            <DoubleAnimation To="0.8" Duration="0:0:0.15" Storyboard.TargetProperty="RenderTransform.ScaleY" Storyboard.TargetName="BigMinimapImage"/>
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </EventTrigger>
                             </Image.Triggers>
                         </Image>
 
-                        <StackPanel x:Name="titlePanel" Grid.Row="0">
+                        <StackPanel Grid.Row="0">
                             <StackPanel.Effect>
                                 <BlurEffect Radius="0"/>
                             </StackPanel.Effect>
@@ -186,11 +186,11 @@
                     </Grid>
                 </Grid>
 
-                <Border x:Name="bigMinimapBackground" Grid.ColumnSpan="2" Opacity="0" IsHitTestVisible="False">
+                <Border x:Name="BigMinimapBackground" Grid.ColumnSpan="2" Opacity="0" IsHitTestVisible="False">
                     <Border.Background>
                         <SolidColorBrush Color="Black" Opacity="0.5"/>
                     </Border.Background>
-                    <Image x:Name="bigMinimapImage" Source="{Binding MinimapBitmap}" Stretch="Uniform" RenderTransformOrigin="0.5,0.5">
+                    <Image x:Name="BigMinimapImage" Source="{Binding MinimapBitmap}" Stretch="Uniform" RenderTransformOrigin="0.5,0.5">
                         <Image.RenderTransform>
                             <ScaleTransform ScaleX="0.5" ScaleY="0.5"/>
                         </Image.RenderTransform>
@@ -202,10 +202,10 @@
             <TabItem.DataContext>
                 <viewmodels:ApiPlayerInfoViewModel />
             </TabItem.DataContext>
-            <DockPanel FocusManager.FocusedElement="{Binding ElementName=tbx_playerSearch}">
+            <DockPanel FocusManager.FocusedElement="{Binding ElementName=PlayerSearchControl}">
                 <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
                     <Button Content="Search" DockPanel.Dock="Right" Command="{Binding SearchCommand}" IsDefault="True" TabIndex="2"/>
-                    <xctk:WatermarkTextBox x:Name="tbx_playerSearch" Watermark="Username..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="1"/>
+                    <xctk:WatermarkTextBox x:Name="PlayerSearchControl" Watermark="Username..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="1"/>
                 </DockPanel>
                 <Grid>
                     <Grid Visibility="{Binding SearchState, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter={x:Static data:AsyncTaskState.Finished}}">
