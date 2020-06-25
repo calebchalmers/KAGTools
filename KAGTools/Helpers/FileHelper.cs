@@ -8,6 +8,11 @@ namespace KAGTools.Helpers
 {
     public static class FileHelper
     {
+        // Application
+        public static string CommonDir = Path.Combine("..", "common");
+        public static string SettingsPath = Path.Combine(CommonDir, "settings.json");
+        public static string LogPath = Path.Combine(CommonDir, "log.txt");
+
         // KAG directories/files
         public static string KagDir => App.Settings.KagDirectory;
         public static string ScreenshotsDir => Path.Combine(KagDir, "Screenshots");
@@ -32,9 +37,9 @@ namespace KAGTools.Helpers
         private const char ManualIndentCharacter = '\t';
 
         // Auto-Start scripts
-        public static string ClientAutoStartScriptPath => Path.GetFullPath(@"Resources\client_autostart.as");
-        public static string ServerAutoStartScriptPath => Path.GetFullPath(@"Resources\server_autostart.as");
-        public static string SoloAutoStartScriptPath => Path.GetFullPath(@"Resources\solo_autostart.as");
+        public static string ClientAutoStartScriptPath = Path.GetFullPath(@"Resources\client_autostart.as");
+        public static string ServerAutoStartScriptPath = Path.GetFullPath(@"Resources\server_autostart.as");
+        public static string SoloAutoStartScriptPath = Path.GetFullPath(@"Resources\solo_autostart.as");
 
         public static void ReadConfigProperties(string filePath, params BaseConfigProperty[] configProperties)
         {

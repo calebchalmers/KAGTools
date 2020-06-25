@@ -4,6 +4,7 @@ using KAGTools.ViewModels;
 using KAGTools.Windows;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
+using Serilog;
 using Squirrel;
 using System;
 using System.IO;
@@ -16,42 +17,13 @@ namespace KAGTools
     /// </summary>
     public partial class App : Application
     {
-        private const ShortcutLocation ShortcutLocations = ShortcutLocation.StartMenu | ShortcutLocation.Desktop;
-
-        #region Settings
         public static Data.Settings Settings;
-        private static string ConfigPath = Path.Combine("..", "config");
-        private static string SettingsFileName = "settings.json";
-        private static string SettingsFilePath = Path.Combine(ConfigPath, SettingsFileName);
-        private static JsonSerializerSettings SettingsSerializerSettings = new JsonSerializerSettings()
-        {
-            DefaultValueHandling = DefaultValueHandling.Populate,
-            Formatting = Formatting.Indented,
-            FloatFormatHandling = FloatFormatHandling.String,
-            FloatParseHandling = FloatParseHandling.Double
-        };
 
-        public static void LoadSettings()
-        {
-            string json = "{}";
-            if (File.Exists(SettingsFilePath))
-            {
-                json = File.ReadAllText(SettingsFilePath);
-            }
-            Settings = JsonConvert.DeserializeObject<Data.Settings>(json, SettingsSerializerSettings);
-        }
-
-        public static void SaveSettings()
-        {
-            Directory.CreateDirectory(ConfigPath);
-            string json = JsonConvert.SerializeObject(Settings, SettingsSerializerSettings);
-            File.WriteAllText(SettingsFilePath, json);
-        }
-        #endregion
+        private const ShortcutLocation ShortcutLocations = ShortcutLocation.StartMenu | ShortcutLocation.Desktop;
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            SaveSettings();
+            SettingsHelper.Save(Settings);
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
@@ -64,10 +36,12 @@ namespace KAGTools
                     onAppUpdate: (v) => OnAppUpdate(v, mgr),
                     onAppUninstall: (v) => OnAppUninstall(v, mgr));
             }
+            // <-- App will exit here if a Squirrel event other than onFirstRun is triggered (via command line argument)
 
-            LoadSettings();
+            SetupLogging();
+            Settings = SettingsHelper.Load();
 
-            if (!Directory.Exists(Settings.KagDirectory))
+            if (string.IsNullOrEmpty(FileHelper.KagDir) || !Directory.Exists(FileHelper.KagDir))
             {
                 // KAG Directory not specified or doesn't exist. Show dialog...
                 if (!FindKagDirectory())
@@ -122,6 +96,21 @@ namespace KAGTools
             MessageBox.Show(AssemblyHelper.AppName + " was successfully uninstalled.", "Uninstall", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         #endregion
+
+        private void SetupLogging()
+        {
+            string outputTemplate = "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}";
+
+            try
+            {
+                File.Delete(FileHelper.LogPath);
+            }
+            catch (Exception) { } // It's not a problem if we can't delete the old log
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File(FileHelper.LogPath, Serilog.Events.LogEventLevel.Information, outputTemplate)
+                .CreateLogger();
+        }
 
         private bool FindKagDirectory()
         {
