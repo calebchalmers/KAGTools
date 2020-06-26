@@ -99,7 +99,7 @@ namespace KAGTools
 
         private void SetupLogging()
         {
-            string outputTemplate = "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}";
+            string outputTemplate = "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:j}{NewLine}{Exception}";
 
             try
             {
