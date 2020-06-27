@@ -26,6 +26,8 @@ namespace KAGTools.ViewModels
         private int _screenHeight;
         private bool _fullscreen;
         ObservableCollection<string> _gamemodes;
+        private bool _startupOptionsEnabled;
+        private bool _gamemodeOptionEnabled;
 
         public MainViewModel()
         {
@@ -44,7 +46,7 @@ namespace KAGTools.ViewModels
             var screenHeightProperty = new IntConfigProperty("Window.Height", ScreenHeight);
             var fullscreenProperty = new BoolConfigProperty("Fullscreen", Fullscreen);
 
-            FileHelper.ReadConfigProperties(FileHelper.StartupConfigPath,
+            StartupOptionsEnabled = FileHelper.ReadConfigProperties(FileHelper.StartupConfigPath,
                 screenWidthProperty,
                 screenHeightProperty,
                 fullscreenProperty
@@ -57,7 +59,7 @@ namespace KAGTools.ViewModels
             // autoconfig.cfg
             var gamemodeProperty = new StringConfigProperty("sv_gamemode", Gamemode);
 
-            FileHelper.ReadConfigProperties(FileHelper.AutoConfigPath,
+            GamemodeOptionEnabled = FileHelper.ReadConfigProperties(FileHelper.AutoConfigPath,
                 gamemodeProperty
             );
 
@@ -92,6 +94,18 @@ namespace KAGTools.ViewModels
         {
             get => _gamemodes;
             set => this.SetProperty(ref _gamemodes, value);
+        }
+
+        public bool StartupOptionsEnabled
+        {
+            get => _startupOptionsEnabled;
+            set => this.SetProperty(ref _startupOptionsEnabled, value);
+        }
+
+        public bool GamemodeOptionEnabled
+        {
+            get => _gamemodeOptionEnabled;
+            set => this.SetProperty(ref _gamemodeOptionEnabled, value);
         }
 
         public ICommand OpenKagFolderCommand { get; private set; }
@@ -138,7 +152,7 @@ namespace KAGTools.ViewModels
 
         private void SaveStartupInfo()
         {
-            FileHelper.WriteConfigProperties(FileHelper.StartupConfigPath,
+            StartupOptionsEnabled = FileHelper.WriteConfigProperties(FileHelper.StartupConfigPath,
                 new IntConfigProperty("Window.Width", ScreenWidth),
                 new IntConfigProperty("Window.Height", ScreenHeight),
                 new BoolConfigProperty("Fullscreen", Fullscreen)
@@ -147,7 +161,7 @@ namespace KAGTools.ViewModels
 
         private void SaveAutoConfigInfo()
         {
-            FileHelper.WriteConfigProperties(FileHelper.AutoConfigPath,
+            GamemodeOptionEnabled = FileHelper.WriteConfigProperties(FileHelper.AutoConfigPath,
                 new StringConfigProperty("sv_gamemode", Gamemode)
             );
         }

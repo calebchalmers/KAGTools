@@ -59,7 +59,7 @@
         <Separator/>
 
         <!-- Config properties -->
-        <UniformGrid Columns="2">
+        <UniformGrid Columns="2" IsEnabled="{Binding GamemodeOptionEnabled}">
             <Label Content="Gamemode:"/>
             <ComboBox ItemsSource="{Binding Gamemodes}" Text="{Binding Gamemode, UpdateSourceTrigger=LostFocus}" VerticalContentAlignment="Center" IsEditable="True">
                 <ComboBox.ItemContainerStyle>
@@ -79,15 +79,15 @@
                 </ComboBox.ItemContainerStyle>
             </ComboBox>
         </UniformGrid>
-        <UniformGrid Columns="2">
+        <UniformGrid Columns="2" IsEnabled="{Binding StartupOptionsEnabled}">
             <Label Content="Screen width:"/>
             <xctk:IntegerUpDown Value="{Binding ScreenWidth}" Minimum="0" UpdateValueOnEnterKey="True"/>
         </UniformGrid>
-        <UniformGrid Columns="2">
+        <UniformGrid Columns="2" IsEnabled="{Binding StartupOptionsEnabled}">
             <Label Content="Screen height:"/>
             <xctk:IntegerUpDown Value="{Binding ScreenHeight}" Minimum="0" UpdateValueOnEnterKey="True"/>
         </UniformGrid>
-        <UniformGrid Columns="2">
+        <UniformGrid Columns="2" IsEnabled="{Binding StartupOptionsEnabled}">
             <Label Content="Fullscreen:"/>
             <CheckBox IsChecked="{Binding Fullscreen}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         </UniformGrid>
