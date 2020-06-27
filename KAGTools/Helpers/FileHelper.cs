@@ -1,4 +1,6 @@
 ﻿using KAGTools.Data;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -41,21 +43,39 @@ namespace KAGTools.Helpers
         public static string ServerAutoStartScriptPath = Path.GetFullPath(@"Resources\server_autostart.as");
         public static string SoloAutoStartScriptPath = Path.GetFullPath(@"Resources\solo_autostart.as");
 
-        public static void ReadConfigProperties(string filePath, params BaseConfigProperty[] configProperties)
+        public static bool ReadConfigProperties(string filePath, params BaseConfigProperty[] configProperties)
         {
-            ReadWriteConfigProperties(filePath, false, configProperties);
+            Log.Information("Reading config file: {FilePath}", filePath);
+            return ReadWriteConfigProperties(filePath, false, configProperties);
         }
 
-        public static void WriteConfigProperties(string filePath, params BaseConfigProperty[] configProperties)
+        public static bool WriteConfigProperties(string filePath, params BaseConfigProperty[] configProperties)
         {
-            ReadWriteConfigProperties(filePath, true, configProperties);
+            Log.Information("Writing config file: {FilePath}", filePath);
+            return ReadWriteConfigProperties(filePath, true, configProperties);
         }
 
-        private static void ReadWriteConfigProperties(string filePath, bool writePropertiesToFile, params BaseConfigProperty[] configProperties)
+        private static bool ReadWriteConfigProperties(string filePath, bool writePropertiesToFile, params BaseConfigProperty[] configProperties)
         {
+            if(!File.Exists(filePath))
+            {
+                Log.Error("Could not find config file: {FilePath}", filePath);
+                return false;
+            }
+
+            string[] lines = null;
+            try
+            {
+                lines = File.ReadAllLines(filePath);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Failed to read config file: {FilePath}", filePath);
+                return false;
+            }
+
             var configPropertyList = new List<BaseConfigProperty>(configProperties);
 
-            string[] lines = File.ReadAllLines(filePath);
             for (int i = 0; i < lines.Length; i++)
             {
                 if (configPropertyList.Count == 0)
@@ -101,8 +121,18 @@ namespace KAGTools.Helpers
 
             if (writePropertiesToFile)
             {
-                File.WriteAllLines(filePath, lines);
+                try
+                {
+                    File.WriteAllLines(filePath, lines);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Failed to write config file: {FilePath}", filePath);
+                    return false;
+                }
             }
+
+            return true;
         }
 
         public static List<string> GetActiveModNames()
