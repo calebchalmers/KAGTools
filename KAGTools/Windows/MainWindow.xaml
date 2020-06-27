@@ -12,91 +12,84 @@
         Title="KAG Tools"
         Left="{Binding Left, Mode=TwoWay, Source={x:Static base:App.Settings}}"
         Top="{Binding Top, Mode=TwoWay, Source={x:Static base:App.Settings}}"
-        Height="245"
         Width="200"
         ResizeMode="NoResize"
         SizeToContent="Height" Loaded="Window_Loaded">
-    <Grid Margin="5">
-        <Grid.Resources>
-            <Style TargetType="{x:Type Button}">
-                <Setter Property="Margin" Value="2"/>
-                <Setter Property="Padding" Value="2"/>
-            </Style>
-            <Style TargetType="{x:Type ComboBox}">
-                <Setter Property="Margin" Value="2"/>
-                <Setter Property="Padding" Value="2,0"/>
-            </Style>
-            <Style TargetType="{x:Type Label}">
-                <Setter Property="Margin" Value="2"/>
-                <Setter Property="Padding" Value="2"/>
-            </Style>
-            <Style TargetType="{x:Type xctk:IntegerUpDown}">
-                <Setter Property="Margin" Value="2"/>
-                <Setter Property="Padding" Value="0"/>
-                <Setter Property="TextAlignment" Value="Left"/>
-            </Style>
-            <Style TargetType="{x:Type CheckBox}">
-                <Setter Property="Margin" Value="2"/>
-                <Setter Property="Padding" Value="2"/>
-            </Style>
-            <Style TargetType="{x:Type Separator}">
-                <Setter Property="Margin" Value="0,4"/>
-            </Style>
-        </Grid.Resources>
-        <StackPanel>
-            <Button Content="Open KAG Folder" Command="{Binding OpenKagFolderCommand}"/>
-            <ComboBox Margin="2" SelectedIndex="{Binding RunTypeIndex, Source={x:Static base:App.Settings}}" Style="{StaticResource ButtonComboBoxStyle}">
-                <ComboBoxItem Content="▶ Test Solo" Tag="{Binding TestSoloCommand}" ToolTip="Runs a client and server in the same process.&#x0a;This is the same as playing solo in-game."/>
-                <ComboBoxItem Content="▶ Test Multiplayer" Tag="{Binding TestMultiplayerCommand}" ToolTip="Runs a client and server as separate processes.&#x0a;This is the same as playing multiplayer in-game."/>
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Padding" Value="2"/>
+        </Style>
+        <Style x:Key="TestButtonComboBoxStyle" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource ButtonComboBoxStyle}">
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+        <Style TargetType="{x:Type ComboBox}">
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Padding" Value="2,0"/>
+        </Style>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Padding" Value="2"/>
+        </Style>
+        <Style TargetType="{x:Type xctk:IntegerUpDown}">
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="TextAlignment" Value="Left"/>
+        </Style>
+        <Style TargetType="{x:Type CheckBox}">
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+        <Style TargetType="{x:Type Separator}">
+            <Setter Property="Margin" Value="2,5"/>
+        </Style>
+    </Window.Resources>
+    <StackPanel Margin="5">
+        <Button Content="Open KAG Folder" Command="{Binding OpenKagFolderCommand}"/>
+        <ComboBox SelectedIndex="{Binding RunTypeIndex, Source={x:Static base:App.Settings}}" Style="{StaticResource TestButtonComboBoxStyle}">
+            <ComboBoxItem Content="▶ Test Solo" Tag="{Binding TestSoloCommand}" ToolTip="Runs a client and server in the same process.&#x0a;This is the same as playing solo in-game."/>
+            <ComboBoxItem Content="▶ Test Multiplayer" Tag="{Binding TestMultiplayerCommand}" ToolTip="Runs a client and server as separate processes.&#x0a;This is the same as playing multiplayer in-game."/>
+        </ComboBox>
+        <Button Content="API Browser..." Command="{Binding ApiCommand}"/>
+        <UniformGrid Columns="2">
+            <Button Content="Manual..." Command="{Binding ManualCommand}"/>
+            <Button Content="Mods..." Command="{Binding ModsCommand}"/>
+        </UniformGrid>
+
+        <Separator/>
+
+        <!-- Config properties -->
+        <UniformGrid Columns="2">
+            <Label Content="Gamemode:"/>
+            <ComboBox ItemsSource="{Binding Gamemodes}" Text="{Binding Gamemode, UpdateSourceTrigger=LostFocus}" VerticalContentAlignment="Center" IsEditable="True">
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding}" Value="">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                                            <Separator HorizontalAlignment="Stretch" Margin="0,2"/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
             </ComboBox>
-            <Button Content="API Browser..." Command="{Binding ApiCommand}"/>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Button Content="Manual..." Grid.Column="0" Command="{Binding ManualCommand}"/>
-                <Button Content="Mods..." Grid.Column="1" Command="{Binding ModsCommand}"/>
-            </Grid>
-
-            <Separator/>
-
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="24"/>
-                    <RowDefinition Height="24"/>
-                    <RowDefinition Height="24"/>
-                    <RowDefinition Height="24"/>
-                </Grid.RowDefinitions>
-                <Label Content="Gamemode:" Grid.Row="0"/>
-                <Label Content="Screen width:" Grid.Row="1"/>
-                <Label Content="Screen height:" Grid.Row="2"/>
-                <Label Content="Fullscreen:" Grid.Row="3"/>
-                <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Gamemodes}" Text="{Binding Gamemode, UpdateSourceTrigger=LostFocus}" VerticalContentAlignment="Center" IsEditable="True">
-                    <ComboBox.ItemContainerStyle>
-                        <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding}" Value="">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type ComboBoxItem}">
-                                                <Separator HorizontalAlignment="Stretch" IsEnabled="False" Margin="0,2"/>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ComboBox.ItemContainerStyle>
-                </ComboBox>
-                <xctk:IntegerUpDown Grid.Column="1" Grid.Row="1" Value="{Binding ScreenWidth}" Minimum="0" UpdateValueOnEnterKey="True"/>
-                <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" Value="{Binding ScreenHeight}" Minimum="0" UpdateValueOnEnterKey="True"/>
-                <CheckBox Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding Fullscreen}"/>
-            </Grid>
-        </StackPanel>
-    </Grid>
+        </UniformGrid>
+        <UniformGrid Columns="2">
+            <Label Content="Screen width:"/>
+            <xctk:IntegerUpDown Value="{Binding ScreenWidth}" Minimum="0" UpdateValueOnEnterKey="True"/>
+        </UniformGrid>
+        <UniformGrid Columns="2">
+            <Label Content="Screen height:"/>
+            <xctk:IntegerUpDown Value="{Binding ScreenHeight}" Minimum="0" UpdateValueOnEnterKey="True"/>
+        </UniformGrid>
+        <UniformGrid Columns="2">
+            <Label Content="Fullscreen:"/>
+            <CheckBox IsChecked="{Binding Fullscreen}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        </UniformGrid>
+    </StackPanel>
 </Window>
