@@ -3,12 +3,12 @@ using KAGTools.Helpers;
 using KAGTools.ViewModels;
 using KAGTools.Windows;
 using Microsoft.WindowsAPICodePack.Dialogs;
-using Newtonsoft.Json;
 using Serilog;
 using Squirrel;
 using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace KAGTools
 {
@@ -60,6 +60,15 @@ namespace KAGTools
 
             // Open main window
             WindowHelper.OpenWindow(new MainViewModel());
+        }
+
+        private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            Log.Error(e.Exception, "An unhandled exception occured");
+            MessageBox.Show(string.Format("An unhandled exception occured in {0}.{1}Check \"{2}\" for more information.", AssemblyHelper.AppName, Environment.NewLine, Path.GetFullPath(FileHelper.LogPath)), "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            e.Handled = true;
+            Shutdown(1);
         }
 
         #region Squirrel Events
