@@ -5,56 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KAGTools.Windows"
         xmlns:usercontrols="clr-namespace:KAGTools.UserControls"
-        xmlns:viewmodels="clr-namespace:KAGTools.ViewModels.Manual"
+        xmlns:viewmodels="clr-namespace:KAGTools.ViewModels"
         xmlns:base="clr-namespace:KAGTools"
         mc:Ignorable="d"
         Title="Manual"
-        Height="{Binding ManualWindowHeight, Mode=TwoWay, Source={x:Static base:App.Settings}}"
-        Width="{Binding ManualWindowWidth, Mode=TwoWay, Source={x:Static base:App.Settings}}"
-        Top="{Binding ManualWindowTop, Mode=TwoWay, Source={x:Static base:App.Settings}}"
-        Left="{Binding ManualWindowLeft, Mode=TwoWay, Source={x:Static base:App.Settings}}">
-    <TabControl>
-        <TabItem Header="Objects">
-            <usercontrols:ManualGenericUserControl>
-                <usercontrols:ManualGenericUserControl.DataContext>
-                    <viewmodels:ManualObjectsViewModel/>
-                </usercontrols:ManualGenericUserControl.DataContext>
-            </usercontrols:ManualGenericUserControl>
-        </TabItem>
-        <TabItem Header="Functions">
-            <usercontrols:ManualGenericUserControl>
-                <usercontrols:ManualGenericUserControl.DataContext>
-                    <viewmodels:ManualFunctionsViewModel/>
-                </usercontrols:ManualGenericUserControl.DataContext>
-            </usercontrols:ManualGenericUserControl>
-        </TabItem>
-        <TabItem Header="Hooks">
-            <usercontrols:ManualGenericUserControl>
-                <usercontrols:ManualGenericUserControl.DataContext>
-                    <viewmodels:ManualHooksViewModel/>
-                </usercontrols:ManualGenericUserControl.DataContext>
-            </usercontrols:ManualGenericUserControl>
-        </TabItem>
-        <TabItem Header="Enums">
-            <usercontrols:ManualGenericUserControl>
-                <usercontrols:ManualGenericUserControl.DataContext>
-                    <viewmodels:ManualEnumsViewModel/>
-                </usercontrols:ManualGenericUserControl.DataContext>
-            </usercontrols:ManualGenericUserControl>
-        </TabItem>
-        <TabItem Header="Variables">
-            <usercontrols:ManualGenericUserControl>
-                <usercontrols:ManualGenericUserControl.DataContext>
-                    <viewmodels:ManualVariablesViewModel/>
-                </usercontrols:ManualGenericUserControl.DataContext>
-            </usercontrols:ManualGenericUserControl>
-        </TabItem>
-        <TabItem Header="TypeDefs">
-            <usercontrols:ManualGenericUserControl>
-                <usercontrols:ManualGenericUserControl.DataContext>
-                    <viewmodels:ManualTypeDefsViewModel/>
-                </usercontrols:ManualGenericUserControl.DataContext>
-            </usercontrols:ManualGenericUserControl>
-        </TabItem>
+        Height="{Binding UserSettings.ManualWindowHeight, Mode=TwoWay}"
+        Width="{Binding UserSettings.ManualWindowWidth, Mode=TwoWay}"
+        Top="{Binding UserSettings.ManualWindowTop, Mode=TwoWay}"
+        Left="{Binding UserSettings.ManualWindowLeft, Mode=TwoWay}">
+    <TabControl ItemsSource="{Binding ManualDocumentViewModels}" SelectedIndex="0">
+        <TabControl.ItemTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:ManualDocumentViewModel}">
+                <TextBlock Text="{Binding Name}"/>
+            </DataTemplate>
+        </TabControl.ItemTemplate>
+        <TabControl.ContentTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:ManualDocumentViewModel}">
+                <usercontrols:ManualDocumentUserControl DataContext="{Binding}"/>
+            </DataTemplate>
+        </TabControl.ContentTemplate>
     </TabControl>
 </Window>

@@ -132,32 +132,26 @@
     <Compile Include="Data\API\ApiServerResults.cs" />
     <Compile Include="Data\AsyncTaskState.cs" />
     <Compile Include="Data\ConfigProperty.cs" />
+    <Compile Include="Data\ManualDocument.cs" />
     <Compile Include="Data\ManualItem.cs" />
     <Compile Include="Data\API\ApiPlayerResults.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Helpers\ApiHelper.cs" />
     <Compile Include="Helpers\AssemblyHelper.cs" />
-    <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="Helpers\TestHelper.cs" />
     <Compile Include="Helpers\UpdateHelper.cs" />
     <Compile Include="Helpers\WindowHelper.cs" />
     <Compile Include="Messages.cs" />
-    <Compile Include="Data\Settings.cs" />
-    <Compile Include="UserControls\ManualGenericUserControl.xaml.cs">
-      <DependentUpon>ManualGenericUserControl.xaml</DependentUpon>
+    <Compile Include="Data\UserSettings.cs" />
+    <Compile Include="UserControls\ManualDocumentUserControl.xaml.cs">
+      <DependentUpon>ManualDocumentUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\ApiViewModel.cs" />
     <Compile Include="ViewModels\FilterListViewModelBase.cs" />
     <Compile Include="ViewModels\InputViewModel.cs" />
     <Compile Include="ViewModels\API\ApiPlayerInfoViewModel.cs" />
     <Compile Include="ViewModels\API\ApiServerBrowserViewModel.cs" />
-    <Compile Include="ViewModels\Manual\ManualGenericViewModel.cs" />
-    <Compile Include="ViewModels\Manual\ManualTypeDefsViewModel.cs" />
-    <Compile Include="ViewModels\Manual\ManualVariablesViewModel.cs" />
-    <Compile Include="ViewModels\Manual\ManualEnumsViewModel.cs" />
-    <Compile Include="ViewModels\Manual\ManualFunctionsViewModel.cs" />
-    <Compile Include="ViewModels\Manual\ManualHooksViewModel.cs" />
-    <Compile Include="ViewModels\Manual\ManualObjectsViewModel.cs" />
+    <Compile Include="ViewModels\ManualDocumentViewModel.cs" />
     <Compile Include="ViewModels\ManualViewModel.cs" />
     <Compile Include="ViewModels\ModsViewModel.cs" />
     <Compile Include="Windows\ApiWindow.xaml.cs">
@@ -172,7 +166,7 @@
     <Compile Include="Windows\InputWindow.xaml.cs">
       <DependentUpon>InputWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="UserControls\ManualGenericUserControl.xaml">
+    <Page Include="UserControls\ManualDocumentUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

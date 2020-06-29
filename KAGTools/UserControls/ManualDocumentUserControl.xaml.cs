@@ -6,9 +6,9 @@ namespace KAGTools.UserControls
     /// <summary>
     /// Interaction logic for ManualGenericUserControl.xaml
     /// </summary>
-    public partial class ManualGenericUserControl : UserControl
+    public partial class ManualDocumentUserControl : UserControl
     {
-        public ManualGenericUserControl()
+        public ManualDocumentUserControl()
         {
             InitializeComponent();
         }

@@ -29,8 +29,11 @@ namespace KAGTools.ViewModels
         private bool _startupOptionsEnabled;
         private bool _gamemodeOptionEnabled;
 
-        public MainViewModel()
+        public MainViewModel(UserSettings userSettings, ManualDocument[] manualDocuments)
         {
+            UserSettings = userSettings;
+            ManualDocuments = manualDocuments;
+
             OpenKagFolderCommand = new RelayCommand(ExecuteOpenKagFolderCommand);
             TestMultiplayerCommand = new RelayCommand(ExecuteTestMultiplayerCommand);
             TestSoloCommand = new RelayCommand(ExecuteTestSoloCommand);
@@ -65,6 +68,9 @@ namespace KAGTools.ViewModels
 
             _gamemode = gamemodeProperty.Value;
         }
+
+        public UserSettings UserSettings { get; }
+        public ManualDocument[] ManualDocuments { get; }
 
         public string Gamemode
         {
@@ -140,7 +146,7 @@ namespace KAGTools.ViewModels
 
         private void ExecuteManualCommand()
         {
-            ManualViewModel viewModel = new ManualViewModel();
+            ManualViewModel viewModel = new ManualViewModel(UserSettings, ManualDocuments);
             WindowHelper.OpenWindow(viewModel);
         }
 

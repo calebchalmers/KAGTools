@@ -16,7 +16,7 @@ namespace KAGTools.Helpers
         public static string LogPath = Path.Combine(CommonDir, "log.txt");
 
         // KAG directories/files
-        public static string KagDir => App.Settings.KagDirectory;
+        public static string KagDir { get; set; } // Must be set on startup
         public static string ScreenshotsDir => Path.Combine(KagDir, "Screenshots");
         public static string ModsDir => Path.Combine(KagDir, "Mods");
         public static string StartupConfigPath => Path.Combine(KagDir, "startup_config.cfg");

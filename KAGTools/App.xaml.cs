@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
+using KAGTools.Data;
 using KAGTools.Helpers;
 using KAGTools.ViewModels;
 using KAGTools.Windows;
@@ -6,6 +7,7 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 using Serilog;
 using Squirrel;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Threading;
@@ -17,13 +19,13 @@ namespace KAGTools
     /// </summary>
     public partial class App : Application
     {
-        public static Data.Settings Settings;
+        private static Data.UserSettings UserSettings;
 
         private const ShortcutLocation ShortcutLocations = ShortcutLocation.StartMenu | ShortcutLocation.Desktop;
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            SettingsHelper.Save(Settings);
+            UserSettings.Save(FileHelper.SettingsPath);
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
@@ -39,7 +41,7 @@ namespace KAGTools
             // <-- App will exit here if a Squirrel event other than onFirstRun is triggered (via command line argument)
 
             SetupLogging();
-            Settings = SettingsHelper.Load();
+            UserSettings = Data.UserSettings.Load(FileHelper.SettingsPath);
 
             if (!EnsureValidKagDirectory())
             {
@@ -47,6 +49,8 @@ namespace KAGTools
                 Shutdown(0);
                 return;
             }
+
+            FileHelper.KagDir = UserSettings.KagDirectory;
 
             // Assign windows to viewmodels
             WindowHelper.Register(typeof(MainViewModel), typeof(MainWindow));
@@ -58,8 +62,19 @@ namespace KAGTools
             // Listen for close window messages
             Messenger.Default.Register<CloseWindowMessage>(this, WindowHelper.OnCloseWindowMessage);
 
+            //TEMPORARY
+            var manualDocuments = new ManualDocument[]
+            {
+                new ManualDocument("Objects", true, FileHelper.GetManualFunctions(FileHelper.ManualObjectsPath, true), () => Process.Start(FileHelper.ManualObjectsPath)),
+                new ManualDocument("Functions", false, FileHelper.GetManualFunctions(FileHelper.ManualFunctionsPath), () => Process.Start(FileHelper.ManualFunctionsPath)),
+                new ManualDocument("Hooks", false, FileHelper.GetManualFunctions(FileHelper.ManualHooksPath), () => Process.Start(FileHelper.ManualHooksPath)),
+                new ManualDocument("Enums", true, FileHelper.GetManualFunctions(FileHelper.ManualEnumsPath, true), () => Process.Start(FileHelper.ManualEnumsPath)),
+                new ManualDocument("Variables", false, FileHelper.GetManualFunctions(FileHelper.ManualVariablesPath), () => Process.Start(FileHelper.ManualVariablesPath)),
+                new ManualDocument("TypeDefs", false, FileHelper.GetManualFunctions(FileHelper.ManualTypeDefsPath), () => Process.Start(FileHelper.ManualTypeDefsPath))
+            };
+
             // Open main window
-            WindowHelper.OpenWindow(new MainViewModel());
+            WindowHelper.OpenWindow(new MainViewModel(UserSettings, manualDocuments));
         }
 
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
@@ -68,7 +83,7 @@ namespace KAGTools
             MessageBox.Show(string.Format("An unhandled exception occured in {0}.{1}Check \"{2}\" for more information.", AssemblyHelper.AppName, Environment.NewLine, Path.GetFullPath(FileHelper.LogPath)), "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
             e.Handled = true;
-            Shutdown(1);
+            Environment.Exit(1);
         }
 
         #region Squirrel Events
@@ -120,7 +135,7 @@ namespace KAGTools
 
         private bool EnsureValidKagDirectory()
         {
-            string dir = Settings.KagDirectory;
+            string dir = UserSettings.KagDirectory;
 
             // Keep asking until they give a valid directory or cancel
             while (true)
@@ -131,7 +146,7 @@ namespace KAGTools
                     if (File.Exists(Path.Combine(dir, "KAG.exe")))
                     {
                         Log.Information("KAG install folder is valid: {KagDirectory}", dir);
-                        Settings.KagDirectory = dir;
+                        UserSettings.KagDirectory = dir;
                         return true;
                     }
                     else

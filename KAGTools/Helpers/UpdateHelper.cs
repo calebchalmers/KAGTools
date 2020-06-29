@@ -10,11 +10,11 @@ namespace KAGTools.Helpers
 {
     public static class UpdateHelper
     {
-        public static async Task<bool> UpdateApp()
+        public static async Task<bool> UpdateApp(bool usePreReleases = false)
         {
             try
             {
-                using (UpdateManager mgr = await UpdateManager.GitHubUpdateManager(ConfigurationManager.AppSettings["UpdateUrl"], prerelease: App.Settings.UsePreReleases))
+                using (UpdateManager mgr = await UpdateManager.GitHubUpdateManager(ConfigurationManager.AppSettings["UpdateUrl"], prerelease: usePreReleases))
                 {
                     UpdateInfo updates = await mgr.CheckForUpdate();
                     if (updates.ReleasesToApply.Count > 0)

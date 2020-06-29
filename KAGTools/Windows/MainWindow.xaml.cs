@@ -1,4 +1,6 @@
-﻿using KAGTools.Helpers;
+﻿using KAGTools.Data;
+using KAGTools.Helpers;
+using System.Diagnostics;
 using System.Windows;
 
 namespace KAGTools.Windows
@@ -10,11 +12,6 @@ namespace KAGTools.Windows
     {
         public MainWindow()
         {
-            if (double.IsNaN(App.Settings.Left) || double.IsNaN(App.Settings.Top))
-            {
-                WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            }
-
             InitializeComponent();
 
             Title += string.Format(" v{0}", AssemblyHelper.Version);
