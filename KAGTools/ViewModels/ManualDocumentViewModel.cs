@@ -17,11 +17,10 @@ namespace KAGTools.ViewModels
         private string _searchFilter = "";
         private string _typeFilter = "";
 
-        public ManualDocumentViewModel(ManualDocument document)
+        public ManualDocumentViewModel(ManualDocument document) : base(document.Items ?? Enumerable.Empty<ManualItem>())
         {
             Name = document.Name;
             HasTypes = document.HasTypes;
-            Items = new ObservableCollection<ManualItem>(document.Items);
 
             OpenSourceFileCommand = new RelayCommand(document.OpenSourceFile);
 

@@ -141,7 +141,7 @@ namespace KAGTools.ViewModels
             ModsViewModel viewModel = new ModsViewModel();
             WindowHelper.OpenDialog(viewModel);
 
-            InitializeGamemodes(viewModel.Items.Where(mod => mod.IsActive));
+            InitializeGamemodes(viewModel.Items.Where(mod => mod.IsActive == true));
         }
 
         private void ExecuteManualCommand()
@@ -176,20 +176,24 @@ namespace KAGTools.ViewModels
         {
             var newGamemodes = new List<string>(DEFAULT_GAMEMODES.Length);
 
-            bool hasCustomGamemodes = false;
-
-            foreach (Mod mod in activeMods)
+            if(activeMods != null)
             {
-                if (mod.Gamemode != null && !newGamemodes.Contains(mod.Gamemode))
+                bool hasCustomGamemodes = false;
+
+                foreach (Mod mod in activeMods)
                 {
-                    newGamemodes.Add(mod.Gamemode);
-                    hasCustomGamemodes = true;
+                    string gamemode = FileHelper.FindGamemodeOfMod(mod.Directory);
+                    if (gamemode != null && !newGamemodes.Contains(gamemode))
+                    {
+                        newGamemodes.Add(gamemode);
+                        hasCustomGamemodes = true;
+                    }
                 }
-            }
 
-            if (hasCustomGamemodes)
-            {
-                newGamemodes.Add("");
+                if (hasCustomGamemodes)
+                {
+                    newGamemodes.Add("");
+                }
             }
 
             newGamemodes.AddRange(DEFAULT_GAMEMODES);

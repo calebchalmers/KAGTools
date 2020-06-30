@@ -2,6 +2,7 @@
 using KAGTools.Data;
 using KAGTools.Helpers;
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace KAGTools.ViewModels
     {
         private string _searchFilter = "";
 
-        public ModsViewModel() : base(FileHelper.GetMods())
+        public ModsViewModel() : base(FileHelper.GetMods() ?? Enumerable.Empty<Mod>())
         {
             OpenCommand = new RelayCommand(ExecuteOpenCommand);
             InfoCommand = new RelayCommand(ExecuteInfoCommand);
@@ -48,7 +49,7 @@ namespace KAGTools.ViewModels
 
             StringBuilder infoBuilder = new StringBuilder();
             infoBuilder.AppendLine("Name: " + Selected.Name);
-            infoBuilder.AppendLine("Gamemode: " + (Selected.Gamemode ?? "N/A"));
+            infoBuilder.AppendLine("Gamemode: " + (FileHelper.FindGamemodeOfMod(Selected.Directory) ?? "N/A"));
 
             MessageBox.Show(infoBuilder.ToString(), "Mod Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -60,7 +61,7 @@ namespace KAGTools.ViewModels
 
         private void UpdateActiveMods()
         {
-            FileHelper.SetActiveMods(Items.Where(mod => mod.IsActive).ToArray());
+            FileHelper.SetActiveMods(Items.Where(mod => mod.IsActive == true).ToArray());
         }
     }
 }

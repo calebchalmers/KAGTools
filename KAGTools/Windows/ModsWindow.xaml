@@ -31,6 +31,14 @@
                 <Style TargetType="{x:Type ListBoxItem}">
                     <Setter Property="ContextMenu" Value="{StaticResource ModContextMenu}"/>
                 </Style>
+                <Style TargetType="{x:Type CheckBox}" x:Key="DisableIfNullStyle">
+                    <Setter Property="IsEnabled" Value="True" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsActive}" Value="{x:Null}">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
             </ListBox.Resources>
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -38,7 +46,7 @@
                         <DockPanel.InputBindings>
                             <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DataContext.OpenCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
                         </DockPanel.InputBindings>
-                        <CheckBox IsChecked="{Binding IsActive}" VerticalAlignment="Center" Command="{Binding DataContext.UpdateActiveModsCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" ToolTip="Active Status" />
+                        <CheckBox IsChecked="{Binding IsActive}" VerticalAlignment="Center" Command="{Binding DataContext.UpdateActiveModsCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" ToolTip="Active Status" Style="{StaticResource DisableIfNullStyle}"/>
                         <TextBlock Text="{Binding Name}" Padding="0" VerticalAlignment="Center" Margin="5,1" ToolTip="{Binding Name}"/>
                     </DockPanel>
                 </DataTemplate>

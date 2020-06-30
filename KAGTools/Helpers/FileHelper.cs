@@ -63,7 +63,7 @@ namespace KAGTools.Helpers
                 return false;
             }
 
-            string[] lines = null;
+            string[] lines;
             try
             {
                 lines = File.ReadAllLines(filePath);
@@ -137,119 +137,145 @@ namespace KAGTools.Helpers
 
         public static List<string> GetActiveModNames()
         {
-            string[] lines = File.ReadAllLines(ModsConfigPath);
+            string[] lines;
+            try
+            {
+                lines = File.ReadAllLines(ModsConfigPath);
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex, "Failed to read mods config file");
+                return null;
+            }
             return lines.Where((line) => !line.StartsWith("#")).ToList();
         }
 
-        public static IEnumerable<Mod> GetMods(bool activeOnly = false)
+        public static List<Mod> GetMods(bool activeOnly = false)
         {
-            List<string> activeModNames = GetActiveModNames();
+            IEnumerable<string> dirs;
+            try
+            {
+                dirs = Directory.EnumerateDirectories(ModsDir);
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex, "Failed to enumerate mods folder");
+                return null;
+            }
 
-            foreach (string dir in Directory.EnumerateDirectories(ModsDir))
+            List<string> activeModNames = GetActiveModNames();
+            List<Mod> modList = new List<Mod>();
+
+            foreach (string dir in dirs)
             {
                 Mod mod = new Mod(dir);
-                mod.IsActive = activeModNames.Contains(mod.Name);
+                mod.IsActive = activeModNames?.Contains(mod.Name);
 
-                if (mod.IsActive || !activeOnly)
+                if (!activeOnly || mod.IsActive == true)
                 {
-                    yield return mod;
+                    modList.Add(mod);
                 }
             }
+            return modList;
         }
 
-        public static void SetActiveMods(Mod[] mods)
+        public static bool SetActiveMods(Mod[] mods)
         {
-            string[] comments = File.ReadAllLines(ModsConfigPath).Where((line) => line.StartsWith("#")).ToArray();
-            List<string> lines = new List<string>(comments);
-            lines.AddRange(mods.Select((mod) => mod.Name));
-            File.WriteAllLines(ModsConfigPath, lines.ToArray());
-        }
-
-        public static bool IsValidPath(string path)
-        {
-            Regex regex = new Regex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]");
-            return !regex.IsMatch(path);
-        }
-
-        public static void CopyDirectory(string sourceDir, string destDir)
-        {
-            // Copy folders
-            foreach (string dirPath in Directory.GetDirectories(sourceDir, "*", SearchOption.AllDirectories))
+            try
             {
-                Directory.CreateDirectory(dirPath.Replace(sourceDir, destDir));
+                string[] comments = File.ReadAllLines(ModsConfigPath).Where((line) => line.StartsWith("#")).ToArray();
+                List<string> lines = new List<string>(comments);
+                lines.AddRange(mods.Select((mod) => mod.Name));
+                File.WriteAllLines(ModsConfigPath, lines.ToArray());
+                return true;
             }
-
-            // Copy files
-            foreach (string newPath in Directory.GetFiles(sourceDir, "*", SearchOption.AllDirectories))
+            catch(Exception ex)
             {
-                File.Copy(newPath, newPath.Replace(sourceDir, destDir), true);
+                Log.Error(ex, "Failed to update mods config");
+                return false;
             }
         }
 
-        public static string FindFirstFile(string dir, string fileName, bool includeSubs = true)
+        private static string FindFirstFile(string dir, string fileName, bool includeSubs = true)
         {
-            string[] filePaths = FindFiles(dir, fileName, includeSubs);
-            if (filePaths.Length == 0) return null;
-            return filePaths[0];
-        }
-
-        public static string[] FindFiles(string dir, string fileName, bool includeSubs = true)
-        {
-            return Directory.GetFiles(dir, fileName, includeSubs ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
+            string[] filePaths = Directory.GetFiles(dir, fileName, SearchOption.AllDirectories);
+            return filePaths.Length > 0 ? filePaths[0] : null;
         }
 
         public static string FindGamemodeOfMod(string modDir)
         {
-            string gamemodeConfigPath = FindFirstFile(modDir, "gamemode.cfg");
-            if (gamemodeConfigPath != null)
-            {
-                var gamemodeProperty = new StringConfigProperty("gamemode_name", null);
-                ReadConfigProperties(gamemodeConfigPath, gamemodeProperty);
+            string gamemodeConfigPath;
 
-                if (!string.IsNullOrEmpty(gamemodeProperty.Value))
-                {
-                    return gamemodeProperty.Value;
-                }
+            try
+            {
+                gamemodeConfigPath = FindFirstFile(modDir, "gamemode.cfg");
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex, "Failed searching for gamemode config");
+                return null;
             }
 
-            return null;
+            if (gamemodeConfigPath == null)
+            {
+                return null;
+            }
+
+            // If we found a gamemode config then read the gamemode name
+            var gamemodeProperty = new StringConfigProperty("gamemode_name", null);
+            ReadConfigProperties(gamemodeConfigPath, gamemodeProperty);
+            return gamemodeProperty.Value;
         }
 
         public static List<ManualItem> GetManualFunctions(string fileName, bool findTypes = false)
         {
-            List<ManualItem> items = new List<ManualItem>();
-
-            using (StreamReader reader = new StreamReader(fileName))
+            if (!File.Exists(fileName))
             {
-                string line = "";
-
-                for (int i = 0; i < ManualHeaderLineCount; i++) // Remove manual header
-                {
-                    reader.ReadLine();
-                }
-
-                string lastType = null;
-
-                while ((line = reader.ReadLine()) != null)
-                {
-                    if (string.IsNullOrEmpty(line))
-                        continue;
-
-                    if (findTypes)
-                    {
-                        if (!line.StartsWith(ManualIndentCharacter.ToString())) // Is a class declaration
-                        {
-                            lastType = line;
-                            continue;
-                        }
-                    }
-
-                    string info = line.TrimStart(ManualIndentCharacter); // Trim indent characters
-                    items.Add(new ManualItem(lastType, info));
-                }
+                Log.Error("Could not find manual file: {FileName}", fileName);
+                return null;
             }
 
-            return items;
+            try
+            {
+                List<ManualItem> items = new List<ManualItem>();
+
+                using (StreamReader reader = new StreamReader(fileName))
+                {
+                    string line = "";
+
+                    for (int i = 0; i < ManualHeaderLineCount; i++) // Remove manual header
+                    {
+                        reader.ReadLine();
+                    }
+
+                    string lastType = null;
+
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        if (string.IsNullOrEmpty(line))
+                            continue;
+
+                        if (findTypes)
+                        {
+                            if (!line.StartsWith(ManualIndentCharacter.ToString())) // Is a class declaration
+                            {
+                                lastType = line;
+                                continue;
+                            }
+                        }
+
+                        string info = line.TrimStart(ManualIndentCharacter); // Trim indent characters
+                        items.Add(new ManualItem(lastType, info));
+                    }
+                }
+
+                return items;
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex, "Failed to read manual file: {FileName}", fileName);
+                return null;
+            }
         }
     }
 }
