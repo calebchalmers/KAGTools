@@ -273,6 +273,6 @@
     <!-- Rename Setup.exe -->
     <Move SourceFiles="Releases/Setup.exe" DestinationFiles="Releases/$(MSBuildProjectName) Setup $([System.Version]::Parse(%(asmblyInfo.Version)).ToString(3)).exe" />
     <!-- Open Releases folder -->
-    <Exec Command="start $(MSBuildThisFileDirectory)Releases" />
+    <Exec Command="cd &quot;$(MSBuildThisFileDirectory)Releases&quot; &amp; start ." />
   </Target>
 </Project>
