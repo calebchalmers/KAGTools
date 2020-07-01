@@ -14,8 +14,7 @@
         Top="{Binding UserSettings.Top, Mode=TwoWay}"
         Width="200"
         ResizeMode="NoResize"
-        SizeToContent="Height"
-        Loaded="Window_Loaded">
+        SizeToContent="Height">
     <Window.Resources>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Margin" Value="2"/>

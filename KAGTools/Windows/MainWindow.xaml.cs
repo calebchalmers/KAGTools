@@ -16,10 +16,5 @@ namespace KAGTools.Windows
 
             Title += string.Format(" v{0}", AssemblyHelper.Version);
         }
-
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            await UpdateHelper.UpdateApp();
-        }
     }
 }

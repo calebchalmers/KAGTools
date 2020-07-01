@@ -7,8 +7,10 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 using Serilog;
 using Squirrel;
 using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -75,6 +77,15 @@ namespace KAGTools
 
             // Open main window
             WindowHelper.OpenWindow(new MainViewModel(UserSettings, manualDocuments));
+
+            // Run auto-updater in the background
+            Task.Run(() =>
+                UpdateHelper.AutoUpdate(
+                    ConfigurationManager.AppSettings["UpdateUrl"],
+                    RequestUpdatePermission,
+                    UserSettings.UsePreReleases
+                )
+            );
         }
 
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
@@ -131,6 +142,18 @@ namespace KAGTools
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.File(FileHelper.LogPath, Serilog.Events.LogEventLevel.Information, outputTemplate)
                 .CreateLogger();
+        }
+
+        private bool RequestUpdatePermission(ReleaseEntry updateRelease)
+        {
+            return MessageBox.Show(
+                $"An update is available (v{updateRelease.Version})." + Environment.NewLine +
+                "Would you like to install it?",
+                AssemblyHelper.AppName,
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question,
+                MessageBoxResult.Yes
+            ) == MessageBoxResult.Yes;
         }
 
         private bool EnsureValidKagDirectory()
