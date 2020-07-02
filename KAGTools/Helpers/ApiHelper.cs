@@ -1,13 +1,11 @@
 ﻿using KAGTools.Data.API;
 using Newtonsoft.Json;
-using System;
+using Serilog;
 using System.Configuration;
-using System.Net;
+using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media.Imaging;
 
 namespace KAGTools.Helpers
 {
@@ -28,45 +26,48 @@ namespace KAGTools.Helpers
 
         public static async Task<ApiPlayerResults> GetPlayer(string username, CancellationToken cancellationToken)
         {
+            Log.Information("API: Requesting player info for {Username}", username);
+
             return await GetApiResultObject<ApiPlayerResults>(string.Format(UrlPlayer, username), cancellationToken);
         }
 
-        public static async Task<ApiPlayerAvatarResults> GetPlayerAvatar(string username, CancellationToken cancellationToken)
+        public static async Task<ApiPlayerAvatarResults> GetPlayerAvatarInfo(string username, CancellationToken cancellationToken)
         {
+            Log.Information("API: Requesting avatar info of player {Username}", username);
+            
             return await GetApiResultObject<ApiPlayerAvatarResults>(string.Format(UrlPlayerAvatar, username), cancellationToken);
         }
 
-        public static async Task<ApiServer[]> GetServers(ApiFilter[] filters, CancellationToken cancellationToken)
+        public static async Task<ApiServer[]> GetServerList(ApiFilter[] filters, CancellationToken cancellationToken)
         {
+            Log.Information("API: Requesting server list with filters: {@Filters}", filters);
+
             string filterJson = "?filters=" + JsonConvert.SerializeObject(filters);
             var results = await GetApiResultObject<ApiServerResults>(UrlServers + filterJson, cancellationToken);
             return results.Servers;
         }
 
-        public static async Task<ApiServer> GetServer(string ip, object port, CancellationToken cancellationToken)
+        public static async Task<ApiServer> GetServer(string ip, string port, CancellationToken cancellationToken)
         {
+            Log.Information("API: Requesting server info for {Ip:l}:{Port:l}", ip, port);
+
             string requestUri = string.Format(UrlServer, ip, port);
             var results = await GetApiResultObject<ApiServerResults>(requestUri, cancellationToken);
             return results.Server;
         }
 
-        public static async Task<BitmapImage> GetServerMinimap(string ip, object port, CancellationToken cancellationToken)
+        public static async Task<Stream> GetServerMinimapStream(string ip, string port, CancellationToken cancellationToken)
         {
-            string requestUri = string.Format(UrlServerMinimap, ip, port);
-            var stream = await HttpGetStream(requestUri, cancellationToken);
+            Log.Information("API: Requesting minimap stream from server at {Ip:l}:{Port:l}", ip, port);
 
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-            bitmap.CacheOption = BitmapCacheOption.Default;
-            bitmap.StreamSource = stream;
-            bitmap.EndInit();
-            return bitmap;
+            string requestUri = string.Format(UrlServerMinimap, ip, port);
+            return await HttpGetStream(requestUri, cancellationToken);
         }
 
-        public static async Task<T> GetApiResultObject<T>(string requestUri, CancellationToken cancellationToken) where T : class
+        private static async Task<T> GetApiResultObject<T>(string requestUri, CancellationToken cancellationToken) where T : class
         {
-            return JsonConvert.DeserializeObject<T>(await HttpGetString(requestUri, cancellationToken), new JsonSerializerSettings
+            string json = await HttpGetString(requestUri, cancellationToken);
+            return JsonConvert.DeserializeObject<T>(json, new JsonSerializerSettings
             {
                 DateTimeZoneHandling = DateTimeZoneHandling.Utc
             });
@@ -77,29 +78,23 @@ namespace KAGTools.Helpers
             return await (await HttpGetContent(requestUri, cancellationToken)).ReadAsStringAsync();
         }
 
-        private static async Task<System.IO.Stream> HttpGetStream(string requestUri, CancellationToken cancellationToken)
+        private static async Task<Stream> HttpGetStream(string requestUri, CancellationToken cancellationToken)
         {
-            return await (await HttpGetContent(requestUri, cancellationToken)).ReadAsStreamAsync();
+            var content = await HttpGetContent(requestUri, cancellationToken);
+            return await content.ReadAsStreamAsync();
         }
 
-        private static async Task<byte[]> HttpGetByteArray(string requestUri, CancellationToken cancellationToken)
-        {
-            return await (await HttpGetContent(requestUri, cancellationToken)).ReadAsByteArrayAsync();
-        }
-
+        // NOTE: This is the only method that actually makes HTTP requests
         private static async Task<HttpContent> HttpGetContent(string requestUri, CancellationToken cancellationToken)
         {
-            HttpResponseMessage result = null;
-
             try
             {
-                result = await httpClient.GetAsync(requestUri, cancellationToken);
+                var result = await httpClient.GetAsync(requestUri, cancellationToken);
                 return result.EnsureSuccessStatusCode().Content;
             }
-            catch (HttpRequestException e) when (result?.StatusCode == HttpStatusCode.InternalServerError)
+            catch (HttpRequestException ex)
             {
-                var message = string.Format("{0}{2}{2}Request URL: {1}", e.Message, requestUri, Environment.NewLine);
-                MessageBox.Show(message, "HTTP Request Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Log.Error(ex, "API: Failed HTTP GET request to {RequestUri}", requestUri);
                 throw;
             }
         }

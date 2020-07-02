@@ -5,6 +5,7 @@ using KAGTools.Helpers;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -18,11 +19,10 @@ namespace KAGTools.ViewModels.API
         private string _searchFilter = "";
         private AsyncTaskState _refreshState = AsyncTaskState.Standby;
 
-        private CancellationTokenSource MinimapCancellationSource { get; set; } = new CancellationTokenSource();
+        private CancellationTokenSource MinimapCancellationSource { get; set; }
         private bool RefreshingServers { get; set; } = false;
 
-        public ApiServerBrowserViewModel()
-            : base()
+        public ApiServerBrowserViewModel() : base()
         {
             RefreshServersCommand = new RelayCommand(ExecuteRefreshServersCommand);
 
@@ -34,7 +34,7 @@ namespace KAGTools.ViewModels.API
                 }
             };
 
-            var tmp = RefreshServersAsync();
+            Task.Run(() => RefreshServersAsync());
         }
 
         protected override bool FilterItem(ApiServer item)
@@ -95,7 +95,7 @@ namespace KAGTools.ViewModels.API
             try
             {
                 RefreshState = AsyncTaskState.Running;
-                ApiServer[] results = await ApiHelper.GetServers(
+                ApiServer[] results = await ApiHelper.GetServerList(
                     new ApiFilter[] {
                         new ApiFilter("current", true)
                     },
@@ -104,7 +104,7 @@ namespace KAGTools.ViewModels.API
                 Items = new ObservableCollection<ApiServer>(results);
                 RefreshState = AsyncTaskState.Finished;
             }
-            catch (System.Net.Http.HttpRequestException)
+            catch (HttpRequestException)
             {
                 RefreshState = AsyncTaskState.Failed;
             }
@@ -117,18 +117,26 @@ namespace KAGTools.ViewModels.API
 
         private async Task UpdateMinimapAsync()
         {
-            MinimapCancellationSource.Cancel();
-            MinimapCancellationSource = new CancellationTokenSource();
-
             MinimapBitmap = null;
 
             try
             {
-                var bitmap = await ApiHelper.GetServerMinimap(Selected.IPv4Address, Selected.Port, MinimapCancellationSource.Token);
+                MinimapCancellationSource?.Cancel();
+                MinimapCancellationSource = new CancellationTokenSource();
+
+                var stream = await ApiHelper.GetServerMinimapStream(Selected.IPv4Address, Selected.Port.ToString(), MinimapCancellationSource.Token);
+
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+                bitmap.CacheOption = BitmapCacheOption.Default;
+                bitmap.StreamSource = stream;
+                bitmap.EndInit();
+
                 MinimapBitmap = bitmap;
             }
             catch (TaskCanceledException) { }
-            catch (System.Net.Http.HttpRequestException) { }
+            catch (HttpRequestException) { }
         }
     }
 }

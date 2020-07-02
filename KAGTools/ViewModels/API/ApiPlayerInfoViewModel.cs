@@ -21,7 +21,7 @@ namespace KAGTools.ViewModels.API
         private AsyncTaskState _resultPlayerServerState = AsyncTaskState.Standby;
         private AsyncTaskState _avatarState = AsyncTaskState.Standby;
 
-        private CancellationTokenSource AvatarCancellationSource { get; set; } = new CancellationTokenSource();
+        private CancellationTokenSource AvatarCancellationSource { get; set; }
 
         public ApiPlayerInfoViewModel()
         {
@@ -133,11 +133,11 @@ namespace KAGTools.ViewModels.API
 
             try
             {
-                AvatarCancellationSource.Cancel();
+                AvatarCancellationSource?.Cancel();
                 AvatarCancellationSource = new CancellationTokenSource();
                 AvatarState = AsyncTaskState.Running;
 
-                ApiPlayerAvatarResults results = await ApiHelper.GetPlayerAvatar(SearchFilter, AvatarCancellationSource.Token);
+                ApiPlayerAvatarResults results = await ApiHelper.GetPlayerAvatarInfo(SearchFilter, AvatarCancellationSource.Token);
 
                 var bitmap = new BitmapImage();
                 bitmap.BeginInit();
