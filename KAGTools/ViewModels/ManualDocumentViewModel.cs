@@ -52,7 +52,7 @@ namespace KAGTools.ViewModels
             get => _searchFilter;
             set
             {
-                this.SetProperty(ref _searchFilter, value);
+                Set(ref _searchFilter, value);
                 searchRegex = GenerateSearchRegex(value);
                 RefreshFilters();
             }
@@ -61,7 +61,11 @@ namespace KAGTools.ViewModels
         public string TypeFilter
         {
             get => _typeFilter;
-            set => this.SetProperty(ref _typeFilter, value, RefreshFilters);
+            set
+            {
+                Set(ref _typeFilter, value);
+                RefreshFilters();
+            }
         }
 
         public Regex GenerateSearchRegex(string input)

@@ -23,19 +23,19 @@ namespace KAGTools.ViewModels
         public string Title
         {
             get => _title;
-            set => this.SetProperty(ref _title, value);
+            set => Set(ref _title, value);
         }
 
         public string InputLabelText
         {
             get => _inputLabelText;
-            set => this.SetProperty(ref _inputLabelText, value);
+            set => Set(ref _inputLabelText, value);
         }
 
         public string Input
         {
             get => _input;
-            set => this.SetProperty(ref _input, value);
+            set => Set(ref _input, value);
         }
 
         public ICommand OKCommand { get; private set; }

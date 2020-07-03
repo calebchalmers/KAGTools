@@ -135,7 +135,6 @@
     <Compile Include="Data\ManualDocument.cs" />
     <Compile Include="Data\ManualItem.cs" />
     <Compile Include="Data\API\ApiPlayerResults.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="Helpers\ApiHelper.cs" />
     <Compile Include="Helpers\AssemblyHelper.cs" />
     <Compile Include="Helpers\TestHelper.cs" />

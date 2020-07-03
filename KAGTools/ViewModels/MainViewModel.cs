@@ -75,62 +75,78 @@ namespace KAGTools.ViewModels
         public string Gamemode
         {
             get => _gamemode;
-            set => this.SetProperty(ref _gamemode, value, SaveAutoConfigInfo);
+            set
+            {
+                Set(ref _gamemode, value);
+                SaveAutoConfigInfo();
+            }
         }
 
         public int ScreenWidth
         {
             get => _screenWidth;
-            set => this.SetProperty(ref _screenWidth, value, SaveStartupInfo);
+            set
+            {
+                Set(ref _screenWidth, value);
+                SaveStartupInfo();
+            }
         }
 
         public int ScreenHeight
         {
             get => _screenHeight;
-            set => this.SetProperty(ref _screenHeight, value, SaveStartupInfo);
+            set
+            {
+                Set(ref _screenHeight, value);
+                SaveStartupInfo();
+            }
         }
 
         public bool Fullscreen
         {
             get => _fullscreen;
-            set => this.SetProperty(ref _fullscreen, value, SaveStartupInfo);
+            set
+            {
+                Set(ref _fullscreen, value);
+                SaveStartupInfo();
+            }
         }
 
         public ObservableCollection<string> Gamemodes
         {
             get => _gamemodes;
-            set => this.SetProperty(ref _gamemodes, value);
+            set => Set(ref _gamemodes, value);
         }
 
         public bool StartupOptionsEnabled
         {
             get => _startupOptionsEnabled;
-            set => this.SetProperty(ref _startupOptionsEnabled, value);
+            set => Set(ref _startupOptionsEnabled, value);
         }
 
         public bool GamemodeOptionEnabled
         {
             get => _gamemodeOptionEnabled;
-            set => this.SetProperty(ref _gamemodeOptionEnabled, value);
+            set => Set(ref _gamemodeOptionEnabled, value);
         }
 
         // Expose user settings to view
         public double WindowTop
         {
             get => UserSettings.Top;
-            set => this.SetProperty(ref UserSettings.Top, value);
+            set => Set(ref UserSettings.Top, value);
         }
 
         public double WindowLeft
         {
             get => UserSettings.Left;
-            set => this.SetProperty(ref UserSettings.Left, value);
+            set => Set(ref UserSettings.Left, value);
         }
 
         public int RunTypeIndex
         {
             get => UserSettings.RunTypeIndex;
-            set => this.SetProperty(ref UserSettings.RunTypeIndex, value);
+            set => Set(ref UserSettings.RunTypeIndex, value);
         }
 
         public ICommand OpenKagFolderCommand { get; private set; }

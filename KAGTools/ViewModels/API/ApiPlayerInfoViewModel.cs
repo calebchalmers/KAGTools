@@ -31,43 +31,43 @@ namespace KAGTools.ViewModels.API
         public string SearchFilter
         {
             get => _searchFilter;
-            set => this.SetProperty(ref _searchFilter, value);
+            set => Set(ref _searchFilter, value);
         }
 
         public ApiPlayerResults ResultPlayer
         {
             get => _resultPlayer;
-            set => this.SetProperty(ref _resultPlayer, value);
+            set => Set(ref _resultPlayer, value);
         }
 
         public BitmapImage AvatarBitmap
         {
             get => _avatarBitmap;
-            set => this.SetProperty(ref _avatarBitmap, value);
+            set => Set(ref _avatarBitmap, value);
         }
 
         public ApiServer ResultPlayerServer
         {
             get => _resultPlayerServer;
-            set => this.SetProperty(ref _resultPlayerServer, value);
+            set => Set(ref _resultPlayerServer, value);
         }
 
         public AsyncTaskState SearchState
         {
             get => _searchState;
-            set => this.SetProperty(ref _searchState, value);
+            set => Set(ref _searchState, value);
         }
 
         public AsyncTaskState ResultPlayerServerState
         {
             get => _resultPlayerServerState;
-            set => this.SetProperty(ref _resultPlayerServerState, value);
+            set => Set(ref _resultPlayerServerState, value);
         }
 
         public AsyncTaskState AvatarState
         {
             get => _avatarState;
-            set => this.SetProperty(ref _avatarState, value);
+            set => Set(ref _avatarState, value);
         }
 
         public ICommand SearchCommand { get; private set; }

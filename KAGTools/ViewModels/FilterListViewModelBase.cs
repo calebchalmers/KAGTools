@@ -45,19 +45,23 @@ namespace KAGTools.ViewModels
         public ObservableCollection<T> Items
         {
             get => _items;
-            set => this.SetProperty(ref _items, value, RefreshFilters);
+            set
+            {
+                Set(ref _items, value);
+                RefreshFilters();
+            }
         }
 
         public ObservableCollection<T> FilteredItems
         {
             get => _filteredItems;
-            private set => this.SetProperty(ref _filteredItems, value);
+            private set => Set(ref _filteredItems, value);
         }
 
         public T Selected
         {
             get => _selected;
-            set => this.SetProperty(ref _selected, value);
+            set => Set(ref _selected, value);
         }
     }
 }

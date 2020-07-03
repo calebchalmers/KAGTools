@@ -45,13 +45,17 @@ namespace KAGTools.ViewModels.API
         public BitmapImage MinimapBitmap
         {
             get => _minimapBitmap;
-            set => this.SetProperty(ref _minimapBitmap, value);
+            set => Set(ref _minimapBitmap, value);
         }
 
         public string SearchFilter
         {
             get => _searchFilter;
-            set => this.SetProperty(ref _searchFilter, value, RefreshFilters);
+            set
+            {
+                Set(ref _searchFilter, value);
+                RefreshFilters();
+            }
         }
 
         public int ServerCount
@@ -75,7 +79,7 @@ namespace KAGTools.ViewModels.API
         public AsyncTaskState RefreshState
         {
             get => _refreshState;
-            set => this.SetProperty(ref _refreshState, value);
+            set => Set(ref _refreshState, value);
         }
 
         public ICommand RefreshServersCommand { get; private set; }

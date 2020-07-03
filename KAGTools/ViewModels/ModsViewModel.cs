@@ -29,7 +29,11 @@ namespace KAGTools.ViewModels
         public string SearchFilter
         {
             get => _searchFilter;
-            set => this.SetProperty(ref _searchFilter, value, RefreshFilters);
+            set
+            {
+                Set(ref _searchFilter, value);
+                RefreshFilters();
+            }
         }
 
         public ICommand OpenCommand { get; private set; }
