@@ -91,10 +91,10 @@ namespace KAGTools
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             Log.Error(e.Exception, "An unhandled exception occured");
-            MessageBox.Show(string.Format("An unhandled exception occured in {0}.{1}Check \"{2}\" for more information.", AssemblyHelper.AppName, Environment.NewLine, Path.GetFullPath(FileHelper.LogPath)), "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            AlertError("An unhandled exception occured.");
 
             e.Handled = true;
-            Environment.Exit(1);
+            Shutdown(1);
         }
 
         #region Squirrel Events
@@ -128,6 +128,17 @@ namespace KAGTools
             MessageBox.Show(AssemblyHelper.AppName + " was successfully uninstalled.", "Uninstall", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         #endregion
+
+        private void AlertError(string message)
+        {
+            MessageBox.Show(
+                message + Environment.NewLine + 
+                Environment.NewLine +
+                $"Check \"{Path.GetFullPath(FileHelper.LogPath)}\" for more information.", 
+                AssemblyHelper.AppName + " Error", 
+                MessageBoxButton.OK, 
+                MessageBoxImage.Error);
+        }
 
         private void SetupLogging()
         {
