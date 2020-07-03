@@ -69,8 +69,8 @@ namespace KAGTools.ViewModels
             _gamemode = gamemodeProperty.Value;
         }
 
-        public UserSettings UserSettings { get; }
-        public ManualDocument[] ManualDocuments { get; }
+        private UserSettings UserSettings { get; }
+        private ManualDocument[] ManualDocuments { get; }
 
         public string Gamemode
         {
@@ -112,6 +112,25 @@ namespace KAGTools.ViewModels
         {
             get => _gamemodeOptionEnabled;
             set => this.SetProperty(ref _gamemodeOptionEnabled, value);
+        }
+
+        // Expose user settings to view
+        public double WindowTop
+        {
+            get => UserSettings.Top;
+            set => this.SetProperty(ref UserSettings.Top, value);
+        }
+
+        public double WindowLeft
+        {
+            get => UserSettings.Left;
+            set => this.SetProperty(ref UserSettings.Left, value);
+        }
+
+        public int RunTypeIndex
+        {
+            get => UserSettings.RunTypeIndex;
+            set => this.SetProperty(ref UserSettings.RunTypeIndex, value);
         }
 
         public ICommand OpenKagFolderCommand { get; private set; }

@@ -12,7 +12,31 @@ namespace KAGTools.ViewModels
             ManualDocumentViewModels = manualDocuments.Select(doc => new ManualDocumentViewModel(doc)).ToArray();
         }
 
-        public UserSettings UserSettings { get; }
+        private UserSettings UserSettings { get; }
         public ManualDocumentViewModel[] ManualDocumentViewModels { get; }
+
+        public double WindowTop
+        {
+            get => UserSettings.ManualWindowTop;
+            set => this.SetProperty(ref UserSettings.ManualWindowTop, value);
+        }
+
+        public double WindowLeft
+        {
+            get => UserSettings.ManualWindowLeft;
+            set => this.SetProperty(ref UserSettings.ManualWindowLeft, value);
+        }
+
+        public double WindowWidth
+        {
+            get => UserSettings.ManualWindowWidth;
+            set => this.SetProperty(ref UserSettings.ManualWindowWidth, value);
+        }
+
+        public double WindowHeight
+        {
+            get => UserSettings.ManualWindowHeight;
+            set => this.SetProperty(ref UserSettings.ManualWindowHeight, value);
+        }
     }
 }

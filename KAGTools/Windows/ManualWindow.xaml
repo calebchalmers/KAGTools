@@ -9,10 +9,10 @@
         xmlns:base="clr-namespace:KAGTools"
         mc:Ignorable="d"
         Title="Manual"
-        Height="{Binding UserSettings.ManualWindowHeight, Mode=TwoWay}"
-        Width="{Binding UserSettings.ManualWindowWidth, Mode=TwoWay}"
-        Top="{Binding UserSettings.ManualWindowTop, Mode=TwoWay}"
-        Left="{Binding UserSettings.ManualWindowLeft, Mode=TwoWay}">
+        Height="{Binding WindowHeight, Mode=TwoWay}"
+        Width="{Binding WindowWidth, Mode=TwoWay}"
+        Top="{Binding WindowTop, Mode=TwoWay}"
+        Left="{Binding WindowLeft, Mode=TwoWay}">
     <TabControl ItemsSource="{Binding ManualDocumentViewModels}" SelectedIndex="0">
         <TabControl.ItemTemplate>
             <DataTemplate DataType="{x:Type viewmodels:ManualDocumentViewModel}">

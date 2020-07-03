@@ -10,8 +10,8 @@
         x:Class="KAGTools.Windows.MainWindow"
         mc:Ignorable="d"
         Title="KAG Tools"
-        Left="{Binding UserSettings.Left, Mode=TwoWay}"
-        Top="{Binding UserSettings.Top, Mode=TwoWay}"
+        Left="{Binding WindowLeft, Mode=TwoWay}"
+        Top="{Binding WindowTop, Mode=TwoWay}"
         Width="200"
         ResizeMode="NoResize"
         SizeToContent="Height">
@@ -46,7 +46,7 @@
     </Window.Resources>
     <StackPanel Margin="5">
         <Button Content="Open KAG Folder" Command="{Binding OpenKagFolderCommand}"/>
-        <ComboBox SelectedIndex="{Binding UserSettings.RunTypeIndex}" Style="{StaticResource TestButtonComboBoxStyle}">
+        <ComboBox SelectedIndex="{Binding RunTypeIndex}" Style="{StaticResource TestButtonComboBoxStyle}">
             <ComboBoxItem Content="▶ Test Solo" Tag="{Binding TestSoloCommand}" ToolTip="Runs a client and server in the same process.&#x0a;This is the same as playing solo in-game."/>
             <ComboBoxItem Content="▶ Test Multiplayer" Tag="{Binding TestMultiplayerCommand}" ToolTip="Runs a client and server as separate processes.&#x0a;This is the same as playing multiplayer in-game."/>
         </ComboBox>

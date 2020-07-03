@@ -13,33 +13,33 @@ namespace KAGTools.Data
         #region Settings Definitions
         // Application
         [DefaultValue("")]
-        public string KagDirectory { get; set; }
+        public string KagDirectory;
 
         [DefaultValue(false)]
-        public bool UsePreReleases { get; set; }
+        public bool UsePreReleases;
 
         // Main window
         [DefaultValue(double.NaN)]
-        public double Left { get; set; }
+        public double Left;
 
         [DefaultValue(double.NaN)]
-        public double Top { get; set; }
+        public double Top;
 
         [DefaultValue(0)]
-        public int RunTypeIndex { get; set; }
+        public int RunTypeIndex;
 
         // Manual window
         [DefaultValue(500)]
-        public double ManualWindowWidth { get; set; }
+        public double ManualWindowWidth;
 
         [DefaultValue(600)]
-        public double ManualWindowHeight { get; set; }
+        public double ManualWindowHeight;
 
         [DefaultValue(double.NaN)]
-        public double ManualWindowTop { get; set; }
+        public double ManualWindowTop;
 
         [DefaultValue(double.NaN)]
-        public double ManualWindowLeft { get; set; }
+        public double ManualWindowLeft;
         #endregion
 
         public static UserSettings Load(string path)
