@@ -70,7 +70,7 @@ namespace KAGTools.Helpers
                 Log.Information("TestMultiplayer: Starting test client process");
                 var clientProcess = StartKagProcess(FileHelper.ClientAutoStartScriptPath);
 
-                if(clientProcess != null)
+                if (clientProcess != null)
                 {
                     // If client or server exits, close the other
                     clientProcess.EnableRaisingEvents = true;
@@ -86,7 +86,7 @@ namespace KAGTools.Helpers
             }
             else
             {
-                if(serverProcess.HasExited)
+                if (serverProcess.HasExited)
                 {
                     Log.Warning("TestMultiplayer: Test server closed before we could connect");
                 }

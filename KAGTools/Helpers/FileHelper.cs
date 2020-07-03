@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace KAGTools.Helpers
 {
@@ -57,7 +56,7 @@ namespace KAGTools.Helpers
 
         private static bool ReadWriteConfigProperties(string filePath, bool writePropertiesToFile, params BaseConfigProperty[] configProperties)
         {
-            if(!File.Exists(filePath))
+            if (!File.Exists(filePath))
             {
                 Log.Error("Could not find config file: {FilePath}", filePath);
                 return false;
@@ -142,7 +141,7 @@ namespace KAGTools.Helpers
             {
                 lines = File.ReadAllLines(ModsConfigPath);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Error(ex, "Failed to read mods config file");
                 return null;
@@ -157,7 +156,7 @@ namespace KAGTools.Helpers
             {
                 dirs = Directory.EnumerateDirectories(ModsDir);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Error(ex, "Failed to enumerate mods folder");
                 return null;
@@ -189,7 +188,7 @@ namespace KAGTools.Helpers
                 File.WriteAllLines(ModsConfigPath, lines.ToArray());
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Error(ex, "Failed to update mods config");
                 return false;
@@ -210,7 +209,7 @@ namespace KAGTools.Helpers
             {
                 gamemodeConfigPath = FindFirstFile(modDir, "gamemode.cfg");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Error(ex, "Failed searching for gamemode config");
                 return null;
@@ -271,7 +270,7 @@ namespace KAGTools.Helpers
 
                 return items;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Error(ex, "Failed to read manual file: {FileName}", fileName);
                 return null;

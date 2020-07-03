@@ -1,6 +1,4 @@
-﻿using KAGTools.Data;
-using KAGTools.Helpers;
-using System.Diagnostics;
+﻿using KAGTools.Helpers;
 using System.Windows;
 
 namespace KAGTools.Windows

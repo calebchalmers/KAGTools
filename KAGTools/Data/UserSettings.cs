@@ -1,7 +1,5 @@
-﻿using KAGTools.Helpers;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Serilog;
-using Serilog.Formatting.Json;
 using System;
 using System.ComponentModel;
 using System.IO;

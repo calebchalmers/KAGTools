@@ -34,7 +34,7 @@ namespace KAGTools.Helpers
         public static async Task<ApiPlayerAvatarResults> GetPlayerAvatarInfo(string username, CancellationToken cancellationToken)
         {
             Log.Information("API: Requesting avatar info of player {Username}", username);
-            
+
             return await GetApiResultObject<ApiPlayerAvatarResults>(string.Format(UrlPlayerAvatar, username), cancellationToken);
         }
 

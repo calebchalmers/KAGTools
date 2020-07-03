@@ -1,9 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using KAGTools.Data;
-using KAGTools.Helpers;
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
@@ -36,7 +34,7 @@ namespace KAGTools.ViewModels
                 item.Type.IndexOf(TypeFilter, StringComparison.OrdinalIgnoreCase) == -1)
                 return false;
 
-            if (!string.IsNullOrEmpty(SearchFilter) && 
+            if (!string.IsNullOrEmpty(SearchFilter) &&
                 !searchRegex.IsMatch(item.Value))
                 return false;
 

@@ -22,7 +22,7 @@ namespace KAGTools.ViewModels
         {
         }
 
-        public FilterListViewModelBase(IEnumerable<T> items) : 
+        public FilterListViewModelBase(IEnumerable<T> items) :
             this(new ObservableCollection<T>(items))
         {
         }

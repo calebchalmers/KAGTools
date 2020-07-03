@@ -195,7 +195,7 @@ namespace KAGTools.ViewModels
         {
             var newGamemodes = new List<string>(DEFAULT_GAMEMODES.Length);
 
-            if(activeMods != null)
+            if (activeMods != null)
             {
                 bool hasCustomGamemodes = false;
 

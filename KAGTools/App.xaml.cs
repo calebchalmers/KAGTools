@@ -132,11 +132,11 @@ namespace KAGTools
         private void AlertError(string message)
         {
             MessageBox.Show(
-                message + Environment.NewLine + 
+                message + Environment.NewLine +
                 Environment.NewLine +
-                $"Check \"{Path.GetFullPath(FileHelper.LogPath)}\" for more information.", 
-                AssemblyHelper.AppName + " Error", 
-                MessageBoxButton.OK, 
+                $"Check \"{Path.GetFullPath(FileHelper.LogPath)}\" for more information.",
+                AssemblyHelper.AppName + " Error",
+                MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }
 
@@ -174,7 +174,7 @@ namespace KAGTools
             // Keep asking until they give a valid directory or cancel
             while (true)
             {
-                if(!string.IsNullOrEmpty(dir))
+                if (!string.IsNullOrEmpty(dir))
                 {
                     // Check if folder contains KAG executable
                     if (File.Exists(Path.Combine(dir, "KAG.exe")))
