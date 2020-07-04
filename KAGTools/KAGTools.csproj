@@ -147,7 +147,6 @@
     </Compile>
     <Compile Include="ViewModels\ApiViewModel.cs" />
     <Compile Include="ViewModels\FilterListViewModelBase.cs" />
-    <Compile Include="ViewModels\InputViewModel.cs" />
     <Compile Include="ViewModels\API\ApiPlayerInfoViewModel.cs" />
     <Compile Include="ViewModels\API\ApiServerBrowserViewModel.cs" />
     <Compile Include="ViewModels\ManualDocumentViewModel.cs" />
@@ -161,9 +160,6 @@
     </Compile>
     <Compile Include="Windows\ModsWindow.xaml.cs">
       <DependentUpon>ModsWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\InputWindow.xaml.cs">
-      <DependentUpon>InputWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="UserControls\ManualDocumentUserControl.xaml">
       <SubType>Designer</SubType>
@@ -199,10 +195,6 @@
     <Page Include="Windows\ModsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\InputWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Xaml\Brushes.xaml">
       <SubType>Designer</SubType>

@@ -60,7 +60,6 @@ namespace KAGTools
             // Assign windows to viewmodels
             windowService.Register<MainWindow, MainViewModel>(() => new MainViewModel(UserSettings, windowService));
             windowService.Register<ModsWindow, ModsViewModel>(() => new ModsViewModel());
-            //windowService.Register<InputWindow, InputViewModel>(() => new InputViewModel()); // need to add parameter functionality for this?
             windowService.Register<ManualWindow, ManualViewModel>(() => CreateManualViewModel(UserSettings));
             windowService.Register<ApiWindow, ApiViewModel>(() => new ApiViewModel());
 
