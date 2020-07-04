@@ -72,9 +72,27 @@ namespace KAGTools.Services
 
             WindowCreationInfo info = infoMap[viewModelType];
 
+            if(!forceNew)
+            {
+                var existingWindow = FindWindowByViewModel<TViewModel>();
+
+                // If there is an existing window and forceNew is false, focus the window and return it's view model
+                if (existingWindow != null)
+                {
+                    if (existingWindow.WindowState == WindowState.Minimized)
+                    {
+                        existingWindow.WindowState = WindowState.Normal;
+                    }
+
+                    existingWindow.Activate();
+                    return (TViewModel)existingWindow.DataContext;
+                }
+            }
+
+            // If no window was found or forceNew is true, create a new window and view model
             TViewModel viewModel = (TViewModel)info.ViewModelCreator();
 
-            Window window = CreateOrFocusWindow(info.WindowType, forceNew);
+            Window window = CreateWindow(info.WindowType, forceNew);
             window.DataContext = viewModel;
 
             if (modal) window.ShowDialog();
@@ -83,25 +101,14 @@ namespace KAGTools.Services
             return viewModel;
         }
 
-        private Window CreateOrFocusWindow(Type windowType, bool forceNew = false)
+        private Window FindWindowByViewModel<TViewModel>()
+            where TViewModel : ViewModelBase
         {
-            if (!forceNew)
-            {
-                Window focusWindow = openWindows.LastOrDefault(w => w.GetType() == windowType);
+            return openWindows.LastOrDefault(w => w.DataContext is TViewModel);
+        }
 
-                // Activate window and show if minimized
-                if (focusWindow != null)
-                {
-                    if (focusWindow.WindowState == WindowState.Minimized)
-                    {
-                        focusWindow.WindowState = WindowState.Normal;
-                    }
-
-                    focusWindow.Activate();
-                    return focusWindow;
-                }
-            }
-
+        private Window CreateWindow(Type windowType, bool forceNew = false)
+        {
             // Create window and add view model to it
             Window window = (Window)Activator.CreateInstance(windowType);
             window.Owner = openWindows.ElementAtOrDefault(0); // Owner is the first opened window
