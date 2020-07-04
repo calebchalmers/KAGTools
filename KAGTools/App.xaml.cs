@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 using KAGTools.Data;
 using KAGTools.Helpers;
+using KAGTools.Services;
 using KAGTools.ViewModels;
 using KAGTools.Windows;
 using Microsoft.WindowsAPICodePack.Dialogs;
@@ -54,29 +55,17 @@ namespace KAGTools
 
             FileHelper.KagDir = UserSettings.KagDirectory;
 
+            var windowService = new WindowService(Messenger.Default);
+
             // Assign windows to viewmodels
-            WindowHelper.Register(typeof(MainViewModel), typeof(MainWindow));
-            WindowHelper.Register(typeof(ModsViewModel), typeof(ModsWindow));
-            WindowHelper.Register(typeof(InputViewModel), typeof(InputWindow));
-            WindowHelper.Register(typeof(ManualViewModel), typeof(ManualWindow));
-            WindowHelper.Register(typeof(ApiViewModel), typeof(ApiWindow));
-
-            // Listen for close window messages
-            Messenger.Default.Register<CloseWindowMessage>(this, WindowHelper.OnCloseWindowMessage);
-
-            //TEMPORARY
-            var manualDocuments = new ManualDocument[]
-            {
-                new ManualDocument("Objects", true, FileHelper.GetManualFunctions(FileHelper.ManualObjectsPath, true), () => Process.Start(FileHelper.ManualObjectsPath)),
-                new ManualDocument("Functions", false, FileHelper.GetManualFunctions(FileHelper.ManualFunctionsPath), () => Process.Start(FileHelper.ManualFunctionsPath)),
-                new ManualDocument("Hooks", false, FileHelper.GetManualFunctions(FileHelper.ManualHooksPath), () => Process.Start(FileHelper.ManualHooksPath)),
-                new ManualDocument("Enums", true, FileHelper.GetManualFunctions(FileHelper.ManualEnumsPath, true), () => Process.Start(FileHelper.ManualEnumsPath)),
-                new ManualDocument("Variables", false, FileHelper.GetManualFunctions(FileHelper.ManualVariablesPath), () => Process.Start(FileHelper.ManualVariablesPath)),
-                new ManualDocument("TypeDefs", false, FileHelper.GetManualFunctions(FileHelper.ManualTypeDefsPath), () => Process.Start(FileHelper.ManualTypeDefsPath))
-            };
+            windowService.Register<MainWindow, MainViewModel>(() => new MainViewModel(UserSettings, windowService));
+            windowService.Register<ModsWindow, ModsViewModel>(() => new ModsViewModel());
+            //windowService.Register<InputWindow, InputViewModel>(() => new InputViewModel()); // need to add parameter functionality for this?
+            windowService.Register<ManualWindow, ManualViewModel>(() => CreateManualViewModel(UserSettings));
+            windowService.Register<ApiWindow, ApiViewModel>(() => new ApiViewModel());
 
             // Open main window
-            WindowHelper.OpenWindow(new MainViewModel(UserSettings, manualDocuments));
+            windowService.OpenWindow<MainViewModel>();
 
             // Run auto-updater in the background
             Task.Run(() =>
@@ -227,6 +216,45 @@ namespace KAGTools
                     return false;
                 }
             }
+        }
+
+        private ManualViewModel CreateManualViewModel(UserSettings userSettings)
+        {
+            var manualDocuments = new ManualDocument[]
+            {
+                new ManualDocument(
+                    "Objects", true,
+                    FileHelper.GetManualFunctions(FileHelper.ManualObjectsPath, true),
+                    () => Process.Start(FileHelper.ManualObjectsPath)
+                ),
+                new ManualDocument(
+                    "Functions", false,
+                    FileHelper.GetManualFunctions(FileHelper.ManualFunctionsPath),
+                    () => Process.Start(FileHelper.ManualFunctionsPath)
+                ),
+                new ManualDocument(
+                    "Hooks", false,
+                    FileHelper.GetManualFunctions(FileHelper.ManualHooksPath),
+                    () => Process.Start(FileHelper.ManualHooksPath)
+                ),
+                new ManualDocument(
+                    "Enums", true,
+                    FileHelper.GetManualFunctions(FileHelper.ManualEnumsPath, true),
+                    () => Process.Start(FileHelper.ManualEnumsPath)
+                ),
+                new ManualDocument(
+                    "Variables", false,
+                    FileHelper.GetManualFunctions(FileHelper.ManualVariablesPath),
+                    () => Process.Start(FileHelper.ManualVariablesPath)
+                ),
+                new ManualDocument(
+                    "TypeDefs", false,
+                    FileHelper.GetManualFunctions(FileHelper.ManualTypeDefsPath),
+                    () => Process.Start(FileHelper.ManualTypeDefsPath)
+                )
+            };
+
+            return new ManualViewModel(userSettings, manualDocuments);
         }
     }
 }

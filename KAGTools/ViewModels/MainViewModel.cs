@@ -2,10 +2,12 @@
 using GalaSoft.MvvmLight.CommandWpf;
 using KAGTools.Data;
 using KAGTools.Helpers;
+using KAGTools.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace KAGTools.ViewModels
@@ -29,10 +31,10 @@ namespace KAGTools.ViewModels
         private bool _startupOptionsEnabled;
         private bool _gamemodeOptionEnabled;
 
-        public MainViewModel(UserSettings userSettings, ManualDocument[] manualDocuments)
+        public MainViewModel(UserSettings userSettings, WindowService windowService)
         {
             UserSettings = userSettings;
-            ManualDocuments = manualDocuments;
+            WindowService = windowService;
 
             OpenKagFolderCommand = new RelayCommand(ExecuteOpenKagFolderCommand);
             TestMultiplayerCommand = new RelayCommand(ExecuteTestMultiplayerCommand);
@@ -70,7 +72,7 @@ namespace KAGTools.ViewModels
         }
 
         private UserSettings UserSettings { get; }
-        private ManualDocument[] ManualDocuments { get; }
+        private WindowService WindowService { get; }
 
         public string Gamemode
         {
@@ -173,22 +175,23 @@ namespace KAGTools.ViewModels
 
         private void ExecuteModsCommand()
         {
-            ModsViewModel viewModel = new ModsViewModel();
-            WindowHelper.OpenDialog(viewModel);
+            var viewModel = WindowService.OpenWindow<ModsViewModel>(modal: true);
 
-            InitializeGamemodes(viewModel.Items.Where(mod => mod.IsActive == true));
+            if(viewModel != null)
+            {
+                var activeMods = viewModel.Items.Where(mod => mod.IsActive == true);
+                InitializeGamemodes(activeMods);
+            }
         }
 
         private void ExecuteManualCommand()
         {
-            ManualViewModel viewModel = new ManualViewModel(UserSettings, ManualDocuments);
-            WindowHelper.OpenWindow(viewModel);
+            WindowService.OpenWindow<ManualViewModel>();
         }
 
         private void ExecuteApiCommand()
         {
-            ApiViewModel viewModel = new ApiViewModel();
-            WindowHelper.OpenDialog(viewModel);
+            WindowService.OpenWindow<ApiViewModel>();
         }
 
         private void SaveStartupInfo()
