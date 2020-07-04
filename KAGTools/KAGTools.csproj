@@ -139,7 +139,6 @@
     <Compile Include="Helpers\AssemblyHelper.cs" />
     <Compile Include="Helpers\TestHelper.cs" />
     <Compile Include="Helpers\UpdateHelper.cs" />
-    <Compile Include="Messages.cs" />
     <Compile Include="Data\UserSettings.cs" />
     <Compile Include="Services\WindowService.cs" />
     <Compile Include="UserControls\ManualDocumentUserControl.xaml.cs">

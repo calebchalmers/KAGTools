@@ -22,12 +22,10 @@ namespace KAGTools.Services
             public Func<ViewModelBase> ViewModelCreator { get; set; }
         }
 
-        public WindowService(IMessenger messenger)
+        public WindowService()
         {
             infoMap = new Dictionary<Type, WindowCreationInfo>();
             openWindows = new List<Window>();
-
-            messenger.Register<CloseWindowMessage>(this, OnCloseWindowMessage);
         }
 
         /// <summary>
@@ -111,17 +109,6 @@ namespace KAGTools.Services
             openWindows.Add(window);
 
             return window;
-        }
-
-        private static void OnCloseWindowMessage(CloseWindowMessage msg)
-        {
-            Window targetWindow = openWindows.LastOrDefault(w => w.DataContext == msg.ViewModel);
-
-            if (targetWindow != null)
-            {
-                targetWindow.DialogResult = msg.DialogResult;
-                targetWindow.Close();
-            }
         }
     }
 }

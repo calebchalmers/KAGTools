@@ -55,7 +55,7 @@ namespace KAGTools
 
             FileHelper.KagDir = UserSettings.KagDirectory;
 
-            var windowService = new WindowService(Messenger.Default);
+            var windowService = new WindowService();
 
             // Assign windows to viewmodels
             windowService.Register<MainWindow, MainViewModel>(() => new MainViewModel(UserSettings, windowService));
