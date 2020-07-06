@@ -22,9 +22,9 @@
             </CollectionViewSource>
         </DockPanel.Resources>
         <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
-            <xctk:WatermarkComboBox Watermark="Type..." Padding="5,3" Text="{Binding TypeFilter}" TabIndex="1" IsEditable="True" MinWidth="70" ItemsSource="{Binding Source={StaticResource TypesSource}}" Visibility="{Binding HasTypes, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <xctk:WatermarkComboBox Watermark="Type..." Padding="5,3" Text="{Binding TypeFilter}" TabIndex="2" IsEditable="True" MinWidth="70" ItemsSource="{Binding Source={StaticResource TypesSource}}" Visibility="{Binding HasTypes, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <Button Content="📖" DockPanel.Dock="Right" Command="{Binding OpenSourceFileCommand}" ToolTip="Open Source File" TabIndex="3"/>
-            <xctk:WatermarkTextBox x:Name="SearchControl" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="2"/>
+            <xctk:WatermarkTextBox x:Name="SearchControl" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="1"/>
         </DockPanel>
         <ListBox ItemsSource="{Binding Source={StaticResource ManualItemsSource}}" BorderThickness="1,0,1,1" TabIndex="4" HorizontalContentAlignment="Stretch">
             <ListBox.ItemTemplate>
