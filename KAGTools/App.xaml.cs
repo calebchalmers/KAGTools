@@ -11,6 +11,7 @@ using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -122,10 +123,13 @@ namespace KAGTools
 
         private void AlertError(string message)
         {
+            StringBuilder messageBuilder = new StringBuilder();
+            messageBuilder.AppendLine(message);
+            messageBuilder.AppendLine();
+            messageBuilder.AppendLine($"Check \"{Path.GetFullPath(FileHelper.LogPath)}\" for more information.");
+
             MessageBox.Show(
-                message + Environment.NewLine +
-                Environment.NewLine +
-                $"Check \"{Path.GetFullPath(FileHelper.LogPath)}\" for more information.",
+                messageBuilder.ToString(),
                 AssemblyHelper.AppName + " Error",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
