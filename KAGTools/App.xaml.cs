@@ -76,13 +76,17 @@ namespace KAGTools
             windowService.OpenWindow<MainViewModel>();
 
             // Run auto-updater in the background
-            Task.Run(() =>
-                UpdateHelper.AutoUpdate(
+            Task.Run(async () =>
+            {
+                if (await UpdateHelper.AutoUpdate(
                     ConfigurationManager.AppSettings["UpdateUrl"],
                     RequestUpdatePermission,
-                    UserSettings.UsePreReleases
-                )
-            );
+                    UserSettings.UsePreReleases))
+                {
+                    // Shutdown and restart if an update was installed
+                    Dispatcher.Invoke(() => Shutdown(0));
+                }
+            });
         }
 
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

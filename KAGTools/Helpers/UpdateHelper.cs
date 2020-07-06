@@ -4,13 +4,12 @@ using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace KAGTools.Helpers
 {
     public static class UpdateHelper
     {
-        public static async Task AutoUpdate(string updateUrl, Func<ReleaseEntry, bool> acceptNewUpdates, bool usePreReleases = false)
+        public static async Task<bool> AutoUpdate(string updateUrl, Func<ReleaseEntry, bool> acceptNewUpdates, bool usePreReleases = false)
         {
             Log.Information("AutoUpdate: Attempting auto-update from: {UpdateUrl}", updateUrl);
             try
@@ -27,13 +26,13 @@ namespace KAGTools.Helpers
                     catch (Exception ex)
                     {
                         Log.Error(ex, "AutoUpdate: Failed to check for updates");
-                        return;
+                        return false;
                     }
 
                     if (updateInfo?.ReleasesToApply.Count == 0)
                     {
                         Log.Information("AutoUpdate: No new updates found");
-                        return;
+                        return false;
                     }
 
                     Log.Information("AutoUpdate: New updates found: {ReleasesToApply}", updateInfo.ReleasesToApply.Select(r => r.Version));
@@ -41,7 +40,7 @@ namespace KAGTools.Helpers
                     if (!acceptNewUpdates(updateInfo.FutureReleaseEntry))
                     {
                         Log.Information("AutoUpdate: Updates declined by user");
-                        return;
+                        return false;
                     }
 
                     try
@@ -52,7 +51,7 @@ namespace KAGTools.Helpers
                     catch (Exception ex)
                     {
                         Log.Error(ex, "AutoUpdate: Failed to download updates");
-                        return;
+                        return false;
                     }
 
                     try
@@ -63,23 +62,23 @@ namespace KAGTools.Helpers
                     catch (Exception ex)
                     {
                         Log.Error(ex, "AutoUpdate: Failed to apply updates");
-                        return;
+                        return false;
                     }
                 }
 
                 Log.Information("AutoUpdate: New updates installed. Restarting");
                 await UpdateManager.RestartAppWhenExited();
-                Application.Current.Shutdown(0);
+                return true;
             }
             catch (HttpRequestException ex)
             {
                 Log.Warning(ex, "AutoUpdate: There was a problem connecting to GitHub");
-                return;
+                return false;
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "AutoUpdate: Failed to auto-update");
-                return;
+                return false;
             }
         }
     }
