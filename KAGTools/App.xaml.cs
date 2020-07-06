@@ -22,13 +22,14 @@ namespace KAGTools
     /// </summary>
     public partial class App : Application
     {
-        private static Data.UserSettings UserSettings;
+        private static JsonSettingsService<UserSettings> UserSettingsService;
+        private UserSettings UserSettings { get => UserSettingsService.Settings; }
 
         private const ShortcutLocation ShortcutLocations = ShortcutLocation.StartMenu | ShortcutLocation.Desktop;
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            UserSettings.Save(FileHelper.SettingsPath);
+            UserSettingsService.Save();
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
@@ -44,7 +45,9 @@ namespace KAGTools
             // <-- App will exit here if a Squirrel event other than onFirstRun is triggered (via command line argument)
 
             SetupLogging();
-            UserSettings = Data.UserSettings.Load(FileHelper.SettingsPath);
+
+            UserSettingsService = new JsonSettingsService<UserSettings>(FileHelper.SettingsPath);
+            UserSettingsService.Load();
 
             if (!EnsureValidKagDirectory())
             {

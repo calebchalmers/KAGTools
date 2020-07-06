@@ -8,7 +8,6 @@ namespace KAGTools.Data
 {
     public class UserSettings
     {
-        #region Settings Definitions
         // Application
         [DefaultValue("")]
         public string KagDirectory;
@@ -38,57 +37,5 @@ namespace KAGTools.Data
 
         [DefaultValue(double.NaN)]
         public double ManualWindowLeft;
-        #endregion
-
-        public static UserSettings Load(string path)
-        {
-            Log.Information("Loading user settings");
-
-            string json = "{}";
-            if (File.Exists(path))
-            {
-                try
-                {
-                    json = File.ReadAllText(path);
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex, "Failed to read user settings file: {Path}", path);
-                }
-            }
-            else
-            {
-                Log.Warning("User settings file not found: {Path}", path);
-            }
-
-            var serializerSettings = new JsonSerializerSettings()
-            {
-                DefaultValueHandling = DefaultValueHandling.Populate
-            };
-
-            return JsonConvert.DeserializeObject<UserSettings>(json, serializerSettings);
-        }
-
-        public void Save(string path)
-        {
-            Log.Information("Saving user settings");
-
-            var serializerSettings = new JsonSerializerSettings()
-            {
-                Formatting = Formatting.Indented,
-                FloatFormatHandling = FloatFormatHandling.String
-            };
-
-            string json = JsonConvert.SerializeObject(this, serializerSettings);
-            try
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
-                File.WriteAllText(path, json);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Failed to write user settings to disk: {Path}", path);
-            }
-        }
     }
 }
