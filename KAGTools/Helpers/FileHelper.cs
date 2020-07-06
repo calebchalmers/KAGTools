@@ -167,7 +167,7 @@ namespace KAGTools.Helpers
 
             foreach (string dir in dirs)
             {
-                Mod mod = new Mod(dir);
+                Mod mod = new Mod(new DirectoryInfo(dir).Name, dir);
                 mod.IsActive = activeModNames?.Contains(mod.Name);
 
                 if (!activeOnly || mod.IsActive == true)

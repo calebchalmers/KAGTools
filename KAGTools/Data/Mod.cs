@@ -8,10 +8,10 @@ namespace KAGTools.Data
         public string Directory { get; set; }
         public bool? IsActive { get; set; }
 
-        public Mod(string dir, bool? isActive = false)
+        public Mod(string name, string directory, bool? isActive = false)
         {
-            Directory = dir;
-            Name = new DirectoryInfo(dir).Name;
+            Name = name;
+            Directory = directory;
             IsActive = isActive;
         }
 
