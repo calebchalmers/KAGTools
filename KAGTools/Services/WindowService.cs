@@ -4,6 +4,7 @@ using KAGTools.ViewModels;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -111,11 +112,38 @@ namespace KAGTools.Services
         {
             // Create window and add view model to it
             Window window = (Window)Activator.CreateInstance(windowType);
-            window.Owner = openWindows.ElementAtOrDefault(0); // Owner is the first opened window
+            window.Owner = openWindows.FirstOrDefault(); // Owner is the first opened window
             window.Closed += (s, e) => openWindows.Remove((Window)s);
             openWindows.Add(window);
 
             return window;
+        }
+
+        /// <summary>
+        /// Opens a file or folder in File Explorer.
+        /// </summary>
+        /// <param name="path">The file or folder to open.</param>
+        public void OpenInExplorer(string path)
+        {
+            Process.Start("explorer.exe", $"\"{path}\"");
+        }
+
+        /// <summary>
+        /// Show an alert to the user.
+        /// </summary>
+        /// <param name="message">The message shown.</param>
+        /// <param name="title">An optional title.</param>
+        /// <param name="error">Whether or not the alert represents an error notification.</param>
+        public void Alert(string message, string title = null, bool error = false)
+        {
+            MessageBox.Show(
+                message, 
+                title ?? Helpers.AssemblyHelper.AppName, 
+                MessageBoxButton.OK, 
+                error ? MessageBoxImage.Error : MessageBoxImage.Information, 
+                MessageBoxResult.OK, 
+                MessageBoxOptions.None
+            );
         }
     }
 }
