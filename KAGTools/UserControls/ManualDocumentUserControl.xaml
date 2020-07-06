@@ -3,13 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:local="clr-namespace:KAGTools.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
     <DockPanel>
+        <DockPanel.Resources>
+            <CollectionViewSource Source="{Binding Types}" x:Key="TypesSource">
+                <CollectionViewSource.SortDescriptions>
+                    <scm:SortDescription Direction="Ascending"/>
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>
+        </DockPanel.Resources>
         <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
-            <xctk:WatermarkComboBox Watermark="Type..." Padding="5,3" Text="{Binding TypeFilter}" TabIndex="1" IsEditable="True" MinWidth="70" ItemsSource="{Binding Types}" Visibility="{Binding HasTypes, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <xctk:WatermarkComboBox Watermark="Type..." Padding="5,3" Text="{Binding TypeFilter}" TabIndex="1" IsEditable="True" MinWidth="70" ItemsSource="{Binding Source={StaticResource TypesSource}}" Visibility="{Binding HasTypes, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <Button Content="📖" DockPanel.Dock="Right" Command="{Binding OpenSourceFileCommand}" ToolTip="Open Source File" TabIndex="3"/>
             <xctk:WatermarkTextBox x:Name="SearchControl" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="2"/>
         </DockPanel>
