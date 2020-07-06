@@ -10,6 +10,11 @@
              d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
     <DockPanel>
         <DockPanel.Resources>
+            <CollectionViewSource Source="{Binding FilteredItems}" x:Key="ManualItemsSource">
+                <CollectionViewSource.SortDescriptions>
+                    <scm:SortDescription PropertyName="Type" Direction="Ascending"/>
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>
             <CollectionViewSource Source="{Binding Types}" x:Key="TypesSource">
                 <CollectionViewSource.SortDescriptions>
                     <scm:SortDescription Direction="Ascending"/>
@@ -21,7 +26,7 @@
             <Button Content="📖" DockPanel.Dock="Right" Command="{Binding OpenSourceFileCommand}" ToolTip="Open Source File" TabIndex="3"/>
             <xctk:WatermarkTextBox x:Name="SearchControl" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="2"/>
         </DockPanel>
-        <ListBox ItemsSource="{Binding FilteredItems}" BorderThickness="1,0,1,1" TabIndex="4" HorizontalContentAlignment="Stretch">
+        <ListBox ItemsSource="{Binding Source={StaticResource ManualItemsSource}}" BorderThickness="1,0,1,1" TabIndex="4" HorizontalContentAlignment="Stretch">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <DockPanel ToolTip="{Binding Value}">
