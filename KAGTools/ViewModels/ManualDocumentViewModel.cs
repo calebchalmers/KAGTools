@@ -16,15 +16,18 @@ namespace KAGTools.ViewModels
         private string _searchFilter = "";
         private string _typeFilter = "";
 
+        private WindowService WindowService { get; }
+        private ManualDocument Document { get; }
+
         public ManualDocumentViewModel(ManualDocument document, WindowService windowService, ManualService manualService)
         {
-            Name = document.Name;
-            HasTypes = document.HasTypes;
+            Document = document;
+            WindowService = windowService;
 
-            OpenSourceFileCommand = new RelayCommand(() =>
-            {
-                windowService.OpenInExplorer(document.Path);
-            });
+            Name = Document.Name;
+            HasTypes = Document.HasTypes;
+
+            OpenSourceFileCommand = new RelayCommand(ExecuteOpenSourceFileCommand);
 
             Items = new ObservableCollection<ManualItem>(manualService.EnumerateManualDocument(document));
 
@@ -72,6 +75,11 @@ namespace KAGTools.ViewModels
                 Set(ref _typeFilter, value);
                 RefreshFilters();
             }
+        }
+
+        private void ExecuteOpenSourceFileCommand()
+        {
+            WindowService.OpenInExplorer(Document.Path);
         }
 
         private Regex GenerateSearchRegex(string input)
