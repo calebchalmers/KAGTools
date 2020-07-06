@@ -1,7 +1,10 @@
 ﻿using GalaSoft.MvvmLight.CommandWpf;
 using KAGTools.Data;
 using KAGTools.Helpers;
+using KAGTools.Services;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -14,11 +17,22 @@ namespace KAGTools.ViewModels
     {
         private string _searchFilter = "";
 
-        public ModsViewModel() : base(FileHelper.GetMods() ?? Enumerable.Empty<Mod>())
+        private WindowService WindowService { get; set; }
+        private ConfigService ConfigService { get; set; }
+        private ModsService ModsService { get; set; }
+
+        public ModsViewModel(WindowService windowService, ConfigService configService, ModsService modsService)
         {
+            WindowService = windowService;
+            ConfigService = configService;
+            ModsService = modsService;
+
             OpenCommand = new RelayCommand(ExecuteOpenCommand);
             InfoCommand = new RelayCommand(ExecuteInfoCommand);
             UpdateActiveModsCommand = new RelayCommand(ExecuteUpdateActiveModsCommand);
+
+            IEnumerable<Mod> allMods = ModsService.EnumerateAllMods();
+            Items = new ObservableCollection<Mod>(allMods);
         }
 
         protected override bool FilterItem(Mod item)
@@ -42,29 +56,28 @@ namespace KAGTools.ViewModels
 
         private void ExecuteOpenCommand()
         {
-            if (Selected == null) return;
-            Process.Start(Selected.Directory);
+            if (Selected != null)
+            {
+                WindowService.OpenInExplorer(Selected.Directory);
+            }
         }
 
         private void ExecuteInfoCommand()
         {
             if (Selected == null) return;
 
+            string gamemode = ConfigService.FindGamemodeOfMod(Selected);
+
             StringBuilder infoBuilder = new StringBuilder();
             infoBuilder.AppendLine("Name: " + Selected.Name);
-            infoBuilder.AppendLine("Gamemode: " + (FileHelper.FindGamemodeOfMod(Selected.Directory) ?? "N/A"));
+            infoBuilder.AppendLine("Gamemode: " + (gamemode ?? "N/A"));
 
-            MessageBox.Show(infoBuilder.ToString(), "Mod Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            WindowService.Alert(infoBuilder.ToString(), "Mod Info");
         }
 
         private void ExecuteUpdateActiveModsCommand()
         {
-            UpdateActiveMods();
-        }
-
-        private void UpdateActiveMods()
-        {
-            FileHelper.SetActiveMods(Items.Where(mod => mod.IsActive == true).ToArray());
+            ModsService.WriteActiveMods(Items.Where(mod => mod.IsActive == true));
         }
     }
 }

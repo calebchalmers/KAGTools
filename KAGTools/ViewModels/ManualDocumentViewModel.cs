@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using KAGTools.Data;
+using KAGTools.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -15,12 +16,17 @@ namespace KAGTools.ViewModels
         private string _searchFilter = "";
         private string _typeFilter = "";
 
-        public ManualDocumentViewModel(ManualDocument document) : base(document.Items ?? Enumerable.Empty<ManualItem>())
+        public ManualDocumentViewModel(ManualDocument document, WindowService windowService, ManualService manualService)
         {
             Name = document.Name;
             HasTypes = document.HasTypes;
 
-            OpenSourceFileCommand = new RelayCommand(document.OpenSourceFile);
+            OpenSourceFileCommand = new RelayCommand(() =>
+            {
+                windowService.OpenInExplorer(document.Path);
+            });
+
+            Items = new ObservableCollection<ManualItem>(manualService.EnumerateManualDocument(document));
 
             if (HasTypes)
             {
@@ -68,7 +74,7 @@ namespace KAGTools.ViewModels
             }
         }
 
-        public Regex GenerateSearchRegex(string input)
+        private Regex GenerateSearchRegex(string input)
         {
             string escapedFilter = Regex.Replace(input, @"[.*+?^${}()|[\]\\]", @"\$&");
             string lookaheads = Regex.Replace(escapedFilter, @"([^ ]+) *", "(?=.*$1)");

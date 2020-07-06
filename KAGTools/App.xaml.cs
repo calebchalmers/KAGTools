@@ -11,6 +11,7 @@ using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,10 +24,10 @@ namespace KAGTools
     /// </summary>
     public partial class App : Application
     {
+        private const ShortcutLocation ShortcutLocations = ShortcutLocation.StartMenu | ShortcutLocation.Desktop;
+
         private static JsonSettingsService<UserSettings> UserSettingsService;
         private UserSettings UserSettings { get => UserSettingsService.Settings; }
-
-        private const ShortcutLocation ShortcutLocations = ShortcutLocation.StartMenu | ShortcutLocation.Desktop;
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
@@ -59,12 +60,16 @@ namespace KAGTools
 
             FileHelper.KagDir = UserSettings.KagDirectory;
 
+            // Initialize services
+            var configService = new ConfigService();
+            var modsService = new ModsService(FileHelper.ModsDir, FileHelper.ModsConfigPath);
+            var manualService = new ManualService(FileHelper.ManualDir);
             var windowService = new WindowService();
 
             // Assign windows to viewmodels
-            windowService.Register<MainWindow, MainViewModel>(() => new MainViewModel(UserSettings, windowService));
-            windowService.Register<ModsWindow, ModsViewModel>(() => new ModsViewModel());
-            windowService.Register<ManualWindow, ManualViewModel>(() => CreateManualViewModel(UserSettings));
+            windowService.Register<MainWindow, MainViewModel>(() => new MainViewModel(UserSettings, windowService, configService, modsService));
+            windowService.Register<ModsWindow, ModsViewModel>(() => new ModsViewModel(windowService, configService, modsService));
+            windowService.Register<ManualWindow, ManualViewModel>(() => new ManualViewModel(UserSettings, windowService, manualService));
             windowService.Register<ApiWindow, ApiViewModel>(() => new ApiViewModel());
 
             // Open main window
@@ -222,45 +227,6 @@ namespace KAGTools
                     return false;
                 }
             }
-        }
-
-        private ManualViewModel CreateManualViewModel(UserSettings userSettings)
-        {
-            var manualDocuments = new ManualDocument[]
-            {
-                new ManualDocument(
-                    "Objects", true,
-                    FileHelper.GetManualFunctions(FileHelper.ManualObjectsPath, true),
-                    () => Process.Start(FileHelper.ManualObjectsPath)
-                ),
-                new ManualDocument(
-                    "Functions", false,
-                    FileHelper.GetManualFunctions(FileHelper.ManualFunctionsPath),
-                    () => Process.Start(FileHelper.ManualFunctionsPath)
-                ),
-                new ManualDocument(
-                    "Hooks", false,
-                    FileHelper.GetManualFunctions(FileHelper.ManualHooksPath),
-                    () => Process.Start(FileHelper.ManualHooksPath)
-                ),
-                new ManualDocument(
-                    "Enums", true,
-                    FileHelper.GetManualFunctions(FileHelper.ManualEnumsPath, true),
-                    () => Process.Start(FileHelper.ManualEnumsPath)
-                ),
-                new ManualDocument(
-                    "Variables", false,
-                    FileHelper.GetManualFunctions(FileHelper.ManualVariablesPath),
-                    () => Process.Start(FileHelper.ManualVariablesPath)
-                ),
-                new ManualDocument(
-                    "TypeDefs", false,
-                    FileHelper.GetManualFunctions(FileHelper.ManualTypeDefsPath),
-                    () => Process.Start(FileHelper.ManualTypeDefsPath)
-                )
-            };
-
-            return new ManualViewModel(userSettings, manualDocuments);
         }
     }
 }

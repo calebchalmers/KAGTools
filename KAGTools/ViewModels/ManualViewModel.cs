@@ -1,18 +1,24 @@
 ﻿using GalaSoft.MvvmLight;
 using KAGTools.Data;
+using KAGTools.Services;
+using System;
 using System.Linq;
 
 namespace KAGTools.ViewModels
 {
     public class ManualViewModel : ViewModelBase
     {
-        public ManualViewModel(UserSettings userSettings, ManualDocument[] manualDocuments)
+        private UserSettings UserSettings { get; }
+
+        public ManualViewModel(UserSettings userSettings, WindowService windowService, ManualService manualService)
         {
             UserSettings = userSettings;
-            ManualDocumentViewModels = manualDocuments.Select(doc => new ManualDocumentViewModel(doc)).ToArray();
+
+            ManualDocumentViewModels = manualService.ManualDocuments.Select(
+                document => new ManualDocumentViewModel(document, windowService, manualService)
+            ).ToArray();
         }
 
-        private UserSettings UserSettings { get; }
         public ManualDocumentViewModel[] ManualDocumentViewModels { get; }
 
         public double WindowTop
