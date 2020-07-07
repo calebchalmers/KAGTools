@@ -33,10 +33,7 @@ namespace KAGTools.ViewModels
 
             if (HasTypes)
             {
-                var types = new ObservableCollection<string>(Items.Select(i => i.Type).Distinct());
-                types.Add("");
-
-                Types = types;
+                Types = new ObservableCollection<string>(Items.Select(i => i.Type).Distinct());
             }
         }
 

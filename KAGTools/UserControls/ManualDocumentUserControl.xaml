@@ -15,14 +15,9 @@
                     <scm:SortDescription PropertyName="Type" Direction="Ascending"/>
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
-            <CollectionViewSource Source="{Binding Types}" x:Key="TypesSource">
-                <CollectionViewSource.SortDescriptions>
-                    <scm:SortDescription Direction="Ascending"/>
-                </CollectionViewSource.SortDescriptions>
-            </CollectionViewSource>
         </DockPanel.Resources>
         <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
-            <xctk:WatermarkComboBox Watermark="Type..." Padding="5,3" Text="{Binding TypeFilter}" TabIndex="2" IsEditable="True" MinWidth="70" ItemsSource="{Binding Source={StaticResource TypesSource}}" Visibility="{Binding HasTypes, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <xctk:WatermarkComboBox x:Name="TypeControl" Watermark="Type..." Padding="5,3" Text="{Binding TypeFilter}" TabIndex="2" IsEditable="True" MinWidth="70" ItemsSource="{Binding Types}" Visibility="{Binding HasTypes, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <Button Content="📖" DockPanel.Dock="Right" Command="{Binding OpenSourceFileCommand}" ToolTip="Open Source File" TabIndex="3"/>
             <xctk:WatermarkTextBox x:Name="SearchControl" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="1"/>
         </DockPanel>

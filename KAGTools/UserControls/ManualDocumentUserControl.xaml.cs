@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace KAGTools.UserControls
@@ -11,6 +12,8 @@ namespace KAGTools.UserControls
         public ManualDocumentUserControl()
         {
             InitializeComponent();
+
+            TypeControl.Items.SortDescriptions.Add(new SortDescription("", ListSortDirection.Ascending));
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
