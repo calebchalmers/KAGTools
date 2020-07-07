@@ -132,6 +132,7 @@
     <Compile Include="Data\API\ApiServerResults.cs" />
     <Compile Include="Data\AsyncTaskState.cs" />
     <Compile Include="Data\ConfigProperty.cs" />
+    <Compile Include="Data\FileLocations.cs" />
     <Compile Include="Data\ManualDocument.cs" />
     <Compile Include="Data\ManualItem.cs" />
     <Compile Include="Data\API\ApiPlayerResults.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Services\ManualService.cs" />
     <Compile Include="Services\ModsService.cs" />
     <Compile Include="Services\JsonSettingsService.cs" />
+    <Compile Include="Services\TestService.cs" />
     <Compile Include="Services\WindowService.cs" />
     <Compile Include="UserControls\ManualDocumentUserControl.xaml.cs">
       <DependentUpon>ManualDocumentUserControl.xaml</DependentUpon>

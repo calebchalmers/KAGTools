@@ -1,5 +1,4 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using KAGTools.Data;
+﻿using KAGTools.Data;
 using KAGTools.Helpers;
 using KAGTools.Services;
 using KAGTools.ViewModels;
@@ -9,9 +8,7 @@ using Serilog;
 using Squirrel;
 using System;
 using System.Configuration;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,8 +23,12 @@ namespace KAGTools
     {
         private const ShortcutLocation ShortcutLocations = ShortcutLocation.StartMenu | ShortcutLocation.Desktop;
 
+        private string AppLogPath = Path.GetFullPath(@"..\common\log.txt");
+        private string AppUserSettingsPath = Path.GetFullPath(@"..\common\usersettings.json");
+
         private static JsonSettingsService<UserSettings> UserSettingsService;
         private UserSettings UserSettings { get => UserSettingsService.Settings; }
+        private FileLocations FileLocations { get; set; }
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
@@ -46,9 +47,9 @@ namespace KAGTools
             }
             // <-- App will exit here if a Squirrel event other than onFirstRun is triggered (via command line argument)
 
-            SetupLogging();
+            SetupLogging(AppLogPath);
 
-            UserSettingsService = new JsonSettingsService<UserSettings>(FileHelper.SettingsPath);
+            UserSettingsService = new JsonSettingsService<UserSettings>(AppUserSettingsPath);
             UserSettingsService.Load();
 
             if (!EnsureValidKagDirectory())
@@ -58,16 +59,17 @@ namespace KAGTools
                 return;
             }
 
-            FileHelper.KagDir = UserSettings.KagDirectory;
+            InitializeFileLocations(UserSettings.KagDirectory);
 
             // Initialize services
             var configService = new ConfigService();
-            var modsService = new ModsService(FileHelper.ModsDir, FileHelper.ModsConfigPath);
-            var manualService = new ManualService(FileHelper.ManualDir);
+            var modsService = new ModsService(FileLocations.ModsDirectory, FileLocations.ModsConfigPath);
+            var manualService = new ManualService(FileLocations.ManualDirectory);
+            var testService = new TestService(FileLocations);
             var windowService = new WindowService();
 
             // Assign windows to viewmodels
-            windowService.Register<MainWindow, MainViewModel>(() => new MainViewModel(UserSettings, windowService, configService, modsService));
+            windowService.Register<MainWindow, MainViewModel>(() => new MainViewModel(UserSettings, FileLocations, windowService, configService, modsService, testService));
             windowService.Register<ModsWindow, ModsViewModel>(() => new ModsViewModel(windowService, configService, modsService));
             windowService.Register<ManualWindow, ManualViewModel>(() => new ManualViewModel(UserSettings, windowService, manualService));
             windowService.Register<ApiWindow, ApiViewModel>(() => new ApiViewModel());
@@ -135,7 +137,7 @@ namespace KAGTools
             StringBuilder messageBuilder = new StringBuilder();
             messageBuilder.AppendLine(message);
             messageBuilder.AppendLine();
-            messageBuilder.AppendLine($"Check \"{Path.GetFullPath(FileHelper.LogPath)}\" for more information.");
+            messageBuilder.AppendLine($"Check \"{AppLogPath}\" for more information.");
 
             MessageBox.Show(
                 messageBuilder.ToString(),
@@ -144,18 +146,18 @@ namespace KAGTools
                 MessageBoxImage.Error);
         }
 
-        private void SetupLogging()
+        private void SetupLogging(string logPath)
         {
             string outputTemplate = "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:j}{NewLine}{Exception}";
 
             try
             {
-                File.Delete(FileHelper.LogPath);
+                File.Delete(logPath);
             }
             catch (Exception) { } // It's not a problem if we can't delete the old log
 
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.File(FileHelper.LogPath, Serilog.Events.LogEventLevel.Information, outputTemplate)
+                .WriteTo.File(logPath, Serilog.Events.LogEventLevel.Information, outputTemplate)
                 .CreateLogger();
         }
 
@@ -231,6 +233,24 @@ namespace KAGTools
                     return false;
                 }
             }
+        }
+
+        private void InitializeFileLocations(string kagDirectory)
+        {
+            FileLocations = new FileLocations
+            {
+                KagDirectory = kagDirectory,
+                ModsDirectory = Path.Combine(kagDirectory, "Mods"),
+                ManualDirectory = Path.Combine(kagDirectory, "Manual", "interface"),
+                AutoConfigPath = Path.Combine(kagDirectory, "autoconfig.cfg"),
+                StartupConfigPath = Path.Combine(kagDirectory, "startup_config.cfg"),
+                ModsConfigPath = Path.Combine(kagDirectory, "mods.cfg"),
+                KagExecutablePath = Path.Combine(kagDirectory, "KAG.exe"),
+
+                SoloAutoStartScriptPath = Path.GetFullPath(@"Resources\solo_autostart.as"),
+                ClientAutoStartScriptPath = Path.GetFullPath(@"Resources\client_autostart.as"),
+                ServerAutoStartScriptPath = Path.GetFullPath(@"Resources\server_autostart.as")
+            };
         }
     }
 }

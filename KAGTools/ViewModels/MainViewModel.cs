@@ -32,16 +32,20 @@ namespace KAGTools.ViewModels
         private bool _gamemodeOptionEnabled;
 
         private UserSettings UserSettings { get; }
+        private FileLocations FileLocations { get; }
         private WindowService WindowService { get; }
         private ConfigService ConfigService { get; }
         private ModsService ModsService { get; }
+        private TestService TestService { get; }
 
-        public MainViewModel(UserSettings userSettings, WindowService windowService, ConfigService configService, ModsService modsService)
+        public MainViewModel(UserSettings userSettings, FileLocations fileLocations, WindowService windowService, ConfigService configService, ModsService modsService, TestService testService)
         {
             UserSettings = userSettings;
+            FileLocations = fileLocations;
             WindowService = windowService;
             ConfigService = configService;
             ModsService = modsService;
+            TestService = testService;
 
             OpenKagFolderCommand = new RelayCommand(ExecuteOpenKagFolderCommand);
             TestMultiplayerCommand = new RelayCommand(ExecuteTestMultiplayerCommand);
@@ -58,7 +62,7 @@ namespace KAGTools.ViewModels
             var screenHeightProperty = new IntConfigProperty("Window.Height", ScreenHeight);
             var fullscreenProperty = new BoolConfigProperty("Fullscreen", Fullscreen);
 
-            StartupOptionsEnabled = ConfigService.ReadConfigProperties(FileHelper.StartupConfigPath,
+            StartupOptionsEnabled = ConfigService.ReadConfigProperties(FileLocations.StartupConfigPath,
                 screenWidthProperty,
                 screenHeightProperty,
                 fullscreenProperty
@@ -71,7 +75,7 @@ namespace KAGTools.ViewModels
             // autoconfig.cfg
             var gamemodeProperty = new StringConfigProperty("sv_gamemode", Gamemode);
 
-            GamemodeOptionEnabled = ConfigService.ReadConfigProperties(FileHelper.AutoConfigPath,
+            GamemodeOptionEnabled = ConfigService.ReadConfigProperties(FileLocations.AutoConfigPath,
                 gamemodeProperty
             );
 
@@ -164,17 +168,17 @@ namespace KAGTools.ViewModels
 
         private void ExecuteOpenKagFolderCommand()
         {
-            WindowService.OpenInExplorer(FileHelper.KagDir);
+            WindowService.OpenInExplorer(FileLocations.KagDirectory);
         }
 
         private async void ExecuteTestMultiplayerCommand()
         {
-            await TestHelper.TestMultiplayer();
+            await TestService.TestMultiplayerAsync(ConfigService);
         }
 
         private void ExecuteTestSoloCommand()
         {
-            TestHelper.TestSolo();
+            TestService.TestSolo();
         }
 
         private void ExecuteModsCommand()
@@ -200,16 +204,17 @@ namespace KAGTools.ViewModels
 
         private void SaveStartupInfo()
         {
-            StartupOptionsEnabled = ConfigService.WriteConfigProperties(FileHelper.StartupConfigPath,
+            StartupOptionsEnabled = ConfigService.WriteConfigProperties(FileLocations.StartupConfigPath,
                 new IntConfigProperty("Window.Width", ScreenWidth),
                 new IntConfigProperty("Window.Height", ScreenHeight),
                 new BoolConfigProperty("Fullscreen", Fullscreen)
             );
         }
 
+
         private void SaveAutoConfigInfo()
         {
-            GamemodeOptionEnabled = ConfigService.WriteConfigProperties(FileHelper.AutoConfigPath,
+            GamemodeOptionEnabled = ConfigService.WriteConfigProperties(FileLocations.AutoConfigPath,
                 new StringConfigProperty("sv_gamemode", Gamemode)
             );
         }
