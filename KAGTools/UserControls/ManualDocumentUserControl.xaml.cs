@@ -12,8 +12,6 @@ namespace KAGTools.UserControls
         public ManualDocumentUserControl()
         {
             InitializeComponent();
-
-            TypeControl.Items.SortDescriptions.Add(new SortDescription("", ListSortDirection.Ascending));
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)

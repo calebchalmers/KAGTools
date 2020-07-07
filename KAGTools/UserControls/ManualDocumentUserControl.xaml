@@ -10,23 +10,21 @@
              d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
     <DockPanel>
         <DockPanel.Resources>
-            <CollectionViewSource Source="{Binding FilteredItems}" x:Key="ManualItemsSource">
-                <CollectionViewSource.SortDescriptions>
-                    <scm:SortDescription PropertyName="Type" Direction="Ascending"/>
-                </CollectionViewSource.SortDescriptions>
-            </CollectionViewSource>
+            <Style TargetType="{x:Type FrameworkElement}" x:Key="VisibleIfHasTypesStyle">
+                <Setter Property="Visibility" Value="{Binding DataContext.HasTypes, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </Style>
         </DockPanel.Resources>
         <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
-            <xctk:WatermarkComboBox x:Name="TypeControl" Watermark="Type..." Padding="5,3" Text="{Binding TypeFilter}" TabIndex="2" IsEditable="True" MinWidth="70" ItemsSource="{Binding Types}" Visibility="{Binding HasTypes, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <xctk:WatermarkComboBox Watermark="Type..." Text="{Binding TypeFilter}" ItemsSource="{Binding Types}" TabIndex="2" IsEditable="True" Padding="5,0" VerticalContentAlignment="Center" MinWidth="70" Style="{StaticResource VisibleIfHasTypesStyle}"/>
             <Button Content="📖" DockPanel.Dock="Right" Command="{Binding OpenSourceFileCommand}" ToolTip="Open Source File" TabIndex="3"/>
-            <xctk:WatermarkTextBox x:Name="SearchControl" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="1"/>
+            <xctk:WatermarkTextBox x:Name="SearchControl" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" Padding="5,0" VerticalContentAlignment="Center" TabIndex="1"/>
         </DockPanel>
-        <ListBox ItemsSource="{Binding Source={StaticResource ManualItemsSource}}" BorderThickness="1,0,1,1" TabIndex="4" HorizontalContentAlignment="Stretch">
+        <ListBox ItemsSource="{Binding FilteredItems}" BorderThickness="1,0,1,1" TabIndex="4">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <DockPanel ToolTip="{Binding Value}">
-                        <TextBlock Text="{Binding Type}" Padding="1" Margin="0,0,5,0" Foreground="{StaticResource DisabledBrush}" Visibility="{Binding DataContext.HasTypes, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                        <xctk:AutoSelectTextBox Text="{Binding Value, Mode=OneWay}" Background="Transparent" AutoSelectBehavior="OnFocus" BorderThickness="0" IsReadOnly="True" TextWrapping="Wrap" IsReadOnlyCaretVisible="True" />
+                    <DockPanel ToolTip="{Binding Value}" Margin="1">
+                        <TextBlock Text="{Binding Type}" Margin="0,0,5,0" Foreground="{StaticResource DisabledBrush}" Style="{DynamicResource VisibleIfHasTypesStyle}"/>
+                        <xctk:AutoSelectTextBox Text="{Binding Value}" Padding="-2,0" Background="Transparent" BorderThickness="0" AutoSelectBehavior="OnFocus" IsReadOnly="True" IsReadOnlyCaretVisible="True"/>
                     </DockPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
