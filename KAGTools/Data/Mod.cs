@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace KAGTools.Data
+﻿namespace KAGTools.Data
 {
     public class Mod
     {

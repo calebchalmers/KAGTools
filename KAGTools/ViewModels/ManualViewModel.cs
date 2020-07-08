@@ -1,7 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using KAGTools.Data;
 using KAGTools.Services;
-using System;
 using System.Linq;
 
 namespace KAGTools.ViewModels

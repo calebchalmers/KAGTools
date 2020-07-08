@@ -1,13 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Messaging;
-using KAGTools.ViewModels;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace KAGTools.Services
@@ -73,7 +68,7 @@ namespace KAGTools.Services
 
             WindowCreationInfo info = infoMap[viewModelType];
 
-            if(!forceNew)
+            if (!forceNew)
             {
                 var existingWindow = FindWindowByViewModel<TViewModel>();
 
@@ -137,11 +132,11 @@ namespace KAGTools.Services
         public void Alert(string message, string title = null, bool error = false)
         {
             MessageBox.Show(
-                message, 
-                title ?? AppInfo.Title, 
-                MessageBoxButton.OK, 
-                error ? MessageBoxImage.Error : MessageBoxImage.Information, 
-                MessageBoxResult.OK, 
+                message,
+                title ?? AppInfo.Title,
+                MessageBoxButton.OK,
+                error ? MessageBoxImage.Error : MessageBoxImage.Information,
+                MessageBoxResult.OK,
                 MessageBoxOptions.None
             );
         }

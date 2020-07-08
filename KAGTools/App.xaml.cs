@@ -81,7 +81,7 @@ namespace KAGTools
             Task.Run(async () =>
             {
                 var autoUpdateService = new AutoUpdater(
-                    ConfigurationManager.AppSettings["UpdateUrl"], 
+                    ConfigurationManager.AppSettings["UpdateUrl"],
                     UserSettings.UsePreReleases
                 );
 

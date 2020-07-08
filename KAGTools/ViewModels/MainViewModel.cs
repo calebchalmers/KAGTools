@@ -4,9 +4,7 @@ using KAGTools.Data;
 using KAGTools.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
 
 namespace KAGTools.ViewModels
@@ -184,7 +182,7 @@ namespace KAGTools.ViewModels
         {
             var viewModel = WindowService.OpenWindow<ModsViewModel>(modal: true);
 
-            if(viewModel != null)
+            if (viewModel != null)
             {
                 var activeMods = viewModel.Items.Where(mod => mod.IsActive == true);
                 InitializeGamemodes(activeMods);

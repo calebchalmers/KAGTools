@@ -75,9 +75,9 @@ namespace KAGTools.Services
             string line;
             using (StreamReader reader = new StreamReader(ModsConfigPath))
             {
-                while((line = reader.ReadLine()) != null)
+                while ((line = reader.ReadLine()) != null)
                 {
-                    if(!line.StartsWith("#"))
+                    if (!line.StartsWith("#"))
                     {
                         yield return line;
                     }
