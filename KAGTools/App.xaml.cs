@@ -32,13 +32,13 @@ namespace KAGTools
         private TestService TestService { get; set; }
         private ApiService ApiService { get; set; }
 
-        private JsonSettingsService<UserSettings> UserSettingsService;
-        private UserSettings UserSettings { get => UserSettingsService.Settings; }
+        private JsonSettingsFile<UserSettings> UserSettingsFile;
+        private UserSettings UserSettings { get => UserSettingsFile.Settings; }
         private FileLocations FileLocations { get; set; }
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            UserSettingsService.Save();
+            UserSettingsFile.Save();
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
@@ -55,8 +55,8 @@ namespace KAGTools
 
             SetupLogging(AppLogPath);
 
-            UserSettingsService = new JsonSettingsService<UserSettings>(AppUserSettingsPath);
-            UserSettingsService.Load();
+            UserSettingsFile = new JsonSettingsFile<UserSettings>(AppUserSettingsPath);
+            UserSettingsFile.Load();
 
             if (!EnsureValidKagDirectory())
             {
@@ -80,7 +80,7 @@ namespace KAGTools
             // Run auto-updater in the background
             Task.Run(async () =>
             {
-                var autoUpdateService = new AutoUpdateService(
+                var autoUpdateService = new AutoUpdater(
                     ConfigurationManager.AppSettings["UpdateUrl"], 
                     UserSettings.UsePreReleases
                 );

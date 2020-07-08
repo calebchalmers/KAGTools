@@ -138,12 +138,12 @@
     <Compile Include="Data\API\ApiPlayerResults.cs" />
     <Compile Include="AppInfo.cs" />
     <Compile Include="Data\UserSettings.cs" />
-    <Compile Include="Services\AutoUpdateService.cs" />
+    <Compile Include="AutoUpdater.cs" />
     <Compile Include="Services\ApiService.cs" />
     <Compile Include="Services\ConfigService.cs" />
     <Compile Include="Services\ManualService.cs" />
     <Compile Include="Services\ModsService.cs" />
-    <Compile Include="Services\JsonSettingsService.cs" />
+    <Compile Include="JsonSettingsFile.cs" />
     <Compile Include="Services\TestService.cs" />
     <Compile Include="Services\WindowService.cs" />
     <Compile Include="UserControls\ManualDocumentUserControl.xaml.cs">

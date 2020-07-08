@@ -8,14 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KAGTools.Services
+namespace KAGTools
 {
-    public class JsonSettingsService<T>
+    public class JsonSettingsFile<T>
     {
         public T Settings { get; set; }
         public string FilePath { get; set; }
 
-        public JsonSettingsService(string filePath)
+        public JsonSettingsFile(string filePath)
         {
             FilePath = filePath;
         }

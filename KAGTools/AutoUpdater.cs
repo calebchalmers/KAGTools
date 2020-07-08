@@ -7,14 +7,14 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KAGTools.Services
+namespace KAGTools
 {
-    public class AutoUpdateService
+    public class AutoUpdater
     {
         public string UpdateUrl { get; set; }
         public bool UsePreReleases { get; set; }
 
-        public AutoUpdateService(string updateUrl, bool usePreReleases)
+        public AutoUpdater(string updateUrl, bool usePreReleases)
         {
             UpdateUrl = updateUrl;
             UsePreReleases = usePreReleases;
