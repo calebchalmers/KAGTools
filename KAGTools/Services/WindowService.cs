@@ -138,7 +138,7 @@ namespace KAGTools.Services
         {
             MessageBox.Show(
                 message, 
-                title ?? Helpers.AssemblyHelper.AppName, 
+                title ?? AppInfo.Title, 
                 MessageBoxButton.OK, 
                 error ? MessageBoxImage.Error : MessageBoxImage.Information, 
                 MessageBoxResult.OK, 

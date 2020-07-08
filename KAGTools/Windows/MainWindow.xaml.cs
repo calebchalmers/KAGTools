@@ -1,5 +1,4 @@
-﻿using KAGTools.Helpers;
-using System.Windows;
+﻿using System.Windows;
 
 namespace KAGTools.Windows
 {
@@ -12,7 +11,7 @@ namespace KAGTools.Windows
         {
             InitializeComponent();
 
-            Title += string.Format(" v{0}", AssemblyHelper.Version);
+            Title += string.Format(" v{0}", AppInfo.Version);
         }
     }
 }

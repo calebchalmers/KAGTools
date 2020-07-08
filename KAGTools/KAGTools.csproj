@@ -140,6 +140,7 @@
     <Compile Include="Helpers\AssemblyHelper.cs" />
     <Compile Include="Helpers\TestHelper.cs" />
     <Compile Include="Helpers\UpdateHelper.cs" />
+    <Compile Include="AppInfo.cs" />
     <Compile Include="Data\UserSettings.cs" />
     <Compile Include="Services\AutoUpdateService.cs" />
     <Compile Include="Services\ApiService.cs" />

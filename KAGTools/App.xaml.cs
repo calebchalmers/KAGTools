@@ -1,5 +1,4 @@
 ﻿using KAGTools.Data;
-using KAGTools.Helpers;
 using KAGTools.Services;
 using KAGTools.ViewModels;
 using KAGTools.Windows;
@@ -109,31 +108,31 @@ namespace KAGTools
         // Runs after install
         private static void OnFirstRun()
         {
-            MessageBox.Show(AssemblyHelper.AppName + " was successfully installed.", "Install", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(AppInfo.Title + " was successfully installed.", "Install", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         // Runs before app launch
         private static void OnAppInitialInstall(Version version, UpdateManager mgr)
         {
-            mgr.CreateShortcutsForExecutable(AssemblyHelper.AppFileName, ShortcutLocations, false);
+            mgr.CreateShortcutsForExecutable(AppInfo.ExeName, ShortcutLocations, false);
             mgr.CreateUninstallerRegistryEntry();
         }
 
         // Runs before app launch
         private static void OnAppUpdate(Version version, UpdateManager mgr)
         {
-            mgr.CreateShortcutsForExecutable(AssemblyHelper.AppFileName, ShortcutLocations, true);
+            mgr.CreateShortcutsForExecutable(AppInfo.ExeName, ShortcutLocations, true);
             mgr.CreateUninstallerRegistryEntry();
 
-            MessageBox.Show(string.Format("{0} version (v{1}) was successfully installed.", AssemblyHelper.AppName, AssemblyHelper.Version), "Update", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(string.Format("{0} version (v{1}) was successfully installed.", AppInfo.Title, AppInfo.Version), "Update", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private static void OnAppUninstall(Version version, UpdateManager mgr)
         {
-            mgr.RemoveShortcutsForExecutable(AssemblyHelper.AppFileName, ShortcutLocations);
+            mgr.RemoveShortcutsForExecutable(AppInfo.ExeName, ShortcutLocations);
             mgr.RemoveUninstallerRegistryEntry();
 
-            MessageBox.Show(AssemblyHelper.AppName + " was successfully uninstalled.", "Uninstall", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(AppInfo.Title + " was successfully uninstalled.", "Uninstall", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         #endregion
 
@@ -146,7 +145,7 @@ namespace KAGTools
 
             MessageBox.Show(
                 messageBuilder.ToString(),
-                AssemblyHelper.AppName + " Error",
+                AppInfo.Title + " Error",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }
@@ -171,7 +170,7 @@ namespace KAGTools
             return MessageBox.Show(
                 $"An update is available (v{updateRelease.Version})." + Environment.NewLine +
                 "Would you like to install it?",
-                AssemblyHelper.AppName,
+                AppInfo.Title,
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question,
                 MessageBoxResult.Yes

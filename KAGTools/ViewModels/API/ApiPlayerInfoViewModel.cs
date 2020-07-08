@@ -2,7 +2,6 @@
 using GalaSoft.MvvmLight.Command;
 using KAGTools.Data;
 using KAGTools.Data.API;
-using KAGTools.Helpers;
 using KAGTools.Services;
 using System;
 using System.Threading;
