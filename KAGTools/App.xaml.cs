@@ -24,6 +24,7 @@ namespace KAGTools
 
         private string AppLogPath = Path.GetFullPath(@"..\common\log.txt");
         private string AppUserSettingsPath = Path.GetFullPath(@"..\common\usersettings.json");
+        private string AppUpdateUrl = ConfigurationManager.AppSettings["UpdateUrl"];
 
         private WindowService WindowService { get; set; }
         private ConfigService ConfigService { get; set; }
@@ -81,7 +82,7 @@ namespace KAGTools
             Task.Run(async () =>
             {
                 var autoUpdateService = new AutoUpdater(
-                    ConfigurationManager.AppSettings["UpdateUrl"],
+                    AppUpdateUrl,
                     UserSettings.UsePreReleases
                 );
 
