@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using KAGTools.Data;
 using KAGTools.Data.API;
 using KAGTools.Helpers;
+using KAGTools.Services;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,8 +24,12 @@ namespace KAGTools.ViewModels.API
 
         private CancellationTokenSource AvatarCancellationSource { get; set; }
 
-        public ApiPlayerInfoViewModel()
+        private ApiService ApiService { get; }
+
+        public ApiPlayerInfoViewModel(ApiService apiService)
         {
+            ApiService = apiService;
+
             SearchCommand = new RelayCommand(ExecuteSearchCommand);
         }
 
@@ -94,7 +99,7 @@ namespace KAGTools.ViewModels.API
             try
             {
                 SearchState = AsyncTaskState.Running;
-                ResultPlayer = await ApiHelper.GetPlayer(SearchFilter, CancellationToken.None);
+                ResultPlayer = await ApiService.GetPlayer(SearchFilter, CancellationToken.None);
                 SearchState = AsyncTaskState.Finished;
             }
             catch (System.Net.Http.HttpRequestException)
@@ -118,7 +123,7 @@ namespace KAGTools.ViewModels.API
                 }
 
                 ResultPlayerServerState = AsyncTaskState.Running;
-                ResultPlayerServer = await ApiHelper.GetServer(playerServer.IPv4Address, playerServer.Port, CancellationToken.None);
+                ResultPlayerServer = await ApiService.GetServer(playerServer.IPv4Address, playerServer.Port, CancellationToken.None);
                 ResultPlayerServerState = AsyncTaskState.Finished;
             }
             catch (System.Net.Http.HttpRequestException)
@@ -137,7 +142,7 @@ namespace KAGTools.ViewModels.API
                 AvatarCancellationSource = new CancellationTokenSource();
                 AvatarState = AsyncTaskState.Running;
 
-                ApiPlayerAvatarResults results = await ApiHelper.GetPlayerAvatarInfo(SearchFilter, AvatarCancellationSource.Token);
+                ApiPlayerAvatarResults results = await ApiService.GetPlayerAvatarInfo(SearchFilter, AvatarCancellationSource.Token);
 
                 var bitmap = new BitmapImage();
                 bitmap.BeginInit();

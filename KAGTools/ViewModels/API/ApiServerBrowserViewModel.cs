@@ -2,6 +2,7 @@
 using KAGTools.Data;
 using KAGTools.Data.API;
 using KAGTools.Helpers;
+using KAGTools.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -22,8 +23,12 @@ namespace KAGTools.ViewModels.API
         private CancellationTokenSource MinimapCancellationSource { get; set; }
         private bool RefreshingServers { get; set; } = false;
 
-        public ApiServerBrowserViewModel() : base()
+        private ApiService ApiService { get; }
+
+        public ApiServerBrowserViewModel(ApiService apiService)
         {
+            ApiService = apiService;
+
             RefreshServersCommand = new RelayCommand(ExecuteRefreshServersCommand);
 
             PropertyChanged += async (s, e) =>
@@ -99,7 +104,7 @@ namespace KAGTools.ViewModels.API
             try
             {
                 RefreshState = AsyncTaskState.Running;
-                ApiServer[] results = await ApiHelper.GetServerList(
+                ApiServer[] results = await ApiService.GetServerList(
                     new ApiFilter[] {
                         new ApiFilter("current", true)
                     },
@@ -128,7 +133,7 @@ namespace KAGTools.ViewModels.API
                 MinimapCancellationSource?.Cancel();
                 MinimapCancellationSource = new CancellationTokenSource();
 
-                var stream = await ApiHelper.GetServerMinimapStream(Selected.IPv4Address, Selected.Port.ToString(), MinimapCancellationSource.Token);
+                var stream = await ApiService.GetServerMinimapStream(Selected.IPv4Address, Selected.Port.ToString(), MinimapCancellationSource.Token);
 
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();

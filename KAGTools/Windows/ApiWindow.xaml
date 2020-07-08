@@ -25,10 +25,7 @@
         </Style>
     </Window.Resources>
     <TabControl>
-        <TabItem Header="Server Browser">
-            <TabItem.DataContext>
-                <viewmodels:ApiServerBrowserViewModel />
-            </TabItem.DataContext>
+        <TabItem Header="Server Browser" DataContext="{Binding ApiServerBrowserViewModel}">
             <TabItem.Resources>
                 <CollectionViewSource Source="{Binding FilteredItems}" x:Key="ServerListItemsSource">
                     <CollectionViewSource.SortDescriptions>
@@ -207,10 +204,7 @@
                 </Border>
             </Grid>
         </TabItem>
-        <TabItem Header="Player Info">
-            <TabItem.DataContext>
-                <viewmodels:ApiPlayerInfoViewModel />
-            </TabItem.DataContext>
+        <TabItem Header="Player Info" DataContext="{Binding ApiPlayerInfoViewModel}">
             <DockPanel FocusManager.FocusedElement="{Binding ElementName=PlayerSearchControl}">
                 <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
                     <Button Content="Search" DockPanel.Dock="Right" Command="{Binding SearchCommand}" IsDefault="True" TabIndex="2"/>

@@ -31,6 +31,7 @@ namespace KAGTools
         private ModsService ModsService { get; set; }
         private ManualService ManualService { get; set; }
         private TestService TestService { get; set; }
+        private ApiService ApiService { get; set; }
 
         private JsonSettingsService<UserSettings> UserSettingsService;
         private UserSettings UserSettings { get => UserSettingsService.Settings; }
@@ -72,7 +73,7 @@ namespace KAGTools
             WindowService.Register<MainWindow, MainViewModel>(() => new MainViewModel(UserSettings, FileLocations, WindowService, ConfigService, ModsService, TestService));
             WindowService.Register<ModsWindow, ModsViewModel>(() => new ModsViewModel(WindowService, ConfigService, ModsService));
             WindowService.Register<ManualWindow, ManualViewModel>(() => new ManualViewModel(UserSettings, WindowService, ManualService));
-            WindowService.Register<ApiWindow, ApiViewModel>(() => new ApiViewModel());
+            WindowService.Register<ApiWindow, ApiViewModel>(() => new ApiViewModel(ApiService));
 
             // Open main window
             WindowService.OpenWindow<MainViewModel>();
@@ -265,18 +266,29 @@ namespace KAGTools
             ConfigService = new ConfigService();
 
             ModsService = new ModsService(
-                FileLocations.ModsDirectory, 
-                FileLocations.ModsConfigPath);
+                FileLocations.ModsDirectory,
+                FileLocations.ModsConfigPath
+            );
 
             ManualService = new ManualService(
-                FileLocations.ManualDirectory);
+                FileLocations.ManualDirectory
+            );
 
             TestService = new TestService(
                 FileLocations.KagExecutablePath,
                 FileLocations.AutoConfigPath,
                 FileLocations.SoloAutoStartScriptPath,
                 FileLocations.ClientAutoStartScriptPath,
-                FileLocations.ServerAutoStartScriptPath);
+                FileLocations.ServerAutoStartScriptPath
+            );
+
+            ApiService = new ApiService(
+                ConfigurationManager.AppSettings["ApiPlayerUrlTemplate"],
+                ConfigurationManager.AppSettings["ApiPlayerAvatarUrlTemplate"],
+                ConfigurationManager.AppSettings["ApiServerListUrlTemplate"],
+                ConfigurationManager.AppSettings["ApiServerUrlTemplate"],
+                ConfigurationManager.AppSettings["ApiServerMinimapUrlTemplate"]
+            );
         }
     }
 }

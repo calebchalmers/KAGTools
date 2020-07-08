@@ -142,6 +142,7 @@
     <Compile Include="Helpers\UpdateHelper.cs" />
     <Compile Include="Data\UserSettings.cs" />
     <Compile Include="Services\AutoUpdateService.cs" />
+    <Compile Include="Services\ApiService.cs" />
     <Compile Include="Services\ConfigService.cs" />
     <Compile Include="Services\ManualService.cs" />
     <Compile Include="Services\ModsService.cs" />
