@@ -136,10 +136,6 @@
     <Compile Include="Data\ManualDocument.cs" />
     <Compile Include="Data\ManualItem.cs" />
     <Compile Include="Data\API\ApiPlayerResults.cs" />
-    <Compile Include="Helpers\ApiHelper.cs" />
-    <Compile Include="Helpers\AssemblyHelper.cs" />
-    <Compile Include="Helpers\TestHelper.cs" />
-    <Compile Include="Helpers\UpdateHelper.cs" />
     <Compile Include="AppInfo.cs" />
     <Compile Include="Data\UserSettings.cs" />
     <Compile Include="Services\AutoUpdateService.cs" />
@@ -185,7 +181,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Data\Mod.cs" />
     <Compile Include="Xaml\Converters\EqualityToVisibilityConverter.cs" />
     <Compile Include="Xaml\Converters\BooleanToYesNoConverter.cs" />
@@ -252,6 +247,7 @@
   <ItemGroup>
     <Resource Include="Resources\Icon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
