@@ -80,12 +80,16 @@ namespace KAGTools
             // Run auto-updater in the background
             Task.Run(async () =>
             {
-                if (await UpdateHelper.AutoUpdate(
-                    ConfigurationManager.AppSettings["UpdateUrl"],
-                    RequestUpdatePermission,
-                    UserSettings.UsePreReleases))
+                var autoUpdateService = new AutoUpdateService(
+                    ConfigurationManager.AppSettings["UpdateUrl"], 
+                    UserSettings.UsePreReleases
+                );
+
+                bool newUpdate = await autoUpdateService.AutoUpdate(RequestUpdatePermission);
+
+                // Shutdown and restart if an update was installed
+                if (newUpdate)
                 {
-                    // Shutdown and restart if an update was installed
                     Dispatcher.Invoke(() => Shutdown(0));
                 }
             });
