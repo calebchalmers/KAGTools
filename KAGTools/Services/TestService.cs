@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -19,11 +20,20 @@ namespace KAGTools.Services
         private readonly int MAX_RETRIES = 100;
         private readonly TimeSpan RETRY_INTERVAL = TimeSpan.FromSeconds(1);
 
-        public FileLocations FileLocations { get; set; }
+        // Relevant file paths
+        public string KagExecutablePath { get; set; }
+        public string AutoConfigPath { get; set; }
+        public string SoloAutoStartScriptPath { get; set; }
+        public string ClientAutoStartScriptPath { get; set; }
+        public string ServerAutoStartScriptPath { get; set; }
 
-        public TestService(FileLocations fileLocations)
+        public TestService(string kagExecutablePath, string autoConfigPath, string soloAutoStartScriptPath, string clientAutoStartScriptPath, string serverAutoStartScriptPath)
         {
-            FileLocations = fileLocations;
+            KagExecutablePath = kagExecutablePath;
+            AutoConfigPath = autoConfigPath;
+            SoloAutoStartScriptPath = soloAutoStartScriptPath;
+            ClientAutoStartScriptPath = clientAutoStartScriptPath;
+            ServerAutoStartScriptPath = serverAutoStartScriptPath;
         }
 
         public bool TestSolo()
@@ -32,7 +42,7 @@ namespace KAGTools.Services
 
             try
             {
-                return StartKagProcess(FileLocations.SoloAutoStartScriptPath) != null;
+                return StartKagProcess(SoloAutoStartScriptPath) != null;
             }
             catch (Win32Exception ex)
             {
@@ -59,7 +69,7 @@ namespace KAGTools.Services
             try
             {
                 Log.Information("TestMultiplayer: Starting test server process");
-                serverProcess = StartKagProcess(FileLocations.ServerAutoStartScriptPath);
+                serverProcess = StartKagProcess(ServerAutoStartScriptPath);
             }
             catch (Win32Exception ex)
             {
@@ -78,7 +88,7 @@ namespace KAGTools.Services
             if (connected)
             {
                 Log.Information("TestMultiplayer: Starting test client process");
-                var clientProcess = StartKagProcess(FileLocations.ClientAutoStartScriptPath);
+                var clientProcess = StartKagProcess(ClientAutoStartScriptPath);
 
                 if (clientProcess != null)
                 {
@@ -114,7 +124,7 @@ namespace KAGTools.Services
             var tcprProperty = new BoolConfigProperty("sv_tcpr", false);
             var passwordProperty = new StringConfigProperty("sv_rconpassword", "");
 
-            bool readSuccess = configService.ReadConfigProperties(FileLocations.AutoConfigPath,
+            bool readSuccess = configService.ReadConfigProperties(AutoConfigPath,
                 tcprProperty,
                 portProperty,
                 passwordProperty
@@ -134,7 +144,7 @@ namespace KAGTools.Services
                     passwordProperty.Value = DEFAULT_RCONPASSWORD;
                 }
 
-                bool writeSuccess = configService.WriteConfigProperties(FileLocations.AutoConfigPath,
+                bool writeSuccess = configService.WriteConfigProperties(AutoConfigPath,
                     tcprProperty,
                     passwordProperty
                 );
@@ -190,9 +200,9 @@ namespace KAGTools.Services
         {
             return Process.Start(new ProcessStartInfo()
             {
-                FileName = FileLocations.KagExecutablePath,
+                FileName = KagExecutablePath,
                 Arguments = $"noautoupdate nolauncher autostart \"{autostart}\"",
-                WorkingDirectory = FileLocations.KagDirectory
+                WorkingDirectory = Path.GetDirectoryName(KagExecutablePath)
             });
         }
     }

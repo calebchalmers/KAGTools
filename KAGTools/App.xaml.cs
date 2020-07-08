@@ -26,7 +26,13 @@ namespace KAGTools
         private string AppLogPath = Path.GetFullPath(@"..\common\log.txt");
         private string AppUserSettingsPath = Path.GetFullPath(@"..\common\usersettings.json");
 
-        private static JsonSettingsService<UserSettings> UserSettingsService;
+        private WindowService WindowService { get; set; }
+        private ConfigService ConfigService { get; set; }
+        private ModsService ModsService { get; set; }
+        private ManualService ManualService { get; set; }
+        private TestService TestService { get; set; }
+
+        private JsonSettingsService<UserSettings> UserSettingsService;
         private UserSettings UserSettings { get => UserSettingsService.Settings; }
         private FileLocations FileLocations { get; set; }
 
@@ -59,23 +65,17 @@ namespace KAGTools
                 return;
             }
 
-            InitializeFileLocations(UserSettings.KagDirectory);
-
-            // Initialize services
-            var configService = new ConfigService();
-            var modsService = new ModsService(FileLocations.ModsDirectory, FileLocations.ModsConfigPath);
-            var manualService = new ManualService(FileLocations.ManualDirectory);
-            var testService = new TestService(FileLocations);
-            var windowService = new WindowService();
+            InitializeFileLocations();
+            InitializeServices();
 
             // Assign windows to viewmodels
-            windowService.Register<MainWindow, MainViewModel>(() => new MainViewModel(UserSettings, FileLocations, windowService, configService, modsService, testService));
-            windowService.Register<ModsWindow, ModsViewModel>(() => new ModsViewModel(windowService, configService, modsService));
-            windowService.Register<ManualWindow, ManualViewModel>(() => new ManualViewModel(UserSettings, windowService, manualService));
-            windowService.Register<ApiWindow, ApiViewModel>(() => new ApiViewModel());
+            WindowService.Register<MainWindow, MainViewModel>(() => new MainViewModel(UserSettings, FileLocations, WindowService, ConfigService, ModsService, TestService));
+            WindowService.Register<ModsWindow, ModsViewModel>(() => new ModsViewModel(WindowService, ConfigService, ModsService));
+            WindowService.Register<ManualWindow, ManualViewModel>(() => new ManualViewModel(UserSettings, WindowService, ManualService));
+            WindowService.Register<ApiWindow, ApiViewModel>(() => new ApiViewModel());
 
             // Open main window
-            windowService.OpenWindow<MainViewModel>();
+            WindowService.OpenWindow<MainViewModel>();
 
             // Run auto-updater in the background
             Task.Run(async () =>
@@ -239,8 +239,10 @@ namespace KAGTools
             }
         }
 
-        private void InitializeFileLocations(string kagDirectory)
+        private void InitializeFileLocations()
         {
+            string kagDirectory = UserSettings.KagDirectory;
+
             FileLocations = new FileLocations
             {
                 KagDirectory = kagDirectory,
@@ -255,6 +257,26 @@ namespace KAGTools
                 ClientAutoStartScriptPath = Path.GetFullPath(@"Resources\client_autostart.as"),
                 ServerAutoStartScriptPath = Path.GetFullPath(@"Resources\server_autostart.as")
             };
+        }
+
+        private void InitializeServices()
+        {
+            WindowService = new WindowService();
+            ConfigService = new ConfigService();
+
+            ModsService = new ModsService(
+                FileLocations.ModsDirectory, 
+                FileLocations.ModsConfigPath);
+
+            ManualService = new ManualService(
+                FileLocations.ManualDirectory);
+
+            TestService = new TestService(
+                FileLocations.KagExecutablePath,
+                FileLocations.AutoConfigPath,
+                FileLocations.SoloAutoStartScriptPath,
+                FileLocations.ClientAutoStartScriptPath,
+                FileLocations.ServerAutoStartScriptPath);
         }
     }
 }
