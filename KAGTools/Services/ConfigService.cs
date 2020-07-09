@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace KAGTools.Services
 {
-    public class ConfigService
+    public class ConfigService : IConfigService
     {
         public ConfigService()
         {

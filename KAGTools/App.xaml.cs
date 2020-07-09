@@ -26,12 +26,12 @@ namespace KAGTools
         private string AppUserSettingsPath = Path.GetFullPath(@"..\common\usersettings.json");
         private string AppUpdateUrl = ConfigurationManager.AppSettings["UpdateUrl"];
 
-        private WindowService WindowService { get; set; }
-        private ConfigService ConfigService { get; set; }
-        private ModsService ModsService { get; set; }
-        private ManualService ManualService { get; set; }
-        private TestService TestService { get; set; }
-        private ApiService ApiService { get; set; }
+        private IWindowService WindowService { get; set; }
+        private IConfigService ConfigService { get; set; }
+        private IModsService ModsService { get; set; }
+        private IManualService ManualService { get; set; }
+        private ITestService TestService { get; set; }
+        private IApiService ApiService { get; set; }
 
         private JsonSettingsFile<UserSettings> UserSettingsFile;
         private UserSettings UserSettings { get => UserSettingsFile.Settings; }

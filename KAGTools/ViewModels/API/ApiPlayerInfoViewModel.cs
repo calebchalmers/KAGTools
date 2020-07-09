@@ -2,7 +2,6 @@
 using GalaSoft.MvvmLight.Command;
 using KAGTools.Data;
 using KAGTools.Data.API;
-using KAGTools.Services;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,9 +22,9 @@ namespace KAGTools.ViewModels.API
 
         private CancellationTokenSource AvatarCancellationSource { get; set; }
 
-        private ApiService ApiService { get; }
+        private IApiService ApiService { get; }
 
-        public ApiPlayerInfoViewModel(ApiService apiService)
+        public ApiPlayerInfoViewModel(IApiService apiService)
         {
             ApiService = apiService;
 

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace KAGTools.Services
 {
-    public class ModsService
+    public class ModsService : IModsService
     {
         public string ModsDirectory { get; set; }
         public string ModsConfigPath { get; set; }

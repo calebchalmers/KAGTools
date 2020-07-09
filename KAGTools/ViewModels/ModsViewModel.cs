@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight.CommandWpf;
 using KAGTools.Data;
-using KAGTools.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,11 +13,11 @@ namespace KAGTools.ViewModels
     {
         private string _searchFilter = "";
 
-        private WindowService WindowService { get; set; }
-        private ConfigService ConfigService { get; set; }
-        private ModsService ModsService { get; set; }
+        private IWindowService WindowService { get; set; }
+        private IConfigService ConfigService { get; set; }
+        private IModsService ModsService { get; set; }
 
-        public ModsViewModel(WindowService windowService, ConfigService configService, ModsService modsService)
+        public ModsViewModel(IWindowService windowService, IConfigService configService, IModsService modsService)
         {
             WindowService = windowService;
             ConfigService = configService;

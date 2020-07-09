@@ -1,7 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using KAGTools.Data;
-using KAGTools.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -30,12 +29,12 @@ namespace KAGTools.ViewModels
 
         private UserSettings UserSettings { get; }
         private FileLocations FileLocations { get; }
-        private WindowService WindowService { get; }
-        private ConfigService ConfigService { get; }
-        private ModsService ModsService { get; }
-        private TestService TestService { get; }
+        private IWindowService WindowService { get; }
+        private IConfigService ConfigService { get; }
+        private IModsService ModsService { get; }
+        private ITestService TestService { get; }
 
-        public MainViewModel(UserSettings userSettings, FileLocations fileLocations, WindowService windowService, ConfigService configService, ModsService modsService, TestService testService)
+        public MainViewModel(UserSettings userSettings, FileLocations fileLocations, IWindowService windowService, IConfigService configService, IModsService modsService, ITestService testService)
         {
             UserSettings = userSettings;
             FileLocations = fileLocations;

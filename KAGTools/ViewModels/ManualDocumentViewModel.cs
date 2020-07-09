@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using KAGTools.Data;
-using KAGTools.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -16,10 +15,10 @@ namespace KAGTools.ViewModels
         private string _searchFilter = "";
         private string _typeFilter = "";
 
-        private WindowService WindowService { get; }
+        private IWindowService WindowService { get; }
         private ManualDocument Document { get; }
 
-        public ManualDocumentViewModel(ManualDocument document, WindowService windowService, ManualService manualService)
+        public ManualDocumentViewModel(ManualDocument document, IWindowService windowService, IManualService manualService)
         {
             Document = document;
             WindowService = windowService;

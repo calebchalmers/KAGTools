@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace KAGTools.Services
 {
-    public class WindowService
+    public class WindowService : IWindowService
     {
         Dictionary<Type, WindowCreationInfo> infoMap;
         private static List<Window> openWindows;

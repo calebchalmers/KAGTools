@@ -1,14 +1,13 @@
 ﻿using GalaSoft.MvvmLight;
-using KAGTools.Services;
 using KAGTools.ViewModels.API;
 
 namespace KAGTools.ViewModels
 {
     public class ApiViewModel : ViewModelBase
     {
-        private ApiService ApiService { get; }
+        private IApiService ApiService { get; }
 
-        public ApiViewModel(ApiService apiService)
+        public ApiViewModel(IApiService apiService)
         {
             ApiService = apiService;
 

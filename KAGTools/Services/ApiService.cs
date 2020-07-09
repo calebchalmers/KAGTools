@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KAGTools.Services
 {
-    public class ApiService
+    public class ApiService : IApiService
     {
         public string PlayerUrlTemplate { get; set; }
         public string PlayerAvatarUrlTemplate { get; set; }

@@ -5,7 +5,7 @@ using System.IO;
 
 namespace KAGTools.Services
 {
-    public class ManualService
+    public class ManualService : IManualService
     {
         private readonly int ManualHeaderLineCount = 3;
         private readonly char ManualIndentCharacter = '\t';

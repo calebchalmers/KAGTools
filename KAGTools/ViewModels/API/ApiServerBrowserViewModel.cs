@@ -1,7 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using KAGTools.Data;
 using KAGTools.Data.API;
-using KAGTools.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -22,9 +21,9 @@ namespace KAGTools.ViewModels.API
         private CancellationTokenSource MinimapCancellationSource { get; set; }
         private bool RefreshingServers { get; set; } = false;
 
-        private ApiService ApiService { get; }
+        private IApiService ApiService { get; }
 
-        public ApiServerBrowserViewModel(ApiService apiService)
+        public ApiServerBrowserViewModel(IApiService apiService)
         {
             ApiService = apiService;
 

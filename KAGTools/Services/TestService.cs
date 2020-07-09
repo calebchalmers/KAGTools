@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace KAGTools.Services
 {
-    public class TestService
+    public class TestService : ITestService
     {
         private readonly string DEFAULT_RCONPASSWORD = "test";
 
@@ -48,7 +48,7 @@ namespace KAGTools.Services
             }
         }
 
-        public async Task<bool> TestMultiplayerAsync(ConfigService configService)
+        public async Task<bool> TestMultiplayerAsync(IConfigService configService)
         {
             Log.Information("Starting multiplayer test");
 
@@ -115,7 +115,7 @@ namespace KAGTools.Services
             }
         }
 
-        private int TryForceMultiplayerAutoConfigProperties(ConfigService configService)
+        private int TryForceMultiplayerAutoConfigProperties(IConfigService configService)
         {
             var portProperty = new IntConfigProperty("sv_port", -1);
             var tcprProperty = new BoolConfigProperty("sv_tcpr", false);

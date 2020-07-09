@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
 using KAGTools.Data;
-using KAGTools.Services;
 using System.Linq;
 
 namespace KAGTools.ViewModels
@@ -9,7 +8,7 @@ namespace KAGTools.ViewModels
     {
         private UserSettings UserSettings { get; }
 
-        public ManualViewModel(UserSettings userSettings, WindowService windowService, ManualService manualService)
+        public ManualViewModel(UserSettings userSettings, IWindowService windowService, IManualService manualService)
         {
             UserSettings = userSettings;
 
