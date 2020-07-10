@@ -25,7 +25,6 @@ namespace KAGTools.ViewModels
 
             OpenCommand = new RelayCommand(ExecuteOpenCommand);
             InfoCommand = new RelayCommand(ExecuteInfoCommand);
-            UpdateActiveModsCommand = new RelayCommand(ExecuteUpdateActiveModsCommand);
 
             IEnumerable<Mod> allMods = ModsService.EnumerateAllMods();
             Items = new ObservableCollection<Mod>(allMods);
@@ -48,7 +47,6 @@ namespace KAGTools.ViewModels
 
         public ICommand OpenCommand { get; private set; }
         public ICommand InfoCommand { get; private set; }
-        public ICommand UpdateActiveModsCommand { get; private set; }
 
         private void ExecuteOpenCommand()
         {
@@ -69,11 +67,6 @@ namespace KAGTools.ViewModels
             infoBuilder.AppendLine("Gamemode: " + (gamemode ?? "N/A"));
 
             WindowService.Alert(infoBuilder.ToString(), "Mod Info");
-        }
-
-        private void ExecuteUpdateActiveModsCommand()
-        {
-            ModsService.WriteActiveMods(Items.Where(mod => mod.IsActive == true));
         }
     }
 }

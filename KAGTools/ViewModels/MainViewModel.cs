@@ -184,6 +184,8 @@ namespace KAGTools.ViewModels
             if (viewModel != null)
             {
                 var activeMods = viewModel.Items.Where(mod => mod.IsActive == true);
+                ModsService.WriteActiveMods(activeMods);
+
                 InitializeGamemodes(activeMods);
             }
         }
