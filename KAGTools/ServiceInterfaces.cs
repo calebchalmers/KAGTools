@@ -35,6 +35,7 @@ namespace KAGTools
         IEnumerable<Mod> EnumerateAllMods();
         IEnumerable<Mod> EnumerateActiveMods();
         bool WriteActiveMods(IEnumerable<Mod> activeMods);
+        Mod CreateNewMod(string name);
     }
 
     public interface IManualService

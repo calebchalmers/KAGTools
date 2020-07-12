@@ -101,5 +101,20 @@ namespace KAGTools.Services
                 return false;
             }
         }
+
+        public Mod CreateNewMod(string name)
+        {
+            try
+            {
+                string directory = Path.Combine(ModsDirectory, name);
+                Directory.CreateDirectory(directory);
+                return new Mod(name, directory, true);
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex, "Failed to create new mod: {Name}", name);
+                return null;
+            }
+        }
     }
 }
