@@ -13,9 +13,9 @@ namespace KAGTools.ViewModels
 {
     public class ModsViewModel : FilterListViewModelBase<Mod>
     {
-        private readonly string InvalidModNamePattern = $"[{Path.GetInvalidPathChars()}= ]";
 
         private string _searchFilter = "";
+        private readonly string InvalidModNamePattern = $"[{Regex.Escape(new string(Path.GetInvalidFileNameChars()))} =]";
 
         private IWindowService WindowService { get; set; }
         private IConfigService ConfigService { get; set; }
