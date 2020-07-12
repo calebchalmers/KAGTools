@@ -17,7 +17,7 @@
         <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
             <xctk:WatermarkComboBox Watermark="Type..." Text="{Binding TypeFilter}" ItemsSource="{Binding Types}" TabIndex="2" IsEditable="True" Padding="5,0" VerticalContentAlignment="Center" MinWidth="70" Style="{StaticResource VisibleIfHasTypesStyle}"/>
             <Button Content="📖" DockPanel.Dock="Right" Command="{Binding OpenSourceFileCommand}" ToolTip="Open Source File" TabIndex="3"/>
-            <xctk:WatermarkTextBox x:Name="SearchControl" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" Padding="5,0" VerticalContentAlignment="Center" TabIndex="1"/>
+            <xctk:WatermarkTextBox x:Name="SearchControl" Watermark="Search..." Text="{Binding SearchInput, UpdateSourceTrigger=PropertyChanged}" Padding="5,0" VerticalContentAlignment="Center" TabIndex="1"/>
         </DockPanel>
         <ListBox ItemsSource="{Binding FilteredItems}" BorderThickness="1,0,1,1" TabIndex="4">
             <ListBox.ItemTemplate>

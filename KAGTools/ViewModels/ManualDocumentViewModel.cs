@@ -10,9 +10,6 @@ namespace KAGTools.ViewModels
 {
     public class ManualDocumentViewModel : FilterListViewModelBase<ManualItem>
     {
-        private Regex searchRegex;
-
-        private string _searchFilter = "";
         private string _typeFilter = "";
 
         private IWindowService WindowService { get; }
@@ -42,11 +39,7 @@ namespace KAGTools.ViewModels
                 item.Type.IndexOf(TypeFilter, StringComparison.OrdinalIgnoreCase) == -1)
                 return false;
 
-            if (!string.IsNullOrEmpty(SearchFilter) &&
-                !searchRegex.IsMatch(item.Value))
-                return false;
-
-            return true;
+            return FilterValueToSearchInput(item.Value);
         }
 
         public string Name { get; }
@@ -54,17 +47,6 @@ namespace KAGTools.ViewModels
         public ObservableCollection<string> Types { get; }
 
         public ICommand OpenSourceFileCommand { get; private set; }
-
-        public string SearchFilter
-        {
-            get => _searchFilter;
-            set
-            {
-                Set(ref _searchFilter, value);
-                searchRegex = GenerateSearchRegex(value);
-                RefreshFilters();
-            }
-        }
 
         public string TypeFilter
         {
@@ -79,14 +61,6 @@ namespace KAGTools.ViewModels
         private void ExecuteOpenSourceFileCommand()
         {
             WindowService.OpenInExplorer(Document.Path);
-        }
-
-        private Regex GenerateSearchRegex(string input)
-        {
-            string escapedFilter = Regex.Replace(input, @"[.*+?^${}()|[\]\\]", @"\$&");
-            string lookaheads = Regex.Replace(escapedFilter, @"([^ ]+) *", "(?=.*$1)");
-            string pattern = $@"^{lookaheads}.*$";
-            return new Regex(pattern, RegexOptions.IgnoreCase);
         }
     }
 }

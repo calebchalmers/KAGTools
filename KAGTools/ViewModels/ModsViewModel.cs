@@ -13,8 +13,6 @@ namespace KAGTools.ViewModels
 {
     public class ModsViewModel : FilterListViewModelBase<Mod>
     {
-
-        private string _searchFilter = "";
         private readonly string InvalidModNamePattern = $"[{Regex.Escape(new string(Path.GetInvalidFileNameChars()))} =]";
 
         private IWindowService WindowService { get; set; }
@@ -27,28 +25,27 @@ namespace KAGTools.ViewModels
             ConfigService = configService;
             ModsService = modsService;
 
-            NewCommand = new RelayCommand(ExecuteNewCommand, () => IsValidModName(SearchFilter));
+            NewCommand = new RelayCommand(ExecuteNewCommand, () => IsValidModName(SearchInput));
             OpenCommand = new RelayCommand(ExecuteOpenCommand);
             InfoCommand = new RelayCommand(ExecuteInfoCommand);
 
             IEnumerable<Mod> allMods = ModsService.EnumerateAllMods();
             Items = new ObservableCollection<Mod>(allMods);
+
+            PropertyChanged += ModsViewModel_PropertyChanged;
+        }
+
+        private void ModsViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == nameof(SearchInput))
+            {
+                ((RelayCommand)NewCommand).RaiseCanExecuteChanged();
+            }
         }
 
         protected override bool FilterItem(Mod item)
         {
-            return item.Name.IndexOf(SearchFilter, StringComparison.OrdinalIgnoreCase) >= 0;
-        }
-
-        public string SearchFilter
-        {
-            get => _searchFilter;
-            set
-            {
-                Set(ref _searchFilter, value);
-                RefreshFilters();
-                ((RelayCommand)NewCommand).RaiseCanExecuteChanged();
-            }
+            return FilterValueToSearchInput(item.Name);
         }
 
         public ICommand NewCommand { get; private set; }
@@ -57,7 +54,7 @@ namespace KAGTools.ViewModels
 
         private void ExecuteNewCommand()
         {
-            string modName = SearchFilter;
+            string modName = SearchInput;
 
             Mod newMod = ModsService.CreateNewMod(modName);
 

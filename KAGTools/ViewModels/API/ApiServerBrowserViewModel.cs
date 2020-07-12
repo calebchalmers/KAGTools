@@ -15,7 +15,6 @@ namespace KAGTools.ViewModels.API
     public class ApiServerBrowserViewModel : FilterListViewModelBase<ApiServer>
     {
         private BitmapImage _minimapBitmap;
-        private string _searchFilter = "";
         private AsyncTaskState _refreshState = AsyncTaskState.Standby;
 
         private CancellationTokenSource MinimapCancellationSource { get; set; }
@@ -29,36 +28,28 @@ namespace KAGTools.ViewModels.API
 
             RefreshServersCommand = new RelayCommand(ExecuteRefreshServersCommand);
 
-            PropertyChanged += async (s, e) =>
-            {
-                if (e.PropertyName == "Selected" && Selected != null)
-                {
-                    await UpdateMinimapAsync();
-                }
-            };
+            PropertyChanged += ApiServerBrowserViewModel_PropertyChanged;
 
             Task.Run(() => RefreshServersAsync());
         }
 
+        private async void ApiServerBrowserViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Selected) && Selected != null)
+            {
+                await UpdateMinimapAsync();
+            }
+        }
+
         protected override bool FilterItem(ApiServer item)
         {
-            return item.Name.IndexOf(SearchFilter, StringComparison.OrdinalIgnoreCase) >= 0;
+            return FilterValueToSearchInput(item.Name);
         }
 
         public BitmapImage MinimapBitmap
         {
             get => _minimapBitmap;
             set => Set(ref _minimapBitmap, value);
-        }
-
-        public string SearchFilter
-        {
-            get => _searchFilter;
-            set
-            {
-                Set(ref _searchFilter, value);
-                RefreshFilters();
-            }
         }
 
         public int ServerCount

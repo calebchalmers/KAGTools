@@ -1,7 +1,9 @@
 ﻿using GalaSoft.MvvmLight;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Data;
 
 namespace KAGTools.ViewModels
@@ -11,6 +13,9 @@ namespace KAGTools.ViewModels
         private ObservableCollection<T> _items;
         private ObservableCollection<T> _filteredItems;
         private T _selected;
+        private string _searchInput;
+
+        private string SearchRegexPattern { get; set; }
 
         public FilterListViewModelBase(ObservableCollection<T> items)
         {
@@ -27,14 +32,11 @@ namespace KAGTools.ViewModels
         {
         }
 
-        private void FilteredItems_Filter(object sender, FilterEventArgs e)
-        {
-            e.Accepted = FilterItem((T)e.Item);
-        }
+        protected abstract bool FilterItem(T item);
 
-        protected virtual bool FilterItem(T item)
+        protected bool FilterValueToSearchInput(string value)
         {
-            return true;
+            return string.IsNullOrEmpty(SearchInput) || Regex.IsMatch(value, SearchRegexPattern, RegexOptions.IgnoreCase);
         }
 
         protected void RefreshFilters()
@@ -62,6 +64,21 @@ namespace KAGTools.ViewModels
         {
             get => _selected;
             set => Set(ref _selected, value);
+        }
+
+        public string SearchInput
+        {
+            get => _searchInput;
+            set
+            {
+                Set(ref _searchInput, value);
+
+                string escapedInput = Regex.Replace(value, @"[.*+?^${}()|[\]\\]", @"\$&");
+                string lookaheads = Regex.Replace(escapedInput, @"([^ ]+) *", "(?=.*$1)");
+                SearchRegexPattern = $@"^{lookaheads}.*$";
+
+                RefreshFilters();
+            }
         }
     }
 }

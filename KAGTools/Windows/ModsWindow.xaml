@@ -20,7 +20,7 @@
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
             <Button DockPanel.Dock="Right" Command="{Binding NewCommand}" Content="New" ToolTip="Create a new mod using the name in the search box."/>
-            <xctk:WatermarkTextBox x:Name="SearchControl" Watermark="Search..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="1"/>
+            <xctk:WatermarkTextBox x:Name="SearchControl" Watermark="Search..." Text="{Binding SearchInput, UpdateSourceTrigger=PropertyChanged}" TabIndex="1"/>
         </DockPanel>
         <ListBox ItemsSource="{Binding Source={StaticResource ItemsSource}}" SelectedItem="{Binding Selected}" BorderThickness="1,0,1,1" HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" TabIndex="2">
             <ListBox.Resources>
