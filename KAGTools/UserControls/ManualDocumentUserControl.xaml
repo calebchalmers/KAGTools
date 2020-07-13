@@ -20,12 +20,25 @@
             <xctk:WatermarkTextBox x:Name="SearchControl" Watermark="Search..." Text="{Binding SearchInput, UpdateSourceTrigger=PropertyChanged}" Padding="5,0" VerticalContentAlignment="Center" TabIndex="1"/>
         </DockPanel>
         <ListBox ItemsSource="{Binding FilteredItems}" BorderThickness="1,0,1,1" TabIndex="4">
+            <ListBox.Resources>
+                <DataTemplate x:Key="ItemValueTemplate">
+                    <TextBlock Text="{Binding Mode=OneWay}"/>
+                </DataTemplate>
+                <DataTemplate x:Key="SelectedItemValueTemplate">
+                    <TextBox Text="{Binding Mode=OneWay}" Padding="-2,0" Background="Transparent" BorderThickness="0" IsReadOnly="True" IsReadOnlyCaretVisible="True"/>
+                </DataTemplate>
+            </ListBox.Resources>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <DockPanel ToolTip="{Binding Value}" Margin="1">
                         <TextBlock Text="{Binding Type}" Margin="0,0,5,0" Foreground="{StaticResource DisabledBrush}" Style="{DynamicResource VisibleIfHasTypesStyle}"/>
-                        <xctk:AutoSelectTextBox Text="{Binding Value}" Padding="-2,0" Background="Transparent" BorderThickness="0" AutoSelectBehavior="OnFocus" IsReadOnly="True" IsReadOnlyCaretVisible="True"/>
+                        <ContentControl x:Name="ValueControl" Content="{Binding Value}" ContentTemplate="{StaticResource ItemValueTemplate}"/>
                     </DockPanel>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="true">
+                            <Setter TargetName="ValueControl" Property="ContentTemplate" Value="{StaticResource SelectedItemValueTemplate}"/>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
