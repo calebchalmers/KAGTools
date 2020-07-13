@@ -47,7 +47,6 @@ namespace KAGTools
             using (UpdateManager mgr = new UpdateManager(""))
             {
                 SquirrelAwareApp.HandleEvents(
-                    onFirstRun: OnFirstRun,
                     onInitialInstall: (v) => OnAppInitialInstall(v, mgr),
                     onAppUpdate: (v) => OnAppUpdate(v, mgr),
                     onAppUninstall: (v) => OnAppUninstall(v, mgr));
@@ -106,20 +105,14 @@ namespace KAGTools
         }
 
         #region Squirrel Events
-        // Runs after install
-        private static void OnFirstRun()
-        {
-            AlertInformation("App successfully installed.");
-        }
-
-        // Runs before app launch
         private static void OnAppInitialInstall(Version version, UpdateManager mgr)
         {
             mgr.CreateShortcutsForExecutable(AppInfo.ExeName, ShortcutLocations, false);
             mgr.CreateUninstallerRegistryEntry();
+
+            AlertInformation("App successfully installed.");
         }
 
-        // Runs before app launch
         private static void OnAppUpdate(Version version, UpdateManager mgr)
         {
             mgr.CreateShortcutsForExecutable(AppInfo.ExeName, ShortcutLocations, true);
