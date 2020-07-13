@@ -109,7 +109,7 @@ namespace KAGTools
         // Runs after install
         private static void OnFirstRun()
         {
-            MessageBox.Show(AppInfo.Title + " was successfully installed.", "Install", MessageBoxButton.OK, MessageBoxImage.Information);
+            AlertInformation("App successfully installed.");
         }
 
         // Runs before app launch
@@ -125,7 +125,7 @@ namespace KAGTools
             mgr.CreateShortcutsForExecutable(AppInfo.ExeName, ShortcutLocations, true);
             mgr.CreateUninstallerRegistryEntry();
 
-            MessageBox.Show(string.Format("{0} version (v{1}) was successfully installed.", AppInfo.Title, AppInfo.Version), "Update", MessageBoxButton.OK, MessageBoxImage.Information);
+            AlertInformation($"App successfully updated to v{version.ToString(3)}.");
         }
 
         private static void OnAppUninstall(Version version, UpdateManager mgr)
@@ -133,9 +133,14 @@ namespace KAGTools
             mgr.RemoveShortcutsForExecutable(AppInfo.ExeName, ShortcutLocations);
             mgr.RemoveUninstallerRegistryEntry();
 
-            MessageBox.Show(AppInfo.Title + " was successfully uninstalled.", "Uninstall", MessageBoxButton.OK, MessageBoxImage.Information);
+            AlertInformation("App successfully uninstalled.");
         }
         #endregion
+
+        private static void AlertInformation(string message)
+        {
+            MessageBox.Show(message, AppInfo.Title, MessageBoxButton.OK, MessageBoxImage.Information);
+        }
 
         private void AlertError(string message)
         {
