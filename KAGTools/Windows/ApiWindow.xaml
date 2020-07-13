@@ -208,7 +208,7 @@
             <DockPanel FocusManager.FocusedElement="{Binding ElementName=PlayerSearchControl}">
                 <DockPanel DockPanel.Dock="Top" Style="{StaticResource FilterBarStyle}">
                     <Button Content="Search" DockPanel.Dock="Right" Command="{Binding SearchCommand}" IsDefault="True" TabIndex="2"/>
-                    <xctk:WatermarkTextBox x:Name="PlayerSearchControl" Watermark="Username..." Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" TabIndex="1"/>
+                    <xctk:WatermarkTextBox x:Name="PlayerSearchControl" Watermark="Username..." Text="{Binding SearchInput, UpdateSourceTrigger=PropertyChanged}" TabIndex="1"/>
                 </DockPanel>
                 <Grid>
                     <Grid Visibility="{Binding SearchState, Converter={StaticResource EqualityToVisibilityConverter}, ConverterParameter={x:Static data:AsyncTaskState.Finished}}">

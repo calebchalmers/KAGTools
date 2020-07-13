@@ -15,7 +15,7 @@ namespace KAGTools.ViewModels.API
         private ApiPlayerResults _resultPlayer;
         private ApiServer _resultPlayerServer;
         private BitmapImage _avatarBitmap;
-        private string _searchFilter = "";
+        private string _searchInput = "";
         private AsyncTaskState _searchState = AsyncTaskState.Standby;
         private AsyncTaskState _resultPlayerServerState = AsyncTaskState.Standby;
         private AsyncTaskState _avatarState = AsyncTaskState.Standby;
@@ -31,10 +31,10 @@ namespace KAGTools.ViewModels.API
             SearchCommand = new RelayCommand(ExecuteSearchCommand);
         }
 
-        public string SearchFilter
+        public string SearchInput
         {
-            get => _searchFilter;
-            set => Set(ref _searchFilter, value);
+            get => _searchInput;
+            set => Set(ref _searchInput, value);
         }
 
         public ApiPlayerResults ResultPlayer
@@ -77,9 +77,9 @@ namespace KAGTools.ViewModels.API
 
         private async void ExecuteSearchCommand()
         {
-            if (string.IsNullOrWhiteSpace(SearchFilter))
+            if (string.IsNullOrWhiteSpace(SearchInput))
                 return;
-            if (SearchFilter.Equals(ResultPlayer?.Info.Username, StringComparison.OrdinalIgnoreCase))
+            if (SearchInput.Equals(ResultPlayer?.Info.Username, StringComparison.OrdinalIgnoreCase))
                 return;
 
             await FindResultPlayer();
@@ -97,7 +97,7 @@ namespace KAGTools.ViewModels.API
             try
             {
                 SearchState = AsyncTaskState.Running;
-                ResultPlayer = await ApiService.GetPlayer(SearchFilter, CancellationToken.None);
+                ResultPlayer = await ApiService.GetPlayer(SearchInput, CancellationToken.None);
                 SearchState = AsyncTaskState.Finished;
             }
             catch (System.Net.Http.HttpRequestException)
@@ -140,7 +140,7 @@ namespace KAGTools.ViewModels.API
                 AvatarCancellationSource = new CancellationTokenSource();
                 AvatarState = AsyncTaskState.Running;
 
-                ApiPlayerAvatarResults results = await ApiService.GetPlayerAvatarInfo(SearchFilter, AvatarCancellationSource.Token);
+                ApiPlayerAvatarResults results = await ApiService.GetPlayerAvatarInfo(SearchInput, AvatarCancellationSource.Token);
 
                 var bitmap = new BitmapImage();
                 bitmap.BeginInit();
