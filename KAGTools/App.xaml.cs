@@ -107,26 +107,26 @@ namespace KAGTools
         #region Squirrel Events
         private static void OnAppInitialInstall(Version version, UpdateManager mgr)
         {
+            AlertInformation("App successfully installed.");
+
             mgr.CreateShortcutsForExecutable(AppInfo.ExeName, ShortcutLocations, false);
             mgr.CreateUninstallerRegistryEntry();
-
-            AlertInformation("App successfully installed.");
         }
 
         private static void OnAppUpdate(Version version, UpdateManager mgr)
         {
+            AlertInformation($"App successfully updated to v{version.ToString(3)}.");
+
             mgr.CreateShortcutsForExecutable(AppInfo.ExeName, ShortcutLocations, true);
             mgr.CreateUninstallerRegistryEntry();
-
-            AlertInformation($"App successfully updated to v{version.ToString(3)}.");
         }
 
         private static void OnAppUninstall(Version version, UpdateManager mgr)
         {
+            AlertInformation("App successfully uninstalled.");
+
             mgr.RemoveShortcutsForExecutable(AppInfo.ExeName, ShortcutLocations);
             mgr.RemoveUninstallerRegistryEntry();
-
-            AlertInformation("App successfully uninstalled.");
         }
         #endregion
 
