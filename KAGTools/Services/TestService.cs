@@ -48,7 +48,7 @@ namespace KAGTools.Services
             }
         }
 
-        public async Task<bool> TestMultiplayerAsync(IConfigService configService)
+        public async Task<bool> TestMultiplayerAsync(bool syncClientServerClosing, IConfigService configService)
         {
             Log.Information("Starting multiplayer test");
 
@@ -89,11 +89,13 @@ namespace KAGTools.Services
 
                 if (clientProcess != null)
                 {
-                    // If client or server exits, close the other
-                    clientProcess.EnableRaisingEvents = true;
-                    serverProcess.EnableRaisingEvents = true;
-                    clientProcess.Exited += (s, e) => CloseIfStillRunning(serverProcess);
-                    serverProcess.Exited += (s, e) => CloseIfStillRunning(clientProcess);
+                    if (syncClientServerClosing) // If either the client or server exits, close the other
+                    {
+                        clientProcess.EnableRaisingEvents = true;
+                        serverProcess.EnableRaisingEvents = true;
+                        clientProcess.Exited += (s, e) => CloseIfStillRunning(serverProcess);
+                        serverProcess.Exited += (s, e) => CloseIfStillRunning(clientProcess);
+                    }
                     return true;
                 }
                 else

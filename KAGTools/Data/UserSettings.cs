@@ -11,6 +11,9 @@ namespace KAGTools.Data
         [DefaultValue(false)]
         public bool UsePreReleases;
 
+        [DefaultValue(true)]
+        public bool SyncClientServerClosing;
+
         // Main window
         [DefaultValue(double.NaN)]
         public double Left;

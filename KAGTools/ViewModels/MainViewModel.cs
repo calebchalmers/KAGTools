@@ -169,7 +169,7 @@ namespace KAGTools.ViewModels
 
         private async void ExecuteTestMultiplayerCommand()
         {
-            await TestService.TestMultiplayerAsync(ConfigService);
+            await TestService.TestMultiplayerAsync(UserSettings.SyncClientServerClosing, ConfigService);
         }
 
         private void ExecuteTestSoloCommand()
