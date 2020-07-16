@@ -94,6 +94,8 @@ namespace KAGTools.Services
             if (modal) window.ShowDialog();
             else window.Show();
 
+            window.Owner = null;
+
             return viewModel;
         }
 
