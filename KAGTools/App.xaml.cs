@@ -44,16 +44,14 @@ namespace KAGTools
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            using (UpdateManager mgr = new UpdateManager(""))
-            {
-                SquirrelAwareApp.HandleEvents(
-                    onInitialInstall: (v) => OnAppInitialInstall(v, mgr),
-                    onAppUpdate: (v) => OnAppUpdate(v, mgr),
-                    onAppUninstall: (v) => OnAppUninstall(v, mgr));
-            }
-            // <-- App will exit here if a Squirrel event other than onFirstRun is triggered (via command line argument)
-
             SetupLogging(AppLogPath);
+
+            SquirrelAwareApp.HandleEvents(
+                onInitialInstall: (v) => OnAppInitialInstall(v),
+                onAppUpdate: (v) => OnAppUpdate(v),
+                onAppUninstall: (v) => OnAppUninstall(v)
+            );
+            // <-- App will exit here if a Squirrel event other than onFirstRun is triggered (via command line argument)
 
             UserSettingsFile = new JsonSettingsFile<UserSettings>(AppUserSettingsPath);
             UserSettingsFile.Load();
@@ -91,28 +89,46 @@ namespace KAGTools
         }
 
         #region Squirrel Events
-        private static void OnAppInitialInstall(Version version, UpdateManager mgr)
+        private static void OnAppInitialInstall(Version version)
         {
             AlertInformation("App successfully installed.");
-
-            mgr.CreateShortcutsForExecutable(AppInfo.ExeName, ShortcutLocations, false);
-            mgr.CreateUninstallerRegistryEntry();
+            ModifyAppShortcuts(false, false);
         }
 
-        private static void OnAppUpdate(Version version, UpdateManager mgr)
+        private static void OnAppUpdate(Version version)
         {
             AlertInformation($"App successfully updated to v{version.ToString(3)}.");
-
-            mgr.CreateShortcutsForExecutable(AppInfo.ExeName, ShortcutLocations, true);
-            mgr.CreateUninstallerRegistryEntry();
+            ModifyAppShortcuts(false, true);
         }
 
-        private static void OnAppUninstall(Version version, UpdateManager mgr)
+        private static void OnAppUninstall(Version version)
         {
             AlertInformation("App successfully uninstalled.");
+            ModifyAppShortcuts(true, false);
+        }
 
-            mgr.RemoveShortcutsForExecutable(AppInfo.ExeName, ShortcutLocations);
-            mgr.RemoveUninstallerRegistryEntry();
+        private static void ModifyAppShortcuts(bool remove, bool update)
+        {
+            using (UpdateManager updateManager = new UpdateManager(""))
+            {
+                try
+                {
+                    if (remove)
+                    {
+                        updateManager.RemoveShortcutsForExecutable(AppInfo.ExeName, ShortcutLocations);
+                        updateManager.RemoveUninstallerRegistryEntry();
+                    }
+                    else
+                    {
+                        updateManager.CreateShortcutsForExecutable(AppInfo.ExeName, ShortcutLocations, update);
+                        updateManager.CreateUninstallerRegistryEntry();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Failed to modify app shortcuts");
+                }
+            }
         }
         #endregion
 
