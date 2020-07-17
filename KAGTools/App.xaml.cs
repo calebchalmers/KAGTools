@@ -78,21 +78,7 @@ namespace KAGTools
             WindowService.OpenWindow<MainViewModel>();
 
             // Run auto-updater in the background
-            Task.Run(async () =>
-            {
-                var autoUpdateService = new AutoUpdater(
-                    AppUpdateUrl,
-                    UserSettings.UsePreReleases
-                );
-
-                bool newUpdate = await autoUpdateService.AutoUpdate(RequestUpdatePermission);
-
-                // Shutdown and restart if an update was installed
-                if (newUpdate)
-                {
-                    Dispatcher.Invoke(() => Shutdown(0));
-                }
-            });
+            Task.Run(AutoUpdateAsync);
         }
 
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
@@ -287,6 +273,22 @@ namespace KAGTools
                 ConfigurationManager.AppSettings["ApiServerUrlTemplate"],
                 ConfigurationManager.AppSettings["ApiServerMinimapUrlTemplate"]
             );
+        }
+
+        private async Task AutoUpdateAsync()
+        {
+            var autoUpdater = new AutoUpdater(
+                AppUpdateUrl,
+                UserSettings.UsePreReleases
+            );
+
+            bool newUpdate = await autoUpdater.AutoUpdate(RequestUpdatePermission);
+
+            // Shutdown and restart if an update was installed
+            if (newUpdate)
+            {
+                Dispatcher.Invoke(() => Shutdown(0));
+            }
         }
     }
 }
