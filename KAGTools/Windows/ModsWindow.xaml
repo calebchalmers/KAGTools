@@ -3,12 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:local="clr-namespace:KAGTools.Windows"
         xmlns:viewmodels="clr-namespace:KAGTools.ViewModels"
         mc:Ignorable="d"
         Title="Mods" Height="400" Width="300" WindowStartupLocation="CenterOwner" FocusManager.FocusedElement="{Binding ElementName=SearchControl}" ResizeMode="NoResize">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Deactivated">
+            <i:InvokeCommandAction Command="{Binding WriteActiveModsCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Window.Resources>
         <CollectionViewSource Source="{Binding FilteredItems}" x:Key="ItemsSource">
             <CollectionViewSource.SortDescriptions>

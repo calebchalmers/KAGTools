@@ -49,8 +49,7 @@ namespace KAGTools.ViewModels
             ModsCommand = new RelayCommand(ExecuteModsCommand);
             ManualCommand = new RelayCommand(ExecuteManualCommand);
             ApiCommand = new RelayCommand(ExecuteApiCommand);
-
-            InitializeGamemodes();
+            UpdateGamemodesCommand = new RelayCommand(ExecuteUpdateGamemodesCommand);
 
             // Get settings from config files
             // startup_config.cfg
@@ -161,6 +160,7 @@ namespace KAGTools.ViewModels
         public ICommand ModsCommand { get; private set; }
         public ICommand ManualCommand { get; private set; }
         public ICommand ApiCommand { get; private set; }
+        public ICommand UpdateGamemodesCommand { get; private set; }
 
         private void ExecuteOpenKagFolderCommand()
         {
@@ -179,15 +179,7 @@ namespace KAGTools.ViewModels
 
         private void ExecuteModsCommand()
         {
-            var viewModel = WindowService.OpenWindow<ModsViewModel>(modal: true);
-
-            if (viewModel != null)
-            {
-                var activeMods = viewModel.Items.Where(mod => mod.IsActive == true);
-                ModsService.WriteActiveMods(activeMods);
-
-                InitializeGamemodes(activeMods);
-            }
+            WindowService.OpenWindow<ModsViewModel>();
         }
 
         private void ExecuteManualCommand()
@@ -200,31 +192,12 @@ namespace KAGTools.ViewModels
             WindowService.OpenWindow<ApiViewModel>();
         }
 
-        private void SaveStartupInfo()
-        {
-            StartupOptionsEnabled = ConfigService.WriteConfigProperties(FileLocations.StartupConfigPath,
-                new IntConfigProperty("Window.Width", ScreenWidth),
-                new IntConfigProperty("Window.Height", ScreenHeight),
-                new BoolConfigProperty("Fullscreen", Fullscreen)
-            );
-        }
-
-
-        private void SaveAutoConfigInfo()
-        {
-            GamemodeOptionEnabled = ConfigService.WriteConfigProperties(FileLocations.AutoConfigPath,
-                new StringConfigProperty("sv_gamemode", Gamemode)
-            );
-        }
-
-        private void InitializeGamemodes(IEnumerable<Mod> activeMods = null)
+        private void ExecuteUpdateGamemodesCommand()
         {
             var newGamemodes = new List<string>(DEFAULT_GAMEMODES.Length);
             bool hasCustomGamemodes = false;
 
-            activeMods = activeMods ?? ModsService.EnumerateActiveMods();
-
-            foreach (Mod mod in activeMods)
+            foreach (Mod mod in ModsService.EnumerateActiveMods())
             {
                 string gamemode = ConfigService.FindGamemodeOfMod(mod);
                 if (gamemode != null && !newGamemodes.Contains(gamemode))
@@ -243,6 +216,22 @@ namespace KAGTools.ViewModels
 
             Gamemodes = new ObservableCollection<string>(newGamemodes);
             RaisePropertyChanged("Gamemode"); // Make sure that gamemode doesn't get cleared after updating the options
+        }
+
+        private void SaveStartupInfo()
+        {
+            StartupOptionsEnabled = ConfigService.WriteConfigProperties(FileLocations.StartupConfigPath,
+                new IntConfigProperty("Window.Width", ScreenWidth),
+                new IntConfigProperty("Window.Height", ScreenHeight),
+                new BoolConfigProperty("Fullscreen", Fullscreen)
+            );
+        }
+
+        private void SaveAutoConfigInfo()
+        {
+            GamemodeOptionEnabled = ConfigService.WriteConfigProperties(FileLocations.AutoConfigPath,
+                new StringConfigProperty("sv_gamemode", Gamemode)
+            );
         }
     }
 }
