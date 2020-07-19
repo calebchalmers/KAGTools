@@ -39,7 +39,7 @@ namespace KAGTools.Services
             {
                 lines = File.ReadAllLines(filePath);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is UnauthorizedAccessException || ex is IOException)
             {
                 Log.Error(ex, "Failed to read config file: {FilePath}", filePath);
                 return false;
@@ -96,7 +96,7 @@ namespace KAGTools.Services
                 {
                     File.WriteAllLines(filePath, lines);
                 }
-                catch (Exception ex)
+                catch (Exception ex) when (ex is UnauthorizedAccessException || ex is IOException)
                 {
                     Log.Error(ex, "Failed to write config file: {FilePath}", filePath);
                     return false;
@@ -110,13 +110,19 @@ namespace KAGTools.Services
         {
             string gamemodeConfigPath;
 
+            if (!Directory.Exists(mod.Directory))
+            {
+                Log.Error("Could not find directory of mod: {ModName}", mod.Name);
+                return null;
+            }
+
             try
             {
                 gamemodeConfigPath = Directory.EnumerateFiles(mod.Directory, "gamemode.cfg", SearchOption.AllDirectories).FirstOrDefault();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is UnauthorizedAccessException || ex is IOException)
             {
-                Log.Error(ex, "Failed searching for gamemode config");
+                Log.Error(ex, "Failed searching for gamemode config in mod: {ModName}", mod.Name);
                 return null;
             }
 

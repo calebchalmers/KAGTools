@@ -20,30 +20,30 @@ namespace KAGTools.Services
 
         public IEnumerable<Mod> EnumerateAllMods()
         {
+            if (!Directory.Exists(ModsDirectory))
+            {
+                Log.Warning("Could not find mods folder");
+                yield break;
+            }
+
             IEnumerable<string> modDirectories;
 
             try
             {
                 modDirectories = Directory.EnumerateDirectories(ModsDirectory);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is UnauthorizedAccessException || ex is IOException)
             {
                 Log.Error(ex, "Failed to enumerate mods folder");
                 yield break;
             }
 
-            List<string> activeModNames = ReadActiveModNames().ToList();
+            List<string> activeModNames = ReadActiveModNames();
 
             foreach (string modDirectory in modDirectories)
             {
                 string modName = new DirectoryInfo(modDirectory).Name;
-                bool modIsActive = false;
-
-                // If this mod is active, mark it as such and remove it from the list to improve efficiency
-                if (activeModNames.Remove(modName))
-                {
-                    modIsActive = true;
-                }
+                bool? modIsActive = activeModNames?.Remove(modName);
 
                 yield return new Mod(modName, modDirectory, modIsActive);
             }
@@ -51,7 +51,12 @@ namespace KAGTools.Services
 
         public IEnumerable<Mod> EnumerateActiveMods()
         {
-            IEnumerable<string> activeModNames = ReadActiveModNames();
+            List<string> activeModNames = ReadActiveModNames();
+
+            if(activeModNames == null)
+            {
+                yield break;
+            }
 
             foreach (string modName in activeModNames)
             {
@@ -64,38 +69,55 @@ namespace KAGTools.Services
             }
         }
 
-        private IEnumerable<string> ReadActiveModNames()
+        private List<string> ReadActiveModNames()
         {
             if (!File.Exists(ModsConfigPath))
             {
                 Log.Error("Could not find mods config file");
-                yield break;
+                return null;
             }
 
-            string line;
-            using (StreamReader reader = new StreamReader(ModsConfigPath))
+            List<string> activeModNames = new List<string>();
+
+            try
             {
-                while ((line = reader.ReadLine()) != null)
+                string line;
+                using (StreamReader reader = new StreamReader(ModsConfigPath))
                 {
-                    if (!line.StartsWith("#"))
+                    while ((line = reader.ReadLine()) != null)
                     {
-                        yield return line;
+                        if (!line.StartsWith("#"))
+                        {
+                            activeModNames.Add(line);
+                        }
                     }
                 }
             }
+            catch (IOException ex)
+            {
+                Log.Error(ex, "Failed to read mods config file");
+                return null;
+            }
+
+            return activeModNames;
         }
 
         public bool WriteActiveMods(IEnumerable<Mod> activeMods)
         {
+            if(!File.Exists(ModsConfigPath))
+            {
+                Log.Error("Could not find mods config file");
+                return false;
+            }
+
             try
             {
-                string[] comments = File.ReadAllLines(ModsConfigPath).Where((line) => line.StartsWith("#")).ToArray();
-                List<string> lines = new List<string>(comments);
-                lines.AddRange(activeMods.Select(mod => mod.Name));
-                File.WriteAllLines(ModsConfigPath, lines.ToArray());
+                var comments = File.ReadAllLines(ModsConfigPath).Where(line => line.StartsWith("#"));
+                var lines = comments.Concat(activeMods.Select(mod => mod.Name));
+                File.WriteAllLines(ModsConfigPath, lines);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is UnauthorizedAccessException || ex is IOException)
             {
                 Log.Error(ex, "Failed to update mods config");
                 return false;
@@ -110,7 +132,7 @@ namespace KAGTools.Services
                 Directory.CreateDirectory(directory);
                 return new Mod(name, directory, true);
             }
-            catch(Exception ex)
+            catch (Exception ex) when (ex is PathTooLongException || ex is UnauthorizedAccessException || ex is IOException)
             {
                 Log.Error(ex, "Failed to create new mod: {Name}", name);
                 return null;

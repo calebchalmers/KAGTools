@@ -27,7 +27,7 @@ namespace KAGTools
                 {
                     json = File.ReadAllText(FilePath);
                 }
-                catch (Exception ex)
+                catch (Exception ex) when (ex is UnauthorizedAccessException || ex is IOException)
                 {
                     Log.Error(ex, "Failed to read user settings file: {Path}", FilePath);
                 }
@@ -56,12 +56,13 @@ namespace KAGTools
             };
 
             string json = JsonConvert.SerializeObject(Settings, serializerSettings);
+
             try
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
                 File.WriteAllText(FilePath, json);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is PathTooLongException || ex is UnauthorizedAccessException || ex is IOException)
             {
                 Log.Error(ex, "Failed to write user settings to disk: {Path}", FilePath);
             }
