@@ -84,7 +84,7 @@ namespace KAGTools
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             Log.Error(e.Exception, "An unhandled exception occured");
-            AlertError("An unhandled exception occured.");
+            AlertError("An unhandled exception occured.", true);
 
             e.Handled = true;
             Shutdown(1);
@@ -139,18 +139,18 @@ namespace KAGTools
             MessageBox.Show(message, AppInfo.Title, MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void AlertError(string message)
+        private void AlertError(string message, bool includeLogsMessage)
         {
-            StringBuilder messageBuilder = new StringBuilder();
-            messageBuilder.AppendLine(message);
-            messageBuilder.AppendLine();
-            messageBuilder.AppendLine($"Check \"{AppLogPath}\" for more information.");
+            if (includeLogsMessage)
+            {
+                StringBuilder messageBuilder = new StringBuilder();
+                messageBuilder.AppendLine(message);
+                messageBuilder.AppendLine();
+                messageBuilder.AppendLine($"Check \"{AppLogPath}\" for more information.");
+                message = messageBuilder.ToString();
+            }
 
-            MessageBox.Show(
-                messageBuilder.ToString(),
-                AppInfo.Title + " Error",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
+            MessageBox.Show(message, AppInfo.Title, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void SetupLogging(string logPath)
@@ -206,13 +206,11 @@ namespace KAGTools
                     {
                         Log.Information("Could not find KAG.exe in specified install folder: {KagDirectory}", dir);
 
-                        MessageBox.Show(
-                            $"KAG.exe was not found in '{dir}'." + Environment.NewLine +
-                            Environment.NewLine +
-                            "Please select your King Arthur's Gold install folder.",
-                            AppInfo.Title,
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Error);
+                        var errorMessageBuilder = new StringBuilder();
+                        errorMessageBuilder.AppendLine($"KAG.exe was not found in '{dir}'.");
+                        errorMessageBuilder.AppendLine();
+                        errorMessageBuilder.AppendLine("Please select your King Arthur's Gold install folder.");
+                        AlertError(errorMessageBuilder.ToString(), false);
                     }
                 }
                 else
