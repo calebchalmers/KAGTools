@@ -52,7 +52,7 @@
     </Window.Resources>
     <StackPanel Margin="5">
         <Button Content="Open KAG Folder" Command="{Binding OpenKagFolderCommand}"/>
-        <ComboBox SelectedIndex="{Binding RunTypeIndex}" Style="{StaticResource TestButtonComboBoxStyle}">
+        <ComboBox SelectedIndex="{Binding TestType}" Style="{StaticResource TestButtonComboBoxStyle}">
             <ComboBoxItem Content="▶ Test Solo" Tag="{Binding TestSoloCommand}" ToolTip="Runs a client and server in the same process.&#x0a;This is the same as playing solo in-game."/>
             <ComboBoxItem Content="▶ Test Multiplayer" Tag="{Binding TestMultiplayerCommand}" ToolTip="Runs a client and server as separate processes.&#x0a;This is the same as playing multiplayer in-game."/>
         </ComboBox>

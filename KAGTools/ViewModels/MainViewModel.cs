@@ -138,20 +138,20 @@ namespace KAGTools.ViewModels
         // Expose user settings to view
         public double WindowTop
         {
-            get => UserSettings.Top;
-            set => Set(ref UserSettings.Top, value);
+            get => UserSettings.MainWindowTop;
+            set => Set(ref UserSettings.MainWindowTop, value);
         }
 
         public double WindowLeft
         {
-            get => UserSettings.Left;
-            set => Set(ref UserSettings.Left, value);
+            get => UserSettings.MainWindowLeft;
+            set => Set(ref UserSettings.MainWindowLeft, value);
         }
 
-        public int RunTypeIndex
+        public int TestType
         {
-            get => UserSettings.RunTypeIndex;
-            set => Set(ref UserSettings.RunTypeIndex, value);
+            get => UserSettings.TestType;
+            set => Set(ref UserSettings.TestType, value);
         }
 
         public ICommand OpenKagFolderCommand { get; private set; }

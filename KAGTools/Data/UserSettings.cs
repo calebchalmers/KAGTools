@@ -16,13 +16,13 @@ namespace KAGTools.Data
 
         // Main window
         [DefaultValue(double.NaN)]
-        public double Left;
-
+        public double MainWindowLeft;
+        
         [DefaultValue(double.NaN)]
-        public double Top;
+        public double MainWindowTop;
 
         [DefaultValue(0)]
-        public int RunTypeIndex;
+        public int TestType;
 
         // Manual window
         [DefaultValue(500)]
