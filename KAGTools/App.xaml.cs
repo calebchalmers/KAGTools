@@ -208,8 +208,9 @@ namespace KAGTools
 
                         MessageBox.Show(
                             $"KAG.exe was not found in '{dir}'." + Environment.NewLine +
+                            Environment.NewLine +
                             "Please select your King Arthur's Gold install folder.",
-                            "Invalid Folder",
+                            AppInfo.Title,
                             MessageBoxButton.OK,
                             MessageBoxImage.Error);
                     }
