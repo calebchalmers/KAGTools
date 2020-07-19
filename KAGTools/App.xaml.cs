@@ -155,11 +155,17 @@ namespace KAGTools
         {
             string outputTemplate = "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:j}{NewLine}{Exception}";
 
-            try
+            if(File.Exists(logPath))
             {
-                File.Delete(logPath);
+                try
+                {
+                    File.Delete(logPath);
+                }
+                catch (Exception ex) when (ex is UnauthorizedAccessException || ex is IOException)
+                {
+                    System.Diagnostics.Debug.WriteLine("Failed to delete previous log file due to {0}", ex);
+                }
             }
-            catch (Exception) { } // It's not a problem if we can't delete the old log
 
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.File(logPath, Serilog.Events.LogEventLevel.Information, outputTemplate)
