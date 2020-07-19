@@ -36,10 +36,12 @@ namespace KAGTools
         private JsonSettingsFile<UserSettings> UserSettingsFile;
         private UserSettings UserSettings { get => UserSettingsFile.Settings; }
         private FileLocations FileLocations { get; set; }
+        private Task AutoUpdateTask = Task.CompletedTask;
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             UserSettingsFile.Save();
+            AutoUpdateTask.Wait();
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
@@ -76,7 +78,7 @@ namespace KAGTools
             WindowService.OpenWindow<MainViewModel>();
 
             // Run auto-updater in the background
-            Task.Run(AutoUpdateAsync);
+            AutoUpdateTask = Task.Run(AutoUpdateAsync);
         }
 
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
