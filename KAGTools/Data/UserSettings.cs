@@ -17,7 +17,7 @@ namespace KAGTools.Data
         // Main window
         [DefaultValue(double.NaN)]
         public double MainWindowLeft;
-        
+
         [DefaultValue(double.NaN)]
         public double MainWindowTop;
 

@@ -38,7 +38,7 @@ namespace KAGTools.ViewModels
 
         private void ModsViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == nameof(SearchInput))
+            if (e.PropertyName == nameof(SearchInput))
             {
                 ((RelayCommand)NewCommand).RaiseCanExecuteChanged();
             }
@@ -60,7 +60,7 @@ namespace KAGTools.ViewModels
 
             Mod newMod = ModsService.CreateNewMod(modName);
 
-            if(newMod == null)
+            if (newMod == null)
             {
                 WindowService.Alert("There was an error creating a new mod.", null, true);
                 return;

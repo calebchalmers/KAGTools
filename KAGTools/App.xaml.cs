@@ -157,7 +157,7 @@ namespace KAGTools
         {
             string outputTemplate = "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:j}{NewLine}{Exception}";
 
-            if(File.Exists(logPath))
+            if (File.Exists(logPath))
             {
                 try
                 {

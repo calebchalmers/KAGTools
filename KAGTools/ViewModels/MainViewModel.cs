@@ -170,7 +170,7 @@ namespace KAGTools.ViewModels
         {
             var portProperty = new IntConfigProperty("sv_port", -1);
 
-            if (ConfigService.ReadConfigProperties(FileLocations.AutoConfigPath, portProperty) && 
+            if (ConfigService.ReadConfigProperties(FileLocations.AutoConfigPath, portProperty) &&
                 TestService.TryFixMultiplayerAutoConfigProperties(ConfigService))
             {
                 await TestService.TestMultiplayerAsync(portProperty.Value, UserSettings.SyncClientServerClosing);

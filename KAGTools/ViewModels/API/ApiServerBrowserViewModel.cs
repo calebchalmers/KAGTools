@@ -1,7 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using KAGTools.Data;
 using KAGTools.Data.API;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;

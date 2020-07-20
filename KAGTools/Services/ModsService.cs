@@ -53,7 +53,7 @@ namespace KAGTools.Services
         {
             List<string> activeModNames = ReadActiveModNames();
 
-            if(activeModNames == null)
+            if (activeModNames == null)
             {
                 yield break;
             }
@@ -104,7 +104,7 @@ namespace KAGTools.Services
 
         public bool WriteActiveMods(IEnumerable<Mod> activeMods)
         {
-            if(!File.Exists(ModsConfigPath))
+            if (!File.Exists(ModsConfigPath))
             {
                 Log.Error("Could not find mods config file");
                 return false;
