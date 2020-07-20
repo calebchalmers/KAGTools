@@ -3,7 +3,6 @@ using GalaSoft.MvvmLight.Command;
 using KAGTools.Data;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 
 namespace KAGTools.ViewModels
@@ -169,7 +168,13 @@ namespace KAGTools.ViewModels
 
         private async void ExecuteTestMultiplayerCommand()
         {
-            await TestService.TestMultiplayerAsync(UserSettings.SyncClientServerClosing, ConfigService);
+            var portProperty = new IntConfigProperty("sv_port", -1);
+
+            if (ConfigService.ReadConfigProperties(FileLocations.AutoConfigPath, portProperty) && 
+                TestService.TryFixMultiplayerAutoConfigProperties(ConfigService))
+            {
+                await TestService.TestMultiplayerAsync(portProperty.Value, UserSettings.SyncClientServerClosing);
+            }
         }
 
         private void ExecuteTestSoloCommand()

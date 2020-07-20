@@ -48,17 +48,9 @@ namespace KAGTools.Services
             }
         }
 
-        public async Task<bool> TestMultiplayerAsync(bool syncClientServerClosing, IConfigService configService)
+        public async Task<bool> TestMultiplayerAsync(int port, bool syncClientServerClosing)
         {
             Log.Information("Starting multiplayer test");
-
-            int port = TryForceMultiplayerAutoConfigProperties(configService);
-
-            // Make sure that sv_tcpr is enabled and sv_rconpassword is set (otherwise we can't test the TCPR port)
-            if (port == -1)
-            {
-                return false;
-            }
 
             // Start the server process
             Process serverProcess;
@@ -67,6 +59,7 @@ namespace KAGTools.Services
             {
                 Log.Information("TestMultiplayer: Starting test server process");
                 serverProcess = StartKagProcess(ServerAutoStartScriptPath);
+                if (serverProcess == null) return false;
             }
             catch (Win32Exception ex)
             {
@@ -74,23 +67,17 @@ namespace KAGTools.Services
                 return false;
             }
 
-            if (serverProcess == null)
-            {
-                return false;
-            }
-
             // Wait until we can connect to the server's TCPR port and start the client process
-            bool connected = await TryConnectToServerTcprPortAsync(serverProcess, port);
-
-            if (connected)
+            if (await TryConnectToServerTcprPortAsync(serverProcess, port))
             {
                 Log.Information("TestMultiplayer: Starting test client process");
                 var clientProcess = StartKagProcess(ClientAutoStartScriptPath);
 
                 if (clientProcess != null)
                 {
-                    if (syncClientServerClosing) // If either the client or server exits, close the other
+                    if (syncClientServerClosing)
                     {
+                        // If either the client or server exits, close the other
                         clientProcess.EnableRaisingEvents = true;
                         serverProcess.EnableRaisingEvents = true;
                         clientProcess.Exited += (s, e) => CloseIfStillRunning(serverProcess);
@@ -117,74 +104,54 @@ namespace KAGTools.Services
             }
         }
 
-        private int TryForceMultiplayerAutoConfigProperties(IConfigService configService)
+        public bool TryFixMultiplayerAutoConfigProperties(IConfigService configService)
         {
-            var portProperty = new IntConfigProperty("sv_port", -1);
             var tcprProperty = new BoolConfigProperty("sv_tcpr", false);
             var passwordProperty = new StringConfigProperty("sv_rconpassword", "");
+            configService.ReadConfigProperties(AutoConfigPath, tcprProperty, passwordProperty);
 
-            bool readSuccess = configService.ReadConfigProperties(AutoConfigPath,
-                tcprProperty,
-                portProperty,
-                passwordProperty
-            );
-
-            if (!readSuccess)
+            if (!tcprProperty.Value || passwordProperty.Value == "")
             {
-                return -1;
-            }
-
-            if (tcprProperty.Value == false || passwordProperty.Value == "")
-            {
-                tcprProperty.Value = true;
+                Log.Information("TCPR is disabled or password isn't set. Writing updated properties");
 
                 if (passwordProperty.Value == "")
                 {
                     passwordProperty.Value = DEFAULT_RCONPASSWORD;
                 }
 
-                bool writeSuccess = configService.WriteConfigProperties(AutoConfigPath,
-                    tcprProperty,
-                    passwordProperty
-                );
+                tcprProperty.Value = true;
 
-                if (!writeSuccess)
-                {
-                    return -1;
-                }
+                return configService.WriteConfigProperties(AutoConfigPath, tcprProperty, passwordProperty);
             }
 
-            return portProperty.Value;
+            return true;
         }
 
         private async Task<bool> TryConnectToServerTcprPortAsync(Process serverProcess, int port)
         {
-            TcpClient tcpClient = new TcpClient(AddressFamily.InterNetwork);
-
-            for (int i = 0; i < MAX_RETRIES; i++)
+            using (var tcpClient = new TcpClient(AddressFamily.InterNetwork))
             {
-                if (serverProcess.HasExited) break;
-
-                await Task.Delay(RETRY_INTERVAL);
-
-                try
+                for (int i = 0; i < MAX_RETRIES; i++)
                 {
-                    Log.Information("TryConnectToServerTcprPort: Attempting to connect to test server ({Tries})", i + 1);
-                    await tcpClient.ConnectAsync("localhost", port);
+                    if (serverProcess.HasExited) break;
 
-                    if (tcpClient.Connected)
+                    await Task.Delay(RETRY_INTERVAL);
+
+                    try
                     {
-                        Log.Information("TryConnectToServerTcprPort: Sucessfully connected to test server");
-                        break;
+                        Log.Information("TryConnectToServerTcprPort: Attempting to connect to test server ({Tries})", i + 1);
+                        await tcpClient.ConnectAsync("localhost", port);
+
+                        if (tcpClient.Connected)
+                        {
+                            Log.Information("TryConnectToServerTcprPort: Sucessfully connected to test server");
+                            return true;
+                        }
                     }
+                    catch (SocketException) { }
                 }
-                catch (SocketException) { }
             }
-
-            bool connected = tcpClient.Connected;
-            tcpClient.Close();
-
-            return connected;
+            return false;
         }
 
         private void CloseIfStillRunning(Process process)

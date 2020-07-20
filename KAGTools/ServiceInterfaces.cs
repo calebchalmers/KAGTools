@@ -47,7 +47,8 @@ namespace KAGTools
     public interface ITestService
     {
         bool TestSolo();
-        Task<bool> TestMultiplayerAsync(bool syncClientServerClosing, IConfigService configService);
+        Task<bool> TestMultiplayerAsync(int port, bool syncClientServerClosing);
+        bool TryFixMultiplayerAutoConfigProperties(IConfigService configService);
     }
 
     public interface IApiService
