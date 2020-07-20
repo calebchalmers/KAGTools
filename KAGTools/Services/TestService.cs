@@ -11,11 +11,9 @@ namespace KAGTools.Services
 {
     public class TestService : ITestService
     {
-        private readonly string DEFAULT_RCONPASSWORD = "test";
-
-        // TCPR port testing options
-        private readonly int MAX_RETRIES = 100;
-        private readonly TimeSpan RETRY_INTERVAL = TimeSpan.FromSeconds(1);
+        private const string DefaultRconPassword = "test";
+        private const int TcprMaxRetries = 100;
+        private const double TcprRetryWaitSeconds = 1.0;
 
         // Relevant file paths
         public string KagExecutablePath { get; set; }
@@ -116,7 +114,7 @@ namespace KAGTools.Services
 
                 if (passwordProperty.Value == "")
                 {
-                    passwordProperty.Value = DEFAULT_RCONPASSWORD;
+                    passwordProperty.Value = DefaultRconPassword;
                 }
 
                 tcprProperty.Value = true;
@@ -131,11 +129,11 @@ namespace KAGTools.Services
         {
             using (var tcpClient = new TcpClient(AddressFamily.InterNetwork))
             {
-                for (int i = 0; i < MAX_RETRIES; i++)
+                for (int i = 0; i < TcprMaxRetries; i++)
                 {
                     if (serverProcess.HasExited) break;
 
-                    await Task.Delay(RETRY_INTERVAL);
+                    await Task.Delay(TimeSpan.FromSeconds(TcprRetryWaitSeconds));
 
                     try
                     {

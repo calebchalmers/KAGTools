@@ -7,8 +7,8 @@ namespace KAGTools.Services
 {
     public class ManualService : IManualService
     {
-        private readonly int ManualHeaderLineCount = 3;
-        private readonly char ManualIndentCharacter = '\t';
+        private const int ManualHeaderLineCount = 3;
+        private const char ManualIndentCharacter = '\t';
 
         public string ManualDirectory { get; set; }
         public ManualDocument[] ManualDocuments { get; set; }

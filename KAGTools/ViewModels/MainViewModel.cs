@@ -9,7 +9,7 @@ namespace KAGTools.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private static readonly string[] DEFAULT_GAMEMODES =
+        private readonly string[] DefaultGamemodes =
         {
             "CTF",
             "TDM",
@@ -199,7 +199,7 @@ namespace KAGTools.ViewModels
 
         private void ExecuteUpdateGamemodesCommand()
         {
-            var newGamemodes = new List<string>(DEFAULT_GAMEMODES.Length);
+            var newGamemodes = new List<string>(DefaultGamemodes.Length);
             bool hasCustomGamemodes = false;
 
             foreach (Mod mod in ModsService.EnumerateActiveMods())
@@ -217,7 +217,7 @@ namespace KAGTools.ViewModels
                 newGamemodes.Add("");
             }
 
-            newGamemodes.AddRange(DEFAULT_GAMEMODES);
+            newGamemodes.AddRange(DefaultGamemodes);
 
             Gamemodes = new ObservableCollection<string>(newGamemodes);
             RaisePropertyChanged("Gamemode"); // Make sure that gamemode doesn't get cleared after updating the options
