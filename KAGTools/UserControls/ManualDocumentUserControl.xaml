@@ -35,7 +35,7 @@
                         <ContentControl x:Name="ValueControl" Content="{Binding Value}" ContentTemplate="{StaticResource ItemValueTemplate}"/>
                     </DockPanel>
                     <DataTemplate.Triggers>
-                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="true">
+                        <DataTrigger Binding="{Binding IsKeyboardFocusWithin, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}" Value="true">
                             <Setter TargetName="ValueControl" Property="ContentTemplate" Value="{StaticResource SelectedItemValueTemplate}"/>
                         </DataTrigger>
                     </DataTemplate.Triggers>
