@@ -9,7 +9,7 @@
         xmlns:local="clr-namespace:KAGTools.Windows"
         xmlns:viewmodels="clr-namespace:KAGTools.ViewModels"
         mc:Ignorable="d"
-        Title="Mods" Height="400" Width="300" WindowStartupLocation="CenterOwner" FocusManager.FocusedElement="{Binding ElementName=SearchControl}" ResizeMode="NoResize">
+        Title="Mods" Height="400" Width="300" WindowStartupLocation="CenterOwner" FocusManager.FocusedElement="{Binding ElementName=SearchControl}" ResizeMode="CanMinimize">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Deactivated">
             <i:InvokeCommandAction Command="{Binding WriteActiveModsCommand}"/>

@@ -9,7 +9,7 @@
         xmlns:viewmodels="clr-namespace:KAGTools.ViewModels.API"
         xmlns:data="clr-namespace:KAGTools.Data"
         mc:Ignorable="d"
-        Title="API Browser" Height="470" Width="660" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" FocusManager.FocusedElement="{Binding ElementName=ServerSearchControl}">
+        Title="API Browser" Height="470" Width="660" WindowStartupLocation="CenterOwner" ResizeMode="CanMinimize" FocusManager.FocusedElement="{Binding ElementName=ServerSearchControl}">
     <Window.Resources>
         <Style x:Key="PropertyPanel" TargetType="{x:Type StackPanel}">
             <Setter Property="TextElement.FontSize" Value="13"/>
