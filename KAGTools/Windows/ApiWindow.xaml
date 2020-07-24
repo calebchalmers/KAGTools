@@ -31,6 +31,7 @@
                     <CollectionViewSource.SortDescriptions>
                         <scm:SortDescription PropertyName="PlayerCount" Direction="Descending" />
                         <scm:SortDescription PropertyName="Name" Direction="Ascending" />
+                        <scm:SortDescription PropertyName="FirstSeenDate" Direction="Descending" />
                     </CollectionViewSource.SortDescriptions>
                 </CollectionViewSource>
             </TabItem.Resources>
