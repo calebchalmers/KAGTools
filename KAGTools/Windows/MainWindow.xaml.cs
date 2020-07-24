@@ -10,8 +10,6 @@ namespace KAGTools.Windows
         public MainWindow()
         {
             InitializeComponent();
-
-            Title += string.Format(" v{0}", AppInfo.Version);
         }
     }
 }
